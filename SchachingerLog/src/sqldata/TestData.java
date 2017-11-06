@@ -5,8 +5,8 @@ import java.sql.*;
 public class TestData {
    // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_IP="140.78.42.62:3306";
-   static final String SCHEME="schachinger_test";
+   static final String DB_IP = "140.78.42.62:3306";
+   static final String SCHEME = "schachinger";
    static final String DB_URL = "jdbc:mysql://" + DB_IP + "/" + SCHEME;
 
    //  Database credentials
