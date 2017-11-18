@@ -1,7 +1,6 @@
-const CHART = document.getElementById("DeliveriesPerDay");
-//CHART.height = 300;
-//CHART.width = 300;
-let barchart = new Chart(CHART, {
+var chart = document.getElementById("DeliveriesPerDay");
+console.log(chart);
+let barchart = new Chart(chart, {
 	type: 'horizontalBar',
 	data: {
 		labels: ["Monday", "Tuesday", "Wednesday", "Thirsday", "Friday"],
@@ -45,8 +44,8 @@ let barchart = new Chart(CHART, {
 		]
 	},
 	options: {
-		//responsive: true,
-		//maintainAspectRatio: false,
+		responsive: true,
+		maintainAspectRatio: false,
 		scales: {
 			yAxes: [{
 				ticks: {

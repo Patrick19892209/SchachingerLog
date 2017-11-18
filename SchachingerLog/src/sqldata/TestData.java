@@ -6,12 +6,15 @@ public class TestData {
    // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_IP = "140.78.42.62:3306";
-   static final String SCHEME = "schachinger";
+   //static final String SCHEME = "schachinger";
+   static final String SCHEME = "testSE";
    static final String DB_URL = "jdbc:mysql://" + DB_IP + "/" + SCHEME;
 
    //  Database credentials
-   static final String USER = "root";
-   static final String PASS = "wkA7*ucE#wY#";
+   static final String USER = "testSE";
+   //static final String PASS = "wkA7*ucE#wY#";
+   static final String PASS = "5pvNmKg0UeArOwH0" + 
+   		"   ";
    
    public static void main(String[] args) {
    Connection conn = null;

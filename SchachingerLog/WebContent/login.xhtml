@@ -9,9 +9,16 @@
  <title> Schachinger-Login</title>
 </h:head>
 
-<body>
-<h:outputText value="Hello JSF 2.2-World"/>
-</body>
+<h:body>
+	<h:form>
+		User: <h:inputText value="#{login.user}" />
+		<br/><br/>
+		Password: <h:inputText value="#{login.pw}" />
+		<br/><br/>
+		<h:commandButton value="Submit" action="index"/>
+	</h:form>
+		
+</h:body>
 
 
 </html>
