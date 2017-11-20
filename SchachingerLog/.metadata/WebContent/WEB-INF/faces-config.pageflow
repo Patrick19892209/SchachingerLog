@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15110157718320" configfile="/SchachingerLog/WebContent/WEB-INF/faces-config.xml"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15110157718320" configfile="/SchachingerLog/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf151120723486413" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf151120723486414 pf151120730962916 pf151120730962917" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="admin/WelcomeAdmin.xhtml" id="pf151120723486415" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf151120723486414" path="/admin/WelcomeAdmin.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="lager/WelcomeLager.xhtml" id="pf151120730962918" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf151120730962916" path="/lager/WelcomeLager.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="büro/WelcomeBüro.xhtml" id="pf151120730962919" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf151120730962917" path="/büro/WelcomeBüro.xhtml"/>
+  <links id="pf151120723486414" target="pf151120723486415" source="pf151120723486413" outcome="admin" redirect="true"/>
+  <links id="pf151120730962916" target="pf151120730962918" source="pf151120723486413" outcome="lager" redirect="true"/>
+  <links id="pf151120730962917" target="pf151120730962919" source="pf151120723486413" outcome="büro" redirect="true"/>
+</pageflow:Pageflow>
