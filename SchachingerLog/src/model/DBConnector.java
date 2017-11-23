@@ -15,7 +15,7 @@ public class DBConnector {
 	 
 	public Connection openConnection() {
 		try {
-	        Class.forName("com.mysql.jdbc.Driver"); // Datenbanktreiber für JDBC Schnittstellen laden.
+	        Class.forName("com.mysql.jdbc.Driver"); // Datenbanktreiber fï¿½r JDBC Schnittstellen laden.
 	 
 	        con = DriverManager.getConnection("jdbc:mysql://"+dbHost+":"+ dbPort+"/"+dbName+"?"+"user="+dbUser+"&"+"password="+dbPass);
 	    } catch (ClassNotFoundException e) {

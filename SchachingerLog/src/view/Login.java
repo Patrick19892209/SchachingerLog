@@ -21,7 +21,6 @@ public class Login {
     private LoginData data;
     private String name;
     
-    
     private boolean loggedIn = false;
     
 	public boolean isLoggedIn() {
@@ -69,11 +68,11 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
                 answer = "lager";
     			break;
-    		case 3: //Büro
+    		case 3: //Bï¿½ro
     			loggedIn = true;
                 logger.info(username + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
-                answer = "büro";
+                answer = "bï¿½ro";
     			break;
 
     		default:
