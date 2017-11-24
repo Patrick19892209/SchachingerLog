@@ -19,6 +19,8 @@ public class Data {
 	}
 	public Data(String logname) {
 		this.logger = (Logger) LoggerFactory.getLogger("model." + logname);
+		this.dbc = new DBConnector();
+		this.con = dbc.openConnection();
 	}
 	public DBConnector getDbc() {
 		return dbc;
