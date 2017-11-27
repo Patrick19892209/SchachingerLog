@@ -4,6 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.faces.application.FacesMessage;
+
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Logger;
+
 public class DBConnector {
 
 	private static Connection con = null;
@@ -12,6 +18,7 @@ public class DBConnector {
 	private static String dbName = "schachinger_log"; 
 	private static String dbUser = "Manuel"; 
 	private static String dbPass = "tr1ckster";
+	private Logger logger = (Logger) LoggerFactory.getLogger("model.DBConnector");
 	 
 	public Connection openConnection() {
 		try {
@@ -30,8 +37,14 @@ public class DBConnector {
 		return con;
 	}
 	
-	public void closeConnection() {
-		
+	public boolean closeConnection(Connection con) {
+		try {
+			con.close();
+		} catch (SQLException e) {
+            logger.info("Couldnt close DB-Connection with error: " + e.getMessage());
+            return false;
+		}
+		return true;
 	}
 	
 }

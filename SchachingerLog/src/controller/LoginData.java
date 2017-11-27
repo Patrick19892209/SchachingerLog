@@ -41,27 +41,25 @@ public class LoginData {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
 		logger = (Logger) LoggerFactory.getLogger("model.LoginData");
+		int result = 0;
 
 		
 		switch (getUserClass(user)) {
 		case 1:
-			if(chkUser(user, password)) return 1;
+			if(chkUser(user, password)) result = 1;
 			break;
 		case 2:
-			if(chkUser(user, password)) return 2;
+			if(chkUser(user, password)) result = 2;
 			break;
 		case 3:
-			if(chkUser(user, password)) return 3;
+			if(chkUser(user, password)) result = 3;
 			break;
+		default : 
+			result = -1;
 		}
 		
-		try {
-			con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return -1;
+		if (!dbc.closeConnection(con)) return -2;
+		return result;
 	}
 
 	private boolean chkUser(String user, String password) {
