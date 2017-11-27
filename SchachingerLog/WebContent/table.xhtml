@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+    xmlns:p="http://primefaces.org/ui">
+
+<h:body>
+<h:form>
+<p:growl id="growl" life="2000" />
+
+<p:dataTable id="ma" var="delivery" value="#{storeView.openDeliveries}">
+    <p:column headerText="Ankunft">
+        <h:outputText value="#{delivery.arrival}">
+        <f:convertDateTime pattern="HH:mm"/>
+        </h:outputText>
+    </p:column>
+    <p:column headerText="Lieferant">
+        <h:outputText value="#{delivery.supplier}" />
+    </p:column>
+     <p:column>
+            <f:facet name="header">
+                <h:outputText value="Buy" />
+            </f:facet>
+<b:commandButton value="success" ajax="true" update="@none" look="success" style="width:80px"/>            
+        </p:column>
+       
+</p:dataTable>
+</h:form>
+<h:form>
+    <b:panelGrid columns="6" size="sm" >
+        <b:commandButton value="primary" ajax="true" update="@none" look="primary" style="width:80px"/>
+        <b:commandButton value="info" ajax="true" update="@none" look="info" style="width:80px"/>
+        <b:commandButton value="success" ajax="true" update="@none" look="success" style="width:80px"/>
+        <b:commandButton value="warning" ajax="true" update="@none" look="warning" style="width:80px"/>
+        <b:commandButton value="danger" ajax="true" update="@none" look="danger" style="width:80px"/>
+        <b:commandButton value="default" ajax="true" update="@none" style="width:80px"/>
+    </b:panelGrid>
+</h:form>
+
+<h:form>
+<p:dataTable var="delivery" value="#{storeView.finishedDeliveries}">
+    <p:column headerText="Ankunft">
+        <h:outputText value="#{delivery.arrival}">
+        <f:convertDateTime pattern="HH:mm"/>
+        </h:outputText>
+    </p:column>
+    <p:column headerText="Lieferant">
+        <h:outputText value="#{delivery.supplier}" />
+    </p:column>   
+ </p:dataTable>
+</h:form>
+
+<!-- <h:form>
+    <b:dataTable value="#{carPool.carPool}"
+                 var="car"
+                 onpage="console.log('page');">
+        <b:dataTableColumn value="#{car.brand}" />
+        <b:dataTableColumn value="#{car.type}" />
+        <b:dataTableColumn value="#{car.color}" />
+        <b:dataTableColumn value="#{car.year}"  order="asc" />
+        <b:dataTableColumn value="#{car.price}" />
+        <b:dataTableColumn value="#{car.enginePower}" label="Engine Power (hp)" />
+        <b:dataTableColumn label="Non-AJAX">
+            <b:commandButton value="info" ajax="true" update="@none" look="info" style="width:80px"/>
+        </b:dataTableColumn>
+        <b:dataTableColumn label="AJAX">
+            <b:commandButton value="info" ajax="true" update="@none" look="info" style="width:80px"/>
+        </b:dataTableColumn>
+    </b:dataTable>
+</h:form>
+/ -->
+
+</h:body>
+</html>
