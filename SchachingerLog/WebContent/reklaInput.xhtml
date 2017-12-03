@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Reklamationserfassung</title>
+	<style type="text/css">
+.tReklaForm {
+	margin: 0 auto;
+	margin-top: 5%;
+	max-width: 130px;
+	padding: 15px;
+}
+
+.Panel {
+	margin: 0 auto;
+	margin-top: 5%;
+	max-width: 600px;
+}
+
+.Output {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.InputText {
+	width: 100%;
+}
+
+.commandButton {
+	margin: 0 auto;
+	align: center;
+}
+
+.column {
+	text-align: center;
+}
+</style>
+</h:head>
+<h:body>
+	<h:form class="Form">
+		<b:container class="Container" layout="fluid">
+			<b:panel class="Panel" title="Reklamationserfassung" look="primary">
+				<b:row>
+					<b:column>
+						<b:message for="artNr" errorClass="errorMessage" />
+						<b:inputText class="InputText" placeholder="Artikelnummer"
+							id="artNr" value="#{rekla.artNr}" required="true"
+							requiredMessage="Artikel eingeben!" 
+							validatorMessage="Artikel sind numerisch 10 -stellig" 
+							ajax="true" autocomplete="false">
+							<f:validateLength minimum="10" maximum="10" for="artNr"/>
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="maengel"/>
+						<b:selectOneMenu value="#{rekla.mangel}" id="maengel" required="true" 
+							requiredMessage="Mangel erfassen!" ajax="true">
+							<f:selectItem itemValue="" itemLabel="Mangel erfassen..." />
+							<f:selectItems value="#{rekla.maengelListe}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="menge" />
+						<b:inputText class="InputText" placeholder="Menge" id="menge"
+							value="#{rekla.menge}" required="true"
+							requiredMessage="Menge erfassen!" ajax="true" autocomplete="false">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="aviso" errorClass="errorMessage" />
+						<b:inputText class="InputText" placeholder="A000037162" id="aviso"
+							value="#{rekla.aviso}" required="true"
+							requiredMessage="Aviso eingeben!" ajax="true"
+							autocomplete="false">
+							<f:validator validatorId = "model.AvisoValidator"/>
+						</b:inputText>
+					</b:column>
+
+				</b:row>
+				<b:row>
+					<b:column class="column">
+						<b:commandButton id="reklaButton" value="Reklamation erfassen" binding="#{rekla.reklaButton}" update="@form" action="#{rekla.insertRekla}" look="primary" />
+						<b:message for="reklaButton" errorClass="errorMessage"></b:message>
+					</b:column>
+				</b:row>
+			</b:panel>
+		</b:container>
+	</h:form>
+</h:body>
+</html>

@@ -1,46 +1,93 @@
 package view;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
+import javax.faces.bean.ManagedBean;
+//import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+
 import controller.ReklaData;
 
+@ManagedBean(name="rekla")
+@ViewScoped
 public class Rekla {
-	
-	private String id;
+
 	private String aviso;
 	private String erfasser;
 	private String artNr;
 	private String an;
 	private String menge;
 	private String mangel;
-	private ReklaData redat;
+	private UIComponent reklaButton;
+	//private ReklaData redat;
+	List <String> maengelListe;
 	
 	public Rekla() {
-	}
 
-	public boolean insert() {
-		if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=null&&this.menge!=null&&this.mangel!=null) {
-			ReklaData redat = new ReklaData(this.erfasser, this.artNr, this.an, this.menge, this.mangel);
-			redat.insertRekla();
-			return true;
-		}
-		else {
-			return false;
-		}
+		//Dropdown opts
+		maengelListe = new ArrayList<>();
+		//maengelListe.add("Mangel erfassen...");	
+		maengelListe.add("Artikel beschädigt");
+		maengelListe.add("Verpackung beschädigt");
+		maengelListe.add("Menge inkorrekt");
+		this.erfasser="DP";
 		
 	}
-	
-	public ReklaData getRedat() {
-		return redat;
+
+	public List<String> getMaengelListe() {
+		return maengelListe;
 	}
 
-	public void setRedat(ReklaData redat) {
-		this.redat = redat;
-	}
-	
-	public String getId() {
-		return id;
+	public void setMaengelListe(List<String> maengelListe) {
+		this.maengelListe = maengelListe;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String insertRekla() throws SQLException {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		String result;	//result message of the given query
+		Severity sev;
+		//if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=maengelListe.get(0)&&this.menge!=null) {
+			ReklaData redat = new ReklaData(this.aviso, this.erfasser, this.artNr, this.an, this.menge, this.mangel);
+			if (redat.avisoExists(this.aviso)) {	//Complaint is only inserted if Aviso is existing in db
+				if(redat.insert()) {
+					result="Reklamationserfassung erfolgreich abgeschlossen";
+					sev = FacesMessage.SEVERITY_INFO;
+				}
+				else {
+					result = "Reklamationserfassung fehlgeschlagen!";
+					sev = FacesMessage.SEVERITY_ERROR;
+				}
+				
+			}
+			else {
+				result = "Kein gültiges Aviso!";
+				sev = FacesMessage.SEVERITY_ERROR;
+			}
+		//}
+		FacesMessage message = new FacesMessage(sev,result,null);
+		context.addMessage(reklaButton.getClientId(context), message);
+		return result;
+	}
+	public UIComponent getReklaButton() {
+		return reklaButton;
+	}
+
+	public void setReklaButton(UIComponent reklaButton) {
+		this.reklaButton = reklaButton;
+	}
+
+	public String getErfasser() {
+		return erfasser;
+	}
+
+	public void setErfasser(String erfasser) {
+		this.erfasser = erfasser;
 	}
 
 	public String getAviso() {
