@@ -16,7 +16,7 @@ public class ReklaData extends Data{
 	
 	//Constructors
 	public ReklaData(String aviso, String erfasser, String artNr, String an, String menge, String mangel) {
-		super("model.ReklaData");
+		super("controller.ReklaData");
 		this.aviso = aviso;
 		this.erfasser = erfasser;
 		this.artNr = artNr;
@@ -25,47 +25,23 @@ public class ReklaData extends Data{
 		this.mangel = mangel;
 	}
 	public ReklaData(){	
-		super("model.ReklaData");
+		super("controller.ReklaData");
 	}
 	
 	//checks whether abbrevation exists
 	public boolean abbrevationExists(String abbr) {
 		String abbrExists = "SELECT * FROM User WHERE Abbrevation = '" + abbr + "'";
-		System.out.println(abbrExists);
+		logger.info(abbrExists);
 		if(exists(abbrExists)) return true;
 		return false;
 	}
 	
 	//checks whether certain Aviso exists in the db
 	public boolean avisoExists(String aviso) {
-		String avisoExists =  "SELECT * FROM Reklamation WHERE Aviso = '" + aviso + "'";
-		Connection con = null;
-		boolean bool = false;
-		try {
-			con = this.dbc.openConnection();
-			con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = con.createStatement();
-				this.rs = stmt.executeQuery(avisoExists);
-				if(this.rs.next()) bool=true;
-				logger.info(avisoExists + " erfolgreich durchgeführt");
-			} finally {
-				try {
-					
-				} catch (Exception ignore) {
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				}
-			} 
-		
-		return bool;
+		String avisoExists =  "SELECT * FROM Lieferung WHERE Aviso = '" + aviso + "'";
+		logger.info(avisoExists);
+		if(exists(avisoExists)) return true;
+		return false;
 	}
 	//inserts the complaint values from a complaint object to the db
 	public boolean insert() {
@@ -77,7 +53,7 @@ public class ReklaData extends Data{
 			anString = "NULL";	
 		}
 		else {
-			anString = "'"+this.an+"'";
+			anString = "'" + this.an + "'";
 		}
 		String insertRekla="INSERT INTO Reklamation (Aviso, Id, Timestamp, Erfasser, ZugewiesenAn, ArtikelNr, Menge, Mangel) "
 				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.ts + ", '" + this.erfasser + "', " + anString +  ", '" + this.artNr +"', '" + this.menge + "', '" + this.mangel + "')";

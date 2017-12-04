@@ -16,8 +16,7 @@ public class AvisoValidator implements Validator {
 		if (value!=null) {
 			ReklaData rd = new ReklaData();
 			if(!rd.avisoExists(value.toString())) {
-				String label = component.getAttributes().get("label").toString();
-				FacesMessage message = new FacesMessage(label + " existiert nicht!");
+				FacesMessage message = new FacesMessage(value.toString() + " existiert nicht!");
 				message.setSeverity(FacesMessage.SEVERITY_ERROR);
 				throw new ValidatorException(message);
 			}

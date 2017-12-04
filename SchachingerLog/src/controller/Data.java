@@ -21,12 +21,12 @@ public class Data {
 		this.dbc = new DBConnector();
 		this.con = null;
 		this.rs = null;
-		this.logger = null;
+		this.logger = (Logger) LoggerFactory.getLogger("controller.noName");;
 		//this.con = dbc.openConnection();
 	}
 
 	public Data(String logname) {
-		this.logger = (Logger) LoggerFactory.getLogger("model." + logname);
+		this.logger = (Logger) LoggerFactory.getLogger(logname);
 		this.dbc = new DBConnector();
 		//this.con = dbc.openConnection();
 	}
@@ -42,7 +42,7 @@ public class Data {
 				stmt = con.createStatement();
 				this.rs = stmt.executeQuery(query);
 				if(this.rs.next()) bool=true;
-				logger.info(query + " erfolgreich durchgeführt");
+				logger.info(query + " erfolgreich durchgeführt - Bool: " + bool);
 			} finally {
 				try {
 					
