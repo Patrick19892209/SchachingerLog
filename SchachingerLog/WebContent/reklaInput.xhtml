@@ -7,39 +7,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
+	<h:outputStylesheet name="resources/css/rekla.css" />
 	<title>Reklamationserfassung</title>
-	<style type="text/css">
-.tReklaForm {
-	margin: 0 auto;
-	margin-top: 5%;
-	max-width: 130px;
-	padding: 15px;
-}
-
-.Panel {
-	margin: 0 auto;
-	margin-top: 5%;
-	max-width: 600px;
-}
-
-.Output {
-	display: table-cell;
-	vertical-align: middle;
-}
-
-.InputText {
-	width: 100%;
-}
-
-.commandButton {
-	margin: 0 auto;
-	align: center;
-}
-
-.column {
-	text-align: center;
-}
-</style>
 </h:head>
 <h:body>
 	<h:form class="Form">
@@ -59,9 +28,13 @@
 				</b:row>
 				<b:row>
 					<b:column>
+						<b:inputText class="InputText" placeholder="Mangel..." id="mangel"
+							value="#{rekla.mangel}" required="true" style="width:30%; float: left"
+							requiredMessage="Menge erfassen!" ajax="true" autocomplete="false">
+						</b:inputText>
 						<b:message for="maengel"/>
 						<b:selectOneMenu value="#{rekla.mangel}" id="maengel" required="true" 
-							requiredMessage="Mangel erfassen!" ajax="true">
+							requiredMessage="Mangel erfassen!" ajax="true" update="@form" style="width:20%; text-align: center">
 							<f:selectItem itemValue="" itemLabel="Mangel erfassen..." />
 							<f:selectItems value="#{rekla.maengelListe}" />
 						</b:selectOneMenu>
