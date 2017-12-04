@@ -14,11 +14,14 @@ public class Data {
 
 	protected DBConnector dbc;
 	protected Connection con;
-	protected Logger logger = null;
-	protected ResultSet rs = null;
+	protected Logger logger;
+	protected ResultSet rs;
 
 	public Data() {
 		this.dbc = new DBConnector();
+		this.con = null;
+		this.rs = null;
+		this.logger = null;
 		//this.con = dbc.openConnection();
 	}
 
@@ -27,21 +30,22 @@ public class Data {
 		this.dbc = new DBConnector();
 		//this.con = dbc.openConnection();
 	}
-
-	public ResultSet executeQuery(String query) {
+	
+	public boolean exists(String query) {
+		Connection con = null;
+		boolean bool = false;
 		try {
-			this.con = dbc.openConnection();
-			this.con.setAutoCommit(false);
+			con = this.dbc.openConnection();
+			con.setAutoCommit(false);
 			Statement stmt = null;
 			try {
 				stmt = con.createStatement();
-				rs = stmt.executeQuery(query); 
+				this.rs = stmt.executeQuery(query);
+				if(this.rs.next()) bool=true;
+				logger.info(query + " erfolgreich durchgeführt");
 			} finally {
 				try {
-					stmt.close();
-					con.commit();
-					con.close();
-					return rs;	
+					
 				} catch (Exception ignore) {
 				}
 			}
@@ -53,74 +57,9 @@ public class Data {
 				logger.warn("Rollback didnt work");
 				}
 			} 
-		logger.info(query + "erfolgreich durchgeführt");
-		return null;
-	}
-	
-	public boolean executeUpdate(String query) {
-		try {
-			this.con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				System.out.println("63");
-				stmt = con.createStatement();
-				System.out.println("65");
-				stmt.executeUpdate(query);
-				
-			} finally {
-				try {
-					stmt.close();
-					con.commit();
-				} catch (Exception ignore) {
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				return false;
-			}
-            
-		} 
-		logger.info(query + "erfolgreich durchgeführt");
-		return true;
-	}
-
-	// führt eine SQL-Abfrage durch type=q --> query sonst update
-	public boolean execute(char type, String query) {
-		boolean bool = false;
-		try {
-			this.con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = con.createStatement();
-				if(type=='q'){ 
-					stmt.executeQuery(query);
-				}
-				else {
-					stmt.executeUpdate(query);
-				}
-				
-				bool = true;
-			} finally {
-				try {
-					stmt.close();
-					con.commit();
-				} catch (Exception ignore) {
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-			try {
-				con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-			}
-			return bool;
+		catch(NullPointerException n) {
+			System.out.println("BUT WHY?!");
 		}
-		logger.info(query + "erfolgreich durchgeführt");
 		return bool;
 	}
 

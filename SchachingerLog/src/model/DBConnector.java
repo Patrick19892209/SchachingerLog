@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.faces.application.FacesMessage;
-
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;

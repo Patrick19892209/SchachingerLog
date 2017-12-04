@@ -27,6 +27,15 @@ public class ReklaData extends Data{
 	public ReklaData(){	
 		super("model.ReklaData");
 	}
+	
+	//checks whether abbrevation exists
+	public boolean abbrevationExists(String abbr) {
+		String abbrExists = "SELECT * FROM User WHERE Abbrevation = '" + abbr + "'";
+		System.out.println(abbrExists);
+		if(exists(abbrExists)) return true;
+		return false;
+	}
+	
 	//checks whether certain Aviso exists in the db
 	public boolean avisoExists(String aviso) {
 		String avisoExists =  "SELECT * FROM Reklamation WHERE Aviso = '" + aviso + "'";
@@ -43,10 +52,7 @@ public class ReklaData extends Data{
 				logger.info(avisoExists + " erfolgreich durchgeführt");
 			} finally {
 				try {
-					this.rs.close();
-					stmt.close();
-					con.commit();
-					con.close();
+					
 				} catch (Exception ignore) {
 				}
 			}
@@ -67,7 +73,7 @@ public class ReklaData extends Data{
 		int newId = getMaxId(this.aviso) + 1;	//get the Id for the current Aviso (Avisos can have more than one complaint)
 		if (newId == 0) return false; 
 		String anString;	//if ZugewiesenAn is null NULL has to be passed as SQL parameter
-		if(this.an == null) {
+		if(this.an == null || this.an == "") {
 			anString = "NULL";	
 		}
 		else {

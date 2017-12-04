@@ -54,20 +54,13 @@ public class Rekla {
 		Severity sev;
 		//if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=maengelListe.get(0)&&this.menge!=null) {
 			ReklaData redat = new ReklaData(this.aviso, this.erfasser, this.artNr, this.an, this.menge, this.mangel);
-			if (redat.avisoExists(this.aviso)) {	//Complaint is only inserted if Aviso is existing in db
-				if(redat.insert()) {
+			if(redat.insert()) {
 					result="Reklamationserfassung erfolgreich abgeschlossen";
 					sev = FacesMessage.SEVERITY_INFO;
-				}
-				else {
-					result = "Reklamationserfassung fehlgeschlagen!";
-					sev = FacesMessage.SEVERITY_ERROR;
-				}
-				
 			}
 			else {
-				result = "Kein gültiges Aviso!";
-				sev = FacesMessage.SEVERITY_ERROR;
+					result = "Reklamationserfassung fehlgeschlagen!";
+					sev = FacesMessage.SEVERITY_ERROR;
 			}
 		//}
 		FacesMessage message = new FacesMessage(sev,result,null);
