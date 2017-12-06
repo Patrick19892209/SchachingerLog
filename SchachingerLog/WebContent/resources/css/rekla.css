@@ -1,0 +1,12 @@
+.Panel {
+	margin: 0 auto;
+	margin-top: 5%;
+	max-width: 600px;
+}
+.commandButton {
+	margin: 0 auto;
+	align: center;
+}
+.column {
+	text-align: center;
+}
