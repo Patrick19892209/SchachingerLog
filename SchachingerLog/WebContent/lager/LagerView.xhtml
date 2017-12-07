@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:p="http://primefaces.org/ui">
 
@@ -18,10 +19,24 @@
 <h:body>
 	<h:form id="form"> 
 		<h2 class="first"></h2>
-		<p:calendar value="#{storeView.deliveryDate}" pattern="MM/dd/yyyy">
+		<p:calendar value="#{storeView.deliveryDate}" pattern="MM/dd/yyyy" >
 			<p:ajax event="dateSelect" listener="#{storeView.onDateSelect}" render="@all" />
 		</p:calendar>
 	</h:form>
+
+<h:form>
+<h:form>
+       <table border="1">
+       <tr>
+       <ui:repeat value="#{storeView.gates}" var="gate" >
+		<b:commandButton style="margin-top:20px" icon-size="1x" iconAwesome="truck"
+                         value="#{gate}" onclick="return false;"
+                         look=	"info" title="icon-size='1x'" />
+       </ui:repeat>
+       </tr>
+       </table></h:form>
+
+</h:form>
 
 	<h:form id="lager">
 		<h:panelGrid  id="delivery" columns="2" >
@@ -72,6 +87,17 @@
 			 </p:dataTable>
 		</h:panelGrid>
 	</h:form>
+	
+	<h:form>
+    <b:panelGrid columns="6" size="sm" >
+        <b:commandButton value="primary" ajax="true" update="@none" look="primary" style="width:80px"/>
+        <b:commandButton value="info" ajax="true" update="@none" look="info" style="width:80px"/>
+        <b:commandButton value="success" ajax="true" update="@none" look="success" style="width:80px"/>
+        <b:commandButton value="warning" ajax="true" update="@none" look="warning" style="width:80px"/>
+        <b:commandButton value="danger" ajax="true" update="@none" look="danger" style="width:80px"/>
+        <b:commandButton value="default" ajax="true" update="@none" style="width:80px"/>
+    </b:panelGrid>
+</h:form>
 </h:body>
 </html>
 

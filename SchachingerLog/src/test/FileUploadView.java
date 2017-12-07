@@ -18,8 +18,7 @@ import org.primefaces.model.UploadedFile;
 
 @ManagedBean
 	public class FileUploadView {
-	//private String destination="C:\\temp\\";
-	private String destination="\\Java Resources\\src\\";
+	private String destination="C:\\temp\\";
 	    private UploadedFile file;
 	 
 	    public UploadedFile getFile() {
@@ -47,7 +46,7 @@ import org.primefaces.model.UploadedFile;
 	    	              
 	    	              
 	    	                // write the inputStream to a FileOutputStream
-	    	                OutputStream out = new FileOutputStream(new File(".\\build\\"  + fileName));
+	    	                OutputStream out = new FileOutputStream(new File(destination + fileName));
 	    	              
 	    	                int read = 0;
 	    	                byte[] bytes = new byte[1024];

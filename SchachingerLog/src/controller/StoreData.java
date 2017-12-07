@@ -35,12 +35,11 @@ public class StoreData {
 	          ResultSet result = query.executeQuery(sql);
 	 
 	          while (result.next()) {
-	          String aviso = result.getString("Aviso");
-	          String supplier = result.getString("Lieferant");
-	          Calendar c = Calendar.getInstance();
-	          c.setTime(day);
-	          list.add(new Delivery(supplier, c, aviso));
-	          
+		          String aviso = result.getString("Aviso");
+		          String supplier = result.getString("Lieferant");
+		          Calendar c = Calendar.getInstance();
+		          c.setTime(day);
+		          list.add(new Delivery(supplier, c, aviso));	          
 	          }
 	      } catch (SQLException e) {
 	        e.printStackTrace();
@@ -115,20 +114,23 @@ public class StoreData {
 	          ResultSet result = query.executeQuery(sql);
 	 
 	          while (result.next()) {
-	          String aviso = result.getString("Aviso");
-	          String supplier = result.getString("Lieferant");
-	          Calendar c = Calendar.getInstance();
-	          c.setTime(day);
-	          list.add(new Delivery(supplier, c, aviso));	          
+		          String aviso = result.getString("Aviso");
+		          String supplier = result.getString("Lieferant");
+		          Calendar c = Calendar.getInstance();
+		          c.setTime(day);
+		          list.add(new Delivery(supplier, c, aviso));	          
 	          }
 	      } catch (SQLException e) {
 	        e.printStackTrace();
+			dbc.closeConnection(con);
 	      }
 	    try {
 			query.close();
+			dbc.closeConnection(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			dbc.closeConnection(con);
 		}
 	return list;
 	}
@@ -155,9 +157,11 @@ public class StoreData {
 	      }
 	    try {
 			query.close();
+			dbc.closeConnection(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			dbc.closeConnection(con);
 			return false;
 		}
 	    return result;
@@ -186,11 +190,46 @@ public class StoreData {
 	      }
 	    try {
 			query.close();
+			dbc.closeConnection(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			dbc.closeConnection(con);
 			return false;
 		}
 	    return result;
+	}
+
+	public int getGates(String location) {
+		dbc = new DBConnector();
+		con = dbc.openConnection();
+		int result = 0 ;
+	    Statement query = null;
+	    try {
+	          query = con.createStatement();
+	 
+	          String sql =
+		                "SELECT Anzahl_Tore"
+		                + " FROM Location Where Name = '" + location + "'";
+
+	          ResultSet results = query.executeQuery(sql);
+	          while (results.next()) {
+	        	  result = results.getInt("Anzahl_Tore");
+	          }
+	      } catch (SQLException e) {
+	        e.printStackTrace();
+			dbc.closeConnection(con);
+			result = -1;
+	      }
+	    try {
+			query.close();
+			dbc.closeConnection(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			dbc.closeConnection(con);
+			result = -1;
+		}
+	return result;
 	}		
 }

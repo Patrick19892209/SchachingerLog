@@ -1,6 +1,7 @@
 package view;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,10 +11,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -48,16 +48,27 @@ public class StoreView {
 	private Date deliveryDate;
 	private Delivery deliDone;
 	private StoreData data;
+	private List<String> gates;
+	private int gate;
     RequestContext context = RequestContext.getCurrentInstance();
     FacesMessage message = null;
-
+    
+    @ManagedProperty(value="#{login}")
+    Login login;
+    
 	@PostConstruct
 	public void init() {
 		data = new StoreData();
 		Calendar now = Calendar.getInstance();
 		deliveryDate = now.getTime();
 		initOpenDeliveries();
-		initFinishedDeliveries();		
+		initFinishedDeliveries();
+		int maxGates = data.getGates(login.getUser().getLocation());
+		gates = new ArrayList<>();
+		for (int i = 1; i <= maxGates; i++) {
+			gates.add("Tor " + i);
+		}
+		this.gate = 1;
 	}
 
     public void addMessage(String summary) {
@@ -69,6 +80,7 @@ public class StoreView {
 		finishedDeliveries = data.finishedDeliveries(deliveryDate);
 	}
 
+	
 	public void onDateSelect(SelectEvent event) {
 	        FacesContext facesContext = FacesContext.getCurrentInstance();
 	        Date dateNew = (Date) event.getObject();
@@ -94,6 +106,31 @@ public class StoreView {
 		Collections.sort(openDeliveries, new TimeComparator());
 	}
 
+	
+	
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
+	}
+
+	public List<String> getGates() {
+		return gates;
+	}
+
+	public void setGates(List<String> gates) {
+		gates = gates;
+	}
+
+	public int getGate() {
+		return gate;
+	}
+
+	public void setGate(int gate) {
+		this.gate = gate;
+	}
 
 	private void setAverageTime() {
 		data.setArrivals(openDeliveries);
