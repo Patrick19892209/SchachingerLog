@@ -9,12 +9,6 @@
 <h:head>
 	<title>Erfassung von zusätzlichen Serviceleistungen</title>
 	<style type="text/css">
-.tReklaForm {
-	margin: 0 auto;
-	margin-top: 5%;
-	max-width: 130px;
-	padding: 15px;
-}
 
 .Panel {
 	margin: 0 auto;
@@ -58,12 +52,19 @@
 					</b:column>
 				</b:row>
 				<b:row>
-					<b:column>
-						<b:message for="services" />
-						<b:inputText class="InputText" placeholder="Service-Leistung..." id="services"
+					<b:column style="width:65%">
+						<b:message for="services"/>
+						<b:inputText class="InputText" placeholder="Service..." id="service"
 							value="#{service.service}" required="true"
 							requiredMessage="Service erfassen!" ajax="true" autocomplete="false">
 						</b:inputText>
+					</b:column>
+					<b:column style="width:35%">
+						<b:selectOneMenu value="#{service.service}" id="services" required="true" 
+							requiredMessage="Service erfassen!" ajax="true" update="@form" >
+						<f:selectItem itemValue="" itemLabel="Service erfassen..." />
+						<f:selectItems value="#{service.serviceListe}" />
+						</b:selectOneMenu>
 					</b:column>
 				</b:row>
 				<b:row>

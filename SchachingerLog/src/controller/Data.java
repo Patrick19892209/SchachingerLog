@@ -45,6 +45,9 @@ public class Data {
 				logger.info(query + " erfolgreich durchgeführt - Bool: " + bool);
 			} finally {
 				try {
+					stmt.close();
+					con.commit();
+					this.dbc.closeConnection(con);
 					
 				} catch (Exception ignore) {
 				}

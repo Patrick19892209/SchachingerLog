@@ -24,25 +24,35 @@ public class Service {
 	private String service;
 	private UIComponent serviceButton;
 	//private ReklaData redat;
-	List <String> maengelListe;
+	List <String> serviceListe;
 	
 	public Service() {
 
 		//Dropdown opts
-		maengelListe = new ArrayList<>();
-		maengelListe.add("Artikel beschädigt");
-		maengelListe.add("Verpackung beschädigt");
-		maengelListe.add("Menge inkorrekt");
+		serviceListe = new ArrayList<>();
+		serviceListe.add("Verpackung erneuert");
+		serviceListe.add("Artikel repariert");
+		serviceListe.add("Palette repariert");
+		serviceListe.add("Ware umsortiert");
+
 		this.erfasser="DP";
 		
 	}
 
+	public List<String> getServiceListe() {
+		return serviceListe;
+	}
+
+	public void setServiceListe(List<String> serviceListe) {
+		this.serviceListe = serviceListe;
+	}
+
 	public List<String> getMaengelListe() {
-		return maengelListe;
+		return serviceListe;
 	}
 
 	public void setMaengelListe(List<String> maengelListe) {
-		this.maengelListe = maengelListe;
+		this.serviceListe = maengelListe;
 	}
 
 	public String insertService() throws SQLException {

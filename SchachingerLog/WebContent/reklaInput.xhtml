@@ -7,13 +7,13 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<h:outputStylesheet name="resources/css/rekla.css" />
+	<h:outputStylesheet name="css/rekla.css" position="last" />
 	<title>Reklamationserfassung</title>
 </h:head>
 <h:body>
-	<h:form class="Form">
-		<b:container class="Container" layout="fluid">
-			<b:panel class="Panel" title="Reklamationserfassung" look="primary">
+	<h:form>
+		<b:container layout="fluid">
+			<b:panel title="Reklamationserfassung" look="primary">
 				<b:row>
 					<b:column>
 						<b:message for="artNr" errorClass="errorMessage" />
@@ -27,16 +27,18 @@
 					</b:column>
 				</b:row>
 				<b:row>
-					<b:column>
-						<b:inputText class="InputText" placeholder="Mangel..." id="mangel"
-							value="#{rekla.mangel}" required="true" style="width:30%; float: left"
+					<b:column class="mangelCol">
+						<b:message for="maengel"/>
+						<b:inputText placeholder="Mangel..." id="mangel"
+							value="#{rekla.mangel}" required="true"
 							requiredMessage="Menge erfassen!" ajax="true" autocomplete="false">
 						</b:inputText>
-						<b:message for="maengel"/>
-						<b:selectOneMenu value="#{rekla.mangel}" id="maengel" required="true" 
-							requiredMessage="Mangel erfassen!" ajax="true" update="@form" style="width:20%; text-align: center">
-							<f:selectItem itemValue="" itemLabel="Mangel erfassen..." />
-							<f:selectItems value="#{rekla.maengelListe}" />
+					</b:column>
+					<b:column class="maengelCol">
+						<b:selectOneMenu value="#{rekla.mangel}" class="mangel" id="maengel" required="true" 
+							requiredMessage="Mangel erfassen!" ajax="true" update="@form" >
+						<f:selectItem itemValue="" itemLabel="Mangel erfassen..." />
+						<f:selectItems value="#{rekla.maengelListe}" />
 						</b:selectOneMenu>
 					</b:column>
 				</b:row>
@@ -71,13 +73,20 @@
 					</b:column>
 				</b:row>
 				<b:row>
-					<b:column class="column">
+					<b:column>
 						<b:commandButton id="reklaButton" value="Reklamation erfassen" binding="#{rekla.reklaButton}" update="@form" action="#{rekla.insertRekla}" look="primary" />
 						<b:message for="reklaButton" errorClass="errorMessage"></b:message>
 					</b:column>
 				</b:row>
 			</b:panel>
 		</b:container>
+	</h:form>
+	<h:form enctype="multipart/form-data">
+			<b:panel class="panelUpload" title="Fotos erstellen und uploaden">
+				<p:fileUpload value="#{fileUploader.file}" mode="advanced" multiple="true"
+					fileUploadListener="#{fileUploader.handleFileUpload}">
+				</p:fileUpload>
+			</b:panel>
 	</h:form>
 </h:body>
 </html>

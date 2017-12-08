@@ -3,7 +3,7 @@
   <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="84" y="60" id="pf151120723486413" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf151120723486414 pf151120730962916 pf151120730962917" path="/login.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="admin/WelcomeAdmin.xhtml" x="35" y="276" id="pf151120723486415" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf151120723486414" path="/admin/WelcomeAdmin.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="lager/WelcomeLager.xhtml" x="396" y="108" id="pf151120730962918" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf151120730962916" path="/lager/WelcomeLager.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="büro/WelcomeBüro.xhtml" x="240" y="204" id="pf151120730962919" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf151120730962917" path="/büro/WelcomeBüro.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="büro/WelcomeBüro.xhtml" x="324" y="211" id="pf151120730962919" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf151120730962917" path="/büro/WelcomeBüro.xhtml"/>
   <links id="pf151120723486414" target="pf151120723486415" source="pf151120723486413" outcome="admin" redirect="true"/>
   <links id="pf151120730962916" target="pf151120730962918" source="pf151120723486413" outcome="lager" redirect="true"/>
   <links id="pf151120730962917" target="pf151120730962919" source="pf151120723486413" outcome="büro" redirect="true"/>
