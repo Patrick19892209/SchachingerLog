@@ -8,37 +8,12 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Erfassung von zusätzlichen Serviceleistungen</title>
-	<style type="text/css">
-
-.Panel {
-	margin: 0 auto;
-	margin-top: 5%;
-	max-width: 600px;
-}
-
-.Output {
-	display: table-cell;
-	vertical-align: middle;
-}
-
-.InputText {
-	width: 100%;
-}
-
-.commandButton {
-	margin: 0 auto;
-	align: center;
-}
-
-.column {
-	text-align: center;
-}
-</style>
+	<h:outputStylesheet name="css/service.css" />
 </h:head>
 <h:body>
 	<h:form class="Form">
-		<b:container class="Container" layout="fluid">
-			<b:panel class="Panel" title="Service-Erfassung" look="success">
+		<b:container layout="fluid">
+			<b:panel title="Service-Erfassung" look="success">
 				<b:row>
 					<b:column>
 						<b:message for="artNr" errorClass="errorMessage" />

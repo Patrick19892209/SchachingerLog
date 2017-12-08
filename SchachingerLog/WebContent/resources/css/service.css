@@ -1,0 +1,19 @@
+@charset "ISO-8859-1";
+.panel {
+	margin: 0 auto;
+	margin-top: 5%;
+	max-width: 700px;
+}
+.col-md-12{
+	text-align: center;
+	min-height: 49px;
+}
+
+.mangelCol{
+	width: 65%;
+	float: left;
+}
+.maengelCol{
+	width: 35%;
+	float: right;
+}
