@@ -24,8 +24,6 @@ public class LoginData {
 		int result = 0;
 
 		result = chkUser(user);
-		
-		
 		if (!dbc.closeConnection(con)) return -2;
 		return result;
 	}
@@ -38,7 +36,7 @@ public class LoginData {
 			Statement stmt = null;
 			ResultSet rs = null;
 			try {
-				String sql = "Select * From User Where abbrevation = '" + user.getName() + 
+				String sql = "Select * From User Where abbrevation = '" + user.getAbbrevation() + 
 						"' and password = '" + user.getPassword() + "'";
 				stmt = con.createStatement();
 				rs = stmt.executeQuery(sql);

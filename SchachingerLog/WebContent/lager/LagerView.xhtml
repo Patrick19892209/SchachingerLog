@@ -30,7 +30,7 @@
        <tr>
        <ui:repeat value="#{storeView.gates}" var="gate" >
 		<b:commandButton style="margin-top:20px" icon-size="1x" iconAwesome="truck"
-                         value="#{gate}" onclick="return false;"
+                         value="#{gate}" onclick="ajax:storeView.switchGate(gate)"
                          look=	"info" title="icon-size='1x'" />
        </ui:repeat>
        </tr>
@@ -43,7 +43,7 @@
 			<p:dataTable class="table1" var="delivery" value="#{storeView.openDeliveries}" >
 			    <p:column headerText="Ankunft" >
         			<h:outputText value="#{delivery.arrival.time}">
-        			<f:convertDateTime pattern="HH:mm"/>
+        			<f:convertDateTime pattern="HH:mm" timeZone="GMT+0"/>
         			</h:outputText>
     			</p:column>
     			<p:column headerText="Lieferant">
@@ -61,12 +61,12 @@
     			</p:column>   
     			<p:column headerText="Ankunft">
         			<h:outputText value="#{delivery.arrival.time}">
-       				<f:convertDateTime pattern="HH:mm"/>
+       				<f:convertDateTime pattern="HH:mm" timeZone="GMT+0"/>
         			</h:outputText>
     			</p:column>
     			<p:column headerText="Abfahrt">
         			<h:outputText value="#{delivery.departure.time}">
-       				<f:convertDateTime pattern="HH:mm"/>
+       				<f:convertDateTime pattern="HH:mm" timeZone="GMT+0"/>
         			</h:outputText>
     			</p:column>
     			<p:column headerText="Rekla">
@@ -80,24 +80,13 @@
 					</p:commandButton>
     			</p:column>
     			<p:column headerText="Ausb.">
-					<p:commandButton  id="iconOnly5"  style="color:red" icon="fa fa-minus-square" title="OK" >
-					<f:setPropertyActionListener value="#{delivery}" target="#{storeView.deliDone}" />
-					</p:commandButton>
+		<b:commandButton style="margin-top:20px" icon-size="1x" iconAwesome="close"
+                         onclick="ajax:storeView.cancel(delivery)"
+                         look="danger" title="icon-size='1x'" />
     			</p:column>
 			 </p:dataTable>
 		</h:panelGrid>
 	</h:form>
-	
-	<h:form>
-    <b:panelGrid columns="6" size="sm" >
-        <b:commandButton value="primary" ajax="true" update="@none" look="primary" style="width:80px"/>
-        <b:commandButton value="info" ajax="true" update="@none" look="info" style="width:80px"/>
-        <b:commandButton value="success" ajax="true" update="@none" look="success" style="width:80px"/>
-        <b:commandButton value="warning" ajax="true" update="@none" look="warning" style="width:80px"/>
-        <b:commandButton value="danger" ajax="true" update="@none" look="danger" style="width:80px"/>
-        <b:commandButton value="default" ajax="true" update="@none" style="width:80px"/>
-    </b:panelGrid>
-</h:form>
-</h:body>
+	</h:body>
 </html>
 

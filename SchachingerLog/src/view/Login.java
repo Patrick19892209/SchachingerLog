@@ -21,7 +21,6 @@ public class Login {
 	private Logger logger = (Logger) LoggerFactory.getLogger("view.Login");
 	private User user;
 	private LoginData data;
-    
     private boolean loggedIn = false;
     
 	@PostConstruct
@@ -30,28 +29,23 @@ public class Login {
 		user = new User();
 	}
 
-
-	
 	public User getUser() {
 		return user;
 	}
-
-
 
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-
-
 	public boolean isLoggedIn() {
 		return loggedIn;
 	}
+
 	public String login() {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage message = null;
         String answer = null;
-        if(user.getName() != null && user.getPassword() != null){
+        if(user.getAbbrevation() != null && user.getPassword() != null){
         	switch (data.getRole(user)) {
     		case 1: //admin
     			loggedIn = true;

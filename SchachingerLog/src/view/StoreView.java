@@ -76,10 +76,33 @@ public class StoreView {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    public void switchGate(String s) {
+    	this.gate = Integer.parseInt(Character.toString(s.charAt(4)));
+    }
 	private void initFinishedDeliveries() {
 		finishedDeliveries = data.finishedDeliveries(deliveryDate);
 	}
 
+	public void setDeliDone(Delivery deliDone) {
+		this.deliDone = deliDone;
+		Calendar c = Calendar.getInstance();
+		deliDone.setTime2(deliveryDate, c);
+		boolean result = data.setTables(deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
+		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
+		initOpenDeliveries();
+		initFinishedDeliveries();
+        RequestContext.getCurrentInstance().update("lager:delivery");
+		addMessage("Alles Gut");
+	}
+
+	public void cancel(Delivery deli) {
+		boolean result = data.delDelivery(deli);
+		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
+		initOpenDeliveries();
+		initFinishedDeliveries();
+        RequestContext.getCurrentInstance().update("lager:delivery");
+		addMessage("Alles Gut");
+	}
 	
 	public void onDateSelect(SelectEvent event) {
 	        FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -121,7 +144,7 @@ public class StoreView {
 	}
 
 	public void setGates(List<String> gates) {
-		gates = gates;
+		this.gates = gates;
 	}
 
 	public int getGate() {
@@ -137,7 +160,6 @@ public class StoreView {
 	}
 
 
-
 	public List<Delivery> getOpenDeliveries() {
 		return openDeliveries;
 	}
@@ -151,21 +173,6 @@ public class StoreView {
 	
 	public Delivery getDeliDone() {
 		return deliDone;
-	}
-
-	
-	public void setDeliDone(Delivery deliDone) {
-		this.deliDone = deliDone;
-		Calendar c = Calendar.getInstance();
-		deliDone.setTime2(deliveryDate, c);
-		boolean result = data.setTableLieferung(deliDone, deliveryDate);
-		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
-		result = data.setTableEingebucht(deliDone, deliveryDate);
-		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
-		initOpenDeliveries();
-		initFinishedDeliveries();
-        RequestContext.getCurrentInstance().update("lager:delivery");
-		addMessage("Alles Gut");
 	}
 
 	public Date getDeliveryDate() {
