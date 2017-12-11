@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Lieferungen verwalten</title>
+</h:head>
+<body>
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+		<p:dataTable id="claimsDt" var="claim" value="#{dtClaims.claims}"
+			editable="true">
+			<f:facet name="header">
+		Reklamationsbearbeitung
+		</f:facet>
+			<p:ajax event="rowEdit" listener="#{dtClaims.onRowEdit}"
+				update=":form:msgs" />
+			<p:ajax event="rowEditCancel" listener="#{dtClaims.onRowCancel}"
+				update=":form:msgs" />
+			<p:column filterBy="#{claim.aviso}" headerText="Aviso" footerText="contains" filterMatchMode="contains">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.aviso}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="avisoInput" value="#{claim.aviso}" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column filterBy="#{claim.id}" headerText="Id" footerText="equals" filterMatchMode="equals">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.id}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="idInput" value="#{claim.id}" label="Id" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column filterBy="#{claim.date}" headerText="Erfassungsdatum" footerText="equals" filterMatchMode="equals">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.date}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="dateInput" value="#{claim.date}" label="Date" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Erfasser">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.creator}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="erfasserInput" value="#{claim.creator}"
+							label="Erfasser" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Zugewiesen an">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.to}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="ToInput" value="#{claim.to}" label="An" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="ArtikelNr">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.productNr}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="artNrInput" value="#{claim.productNr}"
+							label="Artikelnummer" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Mangel">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.deficiency}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText id="mangelInput" value="#{claim.deficiency}"
+							label="Mangel" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column id="editColumn">
+				<p:rowEditor />
+			</p:column>
+		</p:dataTable>
+		<!-- 
+		<h3>Export Page Data Only</h3>
+		<h:commandLink>
+			<p:graphicImage name="/demo/images/excel.png" />
+			<p:dataExporter type="xls" target="claimsDt" fileName="claims"
+				pageOnly="true" />
+		</h:commandLink>
+
+		<h:commandLink>
+			<p:graphicImage name="/demo/images/pdf.png" />
+			<p:dataExporter type="pdf" target="claimsDt" fileName="claims"
+				pageOnly="true" />
+		</h:commandLink>
+
+		<h:commandLink>
+			<p:graphicImage name="/demo/images/csv.png" />
+			<p:dataExporter type="csv" target="claimsDt" fileName="claims"
+				pageOnly="true" />
+		</h:commandLink>
+
+		<h:commandLink>
+			<p:graphicImage name="/demo/images/xml.png" />
+			<p:dataExporter type="xml" target="claimsDt" fileName="claims"
+				pageOnly="true" />
+		</h:commandLink>
+		-->
+	</h:form>
+</body>
+</html>
