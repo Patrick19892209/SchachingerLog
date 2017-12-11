@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<h:outputStylesheet name="css/claim.css" position="last" />
+	<title>Reklamationserfassung</title>
+</h:head>
+<h:body>
+	<h:form>
+		<b:container layout="fluid">
+			<b:panel title="Reklamationserfassung" look="primary">
+				<b:row>
+					<b:column>
+						<b:message for="productNr" errorClass="errorMessage" />
+						<b:inputText class="InputText" placeholder="Artikelnummer..."
+							id="productNr" value="#{claim.productNr}" required="true"
+							requiredMessage="Artikel eingeben!" 
+							validatorMessage="Artikel sind numerisch 10 -stellig" 
+							ajax="true" autocomplete="false">
+							<f:validateLength minimum="10" maximum="10" for="productNr"/>
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column class="deficiencyCol">
+						<b:message for="deficiencies"/>
+						<b:inputText placeholder="Mangel..." id="deficiency"
+							value="#{claim.deficiency}" required="true"
+							requiredMessage="amount erfassen!" ajax="true" autocomplete="false">
+						</b:inputText>
+					</b:column>
+					<b:column class="deficienciesCol">
+						<b:selectOneMenu value="#{claim.deficiency}" id="deficiencies" required="true" 
+							requiredMessage="Mangel erfassen!" ajax="true" update="@form" >
+						<f:selectItem itemValue="" itemLabel="Mangel erfassen..." />
+						<f:selectItems value="#{claim.deficiencyList}" />
+						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="amount" />
+						<b:inputText class="InputText" placeholder="Menge..." id="amount"
+							value="#{claim.amount}" required="true"
+							requiredMessage="amount erfassen!" ajax="true" autocomplete="false">
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="aviso" errorClass="errorMessage" />
+						<b:inputText class="InputText" placeholder="A000037162" id="aviso"
+							value="#{claim.aviso}" required="true"
+							requiredMessage="Aviso eingeben!" ajax="true"
+							autocomplete="false">
+							<f:validator validatorId = "model.AvisoValidator"/>
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="an" errorClass="errorMessage" />
+						<b:inputText class="InputText" placeholder="Zuweisen an... (optional)"
+							id="an" value="#{claim.to}"
+							ajax="true" autocomplete="false">
+							<f:validator validatorId = "model.AbbrevationValidator"/>
+						</b:inputText>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:commandButton id="claimButton" value="Reklamation erfassen" binding="#{claim.claimButton}" update="@form" action="#{claim.insertClaim}" look="primary" />
+						<b:message for="claimButton" errorClass="errorMessage"></b:message>
+					</b:column>
+				</b:row>
+			</b:panel>
+		</b:container>
+	</h:form>
+	<h:form enctype="multipart/form-data">
+			<b:panel class="panelUpload" title="Fotos erstellen und uploaden">
+				<p:fileUpload value="#{fileUploader.file}" mode="advanced" multiple="true"
+					fileUploadListener="#{fileUploader.handleFileUpload}">
+				</p:fileUpload>
+			</b:panel>
+	</h:form>
+</h:body>
+</html>
