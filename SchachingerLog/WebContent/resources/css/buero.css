@@ -1,0 +1,14 @@
+@charset "ISO-8859-1";
+.dataTable{
+	margin-bottom: 20px;
+}
+#avisoInput{
+	width: 100%;
+}
+#dateInput{
+	
+	width: 100%;
+}
+#editColumn{
+	width: 32px;
+}
