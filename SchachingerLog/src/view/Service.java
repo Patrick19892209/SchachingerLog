@@ -1,6 +1,8 @@
 package view;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -18,41 +20,35 @@ import controller.ServiceData;
 public class Service {
 
 	private String aviso;
-	private String erfasser;
-	private String artNr;
-	private String menge;
+	private int id;
+	private String creator;
+	private String productNr;
+	private String amount;
 	private String service;
+	private Date date;
 	private UIComponent serviceButton;
-	//private ReklaData redat;
-	List <String> serviceListe;
+	//private ClaimData redat;
+	List <String> serviceList;
 	
 	public Service() {
 
 		//Dropdown opts
-		serviceListe = new ArrayList<>();
-		serviceListe.add("Verpackung erneuert");
-		serviceListe.add("Artikel repariert");
-		serviceListe.add("Palette repariert");
-		serviceListe.add("Ware umsortiert");
+		serviceList = new ArrayList<>();
+		serviceList.add("Verpackung erneuert");
+		serviceList.add("Artikel repariert");
+		serviceList.add("Palette repariert");
+		serviceList.add("Ware umsortiert");
 
-		this.erfasser="DP";
+		this.creator="DP";
 		
 	}
 
-	public List<String> getServiceListe() {
-		return serviceListe;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setServiceListe(List<String> serviceListe) {
-		this.serviceListe = serviceListe;
-	}
-
-	public List<String> getMaengelListe() {
-		return serviceListe;
-	}
-
-	public void setMaengelListe(List<String> maengelListe) {
-		this.serviceListe = maengelListe;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public String insertService() throws SQLException {
@@ -61,8 +57,7 @@ public class Service {
 		String result;	//result message of the given query
 		Severity sev;
 		//if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=maengelListe.get(0)&&this.menge!=null) {
-			System.out.println(this.menge);
-			ServiceData servdat = new ServiceData(this.aviso, this.erfasser, this.artNr, this.menge, this.service);
+			ServiceData servdat = new ServiceData(this);
 			if(servdat.insert()) {
 					result="Service-Leistung erfolgreich erfasst!";
 					sev = FacesMessage.SEVERITY_INFO;
@@ -75,6 +70,46 @@ public class Service {
 		FacesMessage message = new FacesMessage(sev,result,null);
 		context.addMessage(serviceButton.getClientId(context), message);
 		return result;
+	}
+
+	public String getAviso() {
+		return aviso;
+	}
+
+	public void setAviso(String aviso) {
+		this.aviso = aviso;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public String getProductNr() {
+		return productNr;
+	}
+
+	public void setProductNr(String productNr) {
+		this.productNr = productNr;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 
 	public String getService() {
@@ -93,44 +128,13 @@ public class Service {
 		this.serviceButton = serviceButton;
 	}
 
-	public String getErfasser() {
-		return erfasser;
+	public List<String> getServiceList() {
+		return serviceList;
 	}
 
-	public void setErfasser(String erfasser) {
-		this.erfasser = erfasser;
+	public void setServiceList(List<String> serviceList) {
+		this.serviceList = serviceList;
 	}
-
-	public String getAviso() {
-		return aviso;
-	}
-
-	public void setAviso(String aviso) {
-		this.aviso = aviso;
-	}
-
-	public String getActorA() {
-		return erfasser;
-	}
-
-	public void setActorA(String erfasser) {
-		this.erfasser = erfasser;
-	}
-
-	public String getArtNr() {
-		return artNr;
-	}
-
-	public void setArtNr(String artNr) {
-		this.artNr = artNr;
-	}
-
-	public String getMenge() {
-		return menge;
-	}
-
-	public void setMenge(String menge) {
-		this.menge = menge;
-	}
+	
 	
 }

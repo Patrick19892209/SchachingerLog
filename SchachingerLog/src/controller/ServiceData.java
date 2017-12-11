@@ -1,26 +1,40 @@
 package controller;
 
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import view.Service;
 
 public class ServiceData extends Data {
 
 	private String aviso;
-	private String erfasser;
-	private String artNr;
-	private String menge;
+	private String id;
+	private Date date;
+	private String productNr;
+	private String creator;
+	private String amount;
 	private String service;
-	private String ts = "CURRENT_TIMESTAMP";
 	
 	//Constructors
-	public ServiceData(String aviso, String erfasser, String artNr, String menge, String service) {
-		super("controller.ServiceData");
+	public ServiceData(String aviso, String creator, String productNr, String to, String amount, String service) {
+		super("controller.ClaimData");
 		this.aviso = aviso;
-		this.erfasser = erfasser;
-		this.artNr = artNr;
-		this.menge = menge;
+		this.creator = creator;
+		this.productNr = productNr;
+		this.amount = amount;
 		this.service = service;
+	}
+	
+	public ServiceData(Service service) {	//since 
+		this.aviso = service.getAviso();
+		this.creator = service.getCreator();
+		this.productNr = service.getProductNr();
+		this.amount = service.getAmount();
+		this.service = service.getService();
+
 	}
 	public ServiceData(){	
 		super("controller.ServiceData");
@@ -36,7 +50,7 @@ public class ServiceData extends Data {
 	
 	//checks whether certain Aviso exists in the db
 	public boolean avisoExists(String aviso) {
-		String avisoExists =  "SELECT * FROM Lieferung WHERE Aviso = '" + aviso + "'";
+		String avisoExists =  "SELECT * FROM Delivery WHERE aviso = '" + aviso + "'";
 		logger.info(avisoExists);
 		if(exists(avisoExists));
 		return false;
@@ -44,12 +58,12 @@ public class ServiceData extends Data {
 	//inserts the complaint values from a complaint object to the db
 	public boolean insert() {
 
-		ReklaData rd = new ReklaData();
+		ClaimData rd = new ClaimData();
 		int newId = rd.getMaxId(this.aviso) + 1;	//get the new Id for the current Aviso (Avisos can have more than one complaint, thus they have an Id)
 		if (newId == 0) return false; 
-		String insertService="INSERT INTO Additional_Service (Aviso, Id, Timestamp, Erfasser, ArtikelNr, Service, Menge) "
-				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.ts + ", '" + this.erfasser + "', '" 
-				+ this.artNr + "', '" + this.service + "', '" + this.menge +  "')";
+		String insertService="INSERT INTO Additional_Service (aviso, id, date, creator, product_nr, service, amount) "
+				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.date + ", '" + this.creator + "', '" 
+				+ this.productNr + "', '" + this.service + "', '" + this.amount +  "')";
 		
 		this.logger.info("Insert Query: " + insertService);
 		Connection con = null;
@@ -83,49 +97,66 @@ public class ServiceData extends Data {
 		
 		return bool;
 	}
-
+	
 	//Getters and Setters
 
-	public String getTs() {
-		return ts;
-	}
-	public void setTs(String ts) {
-		this.ts = ts;
-	}
 	public String getAviso() {
 		return aviso;
 	}
+
 	public void setAviso(String aviso) {
 		this.aviso = aviso;
 	}
-	public String getErfasser() {
-		return erfasser;
-	}
-	public void setErfasser(String erfasser) {
-		this.erfasser = erfasser;
-	}
-	public String getArtNr() {
-		return artNr;
+
+	public String getId() {
+		return id;
 	}
 
-	public void setArtNr(String artNr) {
-		this.artNr = artNr;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getProductNr() {
+		return productNr;
+	}
+
+	public void setProductNr(String productNr) {
+		this.productNr = productNr;
+	}
+
+	public String getCreator() {
+		return creator;
+	}
+
+	public void setCreator(String creator) {
+		this.creator = creator;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 
 	public String getService() {
 		return service;
 	}
+
 	public void setService(String service) {
 		this.service = service;
 	}
-	public String getMenge() {
-		return menge;
-	}
 
-	public void setMenge(String menge) {
-		this.menge = menge;
-	}
-	//
 
+	
 	
 }

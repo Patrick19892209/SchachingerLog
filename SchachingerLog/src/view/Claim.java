@@ -1,6 +1,10 @@
 package view;
+
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -11,48 +15,60 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import controller.ReklaData;
+import controller.ClaimData;
 
-@ManagedBean(name="rekla")
+@ManagedBean(name="claim")
 @ViewScoped
-public class Rekla {
+public class Claim {
 
 	private String aviso;
-	private String erfasser;
-	private String artNr;
-	private String an;
-	private String menge;
-	private String mangel;
-	private UIComponent reklaButton;
-	//private ReklaData redat;
-	List <String> maengelListe;
+	private int id;
+	private String creator;
+	private String productNr;
+	private String to;
+	private String amount;
+	private String deficiency;
+	private UIComponent claimButton;
+	private Date date;
+
+	//private ClaimData redat;
+	List <String> deficiencyList;
 	
-	public Rekla() {
+	public Claim() {
 
 		//Dropdown opts
-		maengelListe = new ArrayList<>();
-		maengelListe.add("Artikel beschädigt");
-		maengelListe.add("Verpackung beschädigt");
-		maengelListe.add("Menge inkorrekt");
-		this.erfasser="DP";
+		deficiencyList = new ArrayList<>();
+		deficiencyList.add("Artikel beschädigt");
+		deficiencyList.add("Verpackung beschädigt");
+		deficiencyList.add("Menge inkorrekt");
+		this.creator="DP";
 		
 	}
-
-	public List<String> getMaengelListe() {
-		return maengelListe;
+	
+	public Claim(String aviso, String creator, Date date, String productNr, String to, String amount, String deficiency,
+			Timestamp ts) {
+		super();
+		this.aviso = aviso;
+		this.creator = creator;
+		this.productNr = productNr;
+		this.to = to;
+		this.amount = amount;
+		this.deficiency = deficiency;
+		this.date = date;
+		deficiencyList = new ArrayList<>();
+		deficiencyList.add("Artikel beschädigt");
+		deficiencyList.add("Verpackung beschädigt");
+		deficiencyList.add("amount inkorrekt");
 	}
-
-	public void setMaengelListe(List<String> maengelListe) {
-		this.maengelListe = maengelListe;
-	}
-
-	public String insertRekla() throws SQLException {
+	
+	//inserts data from this Claim into Table Claim
+	public String insertClaim() throws SQLException {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
 		String result;	//result message of the given query
 		Severity sev;
-		//if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=maengelListe.get(0)&&this.menge!=null) {
-			ReklaData redat = new ReklaData(this.aviso, this.erfasser, this.artNr, this.an, this.menge, this.mangel);
+		//if (this.creator!=null&&this.productNr!=null&&this.deficiency!=deficiencyList.get(0)&&this.amount!=null) {
+			ClaimData redat = new ClaimData(this);
 			if(redat.insert()) {
 					result="Reklamationserfassung erfolgreich abgeschlossen";
 					sev = FacesMessage.SEVERITY_INFO;
@@ -63,25 +79,19 @@ public class Rekla {
 			}
 		//}
 		FacesMessage message = new FacesMessage(sev,result,null);
-		context.addMessage(reklaButton.getClientId(context), message);
+		context.addMessage(claimButton.getClientId(context), message);
 		return result;
 	}
-	public UIComponent getReklaButton() {
-		return reklaButton;
+	
+	//converts Timestamp to String e.g. 2017-12-24
+	public String convertTsToDate(Timestamp ts) {
+		Date date = new Date(ts.getTime());
+  	  	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+  	  	return format1.format(date);	
 	}
-
-	public void setReklaButton(UIComponent reklaButton) {
-		this.reklaButton = reklaButton;
-	}
-
-	public String getErfasser() {
-		return erfasser;
-	}
-
-	public void setErfasser(String erfasser) {
-		this.erfasser = erfasser;
-	}
-
+	
+	//Getters and Setters
+	
 	public String getAviso() {
 		return aviso;
 	}
@@ -90,54 +100,75 @@ public class Rekla {
 		this.aviso = aviso;
 	}
 
-	public String getActorA() {
-		return erfasser;
+	public int getId() {
+		return id;
 	}
 
-	public void setActorA(String erfasser) {
-		this.erfasser = erfasser;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getActorB() {
-		return an;
+	public String getCreator() {
+		return creator;
 	}
 
-	public void setActorB(String an) {
-		this.an = an;
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
-
-	public String getArtNr() {
-		return artNr;
-	}
-
-	public void setArtNr(String artNr) {
-		this.artNr = artNr;
-	}
-
-	public String getAn() {
-		return an;
-	}
-
-	public void setAn(String an) {
-		this.an = an;
-	}
-
-	public String getMenge() {
-		return menge;
-	}
-
-	public void setMenge(String menge) {
-		this.menge = menge;
-	}
-
-	public String getMangel() {
-		return mangel;
-	}
-
-	public void setMangel(String mangel) {
-		this.mangel = mangel;
-	};
 	
-	
-	
+	public String getProductNr() {
+		return productNr;
+	}
+
+	public void setProductNr(String productNr) {
+		this.productNr = productNr;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
+	public String getDeficiency() {
+		return deficiency;
+	}
+
+	public void setDeficiency(String deficiency) {
+		this.deficiency = deficiency;
+	}
+
+	public UIComponent getClaimButton() {
+		return claimButton;
+	}
+
+	public void setClaimButton(UIComponent claimButton) {
+		this.claimButton = claimButton;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public List<String> getDeficiencyList() {
+		return deficiencyList;
+	}
+
+	public void setDeficiencyList(List<String> deficiencyList) {
+		this.deficiencyList = deficiencyList;
+	}	
 }

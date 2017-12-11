@@ -11,17 +11,15 @@
 
  
     <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
- 
     
         <h:panelGrid columns="2" cellpadding="5">
             <h:outputLabel for="username" value="Username:" />
-            <p:inputText id="username" value="#{log.username}" required="true" label="username" />
+            <p:inputText id="username" value="#{login.user.abbrevation}" required="true" label="username" />
  			<h:outputLabel for="password" value="Password:" />
-            <p:password id="password" value="#{log.password}" required="true" label="password" />
-            
- 
+            <p:password id="password" value="#{login.user.password}" required="true" label="password" />           
+
             <f:facet name="footer">
-                <p:commandButton value="Login" id="withIcon" update="growl" action="#{log.login}" icon="ui-icon-key" ajax="true"/>
+                <p:commandButton value="Login" id="withIcon" update="growl" action="#{login.login}" icon="ui-icon-key" ajax="true"/>
             </f:facet>  
         </h:panelGrid>
     

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,18 +31,15 @@ public class StoreData {
         	  String date = format1.format(day);
 	 
 	          String sql =
-		                "SELECT Aviso,BestellNr,Datum,Lieferant,AnzahlPos,Komplexität"
-		                + " FROM Lieferung Where Datum = '" + date + "' and Arrival_Date IS NULL";
+		                "SELECT *"
+		                + " FROM Delivery Where date = '" + date + "' and arrival_date IS NULL";
 	          ResultSet result = query.executeQuery(sql);
 	 
 	          while (result.next()) {
-	          String aviso = result.getString("Aviso");
-	          String supplier = result.getString("Lieferant");
-	          Calendar c = Calendar.getInstance();
-	          c.setTime(day);
-	          list.add(new Delivery(supplier, c, aviso));
-	          
-	          }
+		          String aviso = result.getString("aviso");
+		          String supplier = result.getString("supplier");
+		          Calendar arrivalC = Calendar.getInstance();
+		          list.add(new Delivery(supplier, arrivalC, aviso));}
 	      } catch (SQLException e) {
 	        e.printStackTrace();
 	      }
@@ -67,11 +65,11 @@ public class StoreData {
 	              long sum = 0L;
         		  String sql =
 			      "SELECT *"
-			      + " FROM Eingebucht Where Lieferant = '" + supplier + "'";
+			      + " FROM Registered Where supplier = '" + supplier + "'";
 		          ResultSet result = query.executeQuery(sql);
 		 
 		          while (result.next()) {
-		          Time time = result.getTime("LieferZeit");
+		          Time time = result.getTime("delivery_time");
 		          list.add(time);
 		          }
 
@@ -111,29 +109,48 @@ public class StoreData {
 	 
 	          String sql =
 		                "SELECT *"
-		                + " FROM Eingebucht Where LieferDatum = '" + date + "'";
+		                + " FROM Registered Where delivery_date = '" + date + "'";
 	          ResultSet result = query.executeQuery(sql);
 	 
 	          while (result.next()) {
-	          String aviso = result.getString("Aviso");
-	          String supplier = result.getString("Lieferant");
-	          Calendar c = Calendar.getInstance();
-	          c.setTime(day);
-	          list.add(new Delivery(supplier, c, aviso));	          
+		          String aviso = result.getString("aviso");
+		          String supplier = result.getString("supplier");
+		          Date arrivalD = result.getDate("arrival_date");
+		          Time arrivalT = result.getTime("arrival_time");
+		          Date departureD = result.getDate("delivery_date");
+		          Time departureT = result.getTime("delivery_time");
+		          SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		          String dateInStringD = arrivalD.toString().concat(" ").concat(arrivalT.toString());
+		          SimpleDateFormat sdfT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		          String dateInStringT = departureD.toString().concat(" ").concat(departureT.toString());
+		          
+		          Calendar arrivalC = Calendar.getInstance();
+		          Calendar departureC = Calendar.getInstance();
+		          try {
+					arrivalC.setTime(sdfD.parse(dateInStringD));
+			        departureC.setTime(sdfT.parse(dateInStringT));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		          list.add(new Delivery(supplier, arrivalC, departureC, aviso));	          
 	          }
 	      } catch (SQLException e) {
 	        e.printStackTrace();
+			dbc.closeConnection(con);
 	      }
 	    try {
 			query.close();
+			dbc.closeConnection(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			dbc.closeConnection(con);
 		}
 	return list;
 	}
 
-	public boolean setTableLieferung(Delivery deli, Date deliveryDate) {
+	public boolean setTables(Delivery deli, Date deliveryDate, int gate, String name) {
 		boolean result = true;
 		dbc = new DBConnector();
 		con = dbc.openConnection();
@@ -143,52 +160,112 @@ public class StoreData {
 	    try {
 	          query = con.createStatement();
 	          String sql =
-		                "UPDATE Lieferung"
-		                + " Set Arrival_Date = '" + new java.sql.Date(deli.getDeparture().getTime().getTime()) + "' Where Aviso = '" + deli.getAviso() + 
-		                "' AND Lieferant = '" + deli.getFullSupplier() + "'";
+		                "UPDATE Delivery"
+		                + " Set arrival_date = '" + new java.sql.Date(deli.getDeparture().getTime().getTime()) + "' Where aviso = '" + deli.getAviso() + 
+		                "' AND supplier = '" + deli.getFullSupplier() + "'";
+	  		query.executeUpdate(sql);
+			 
+	  		query = con.createStatement();
+	        sql =
+		                "INSERT INTO Registered (aviso, supplier, creator, delivery_date, delivery_time, gate, arrival_date, arrival_time) VALUES ('"
+		                + deli.getAviso() + "','" + deli.getFullSupplier() + "','" + name + "','" +
+		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getDeparture().getTime().getTime()) + "','" + gate + "','" +
+		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getArrival().getTime().getTime()) + "')";
 	  		query.executeUpdate(sql);
 			 
 	          
 	      } catch (SQLException e) {
 	        e.printStackTrace();
+	        try {
+				con.rollback();
+				dbc.closeConnection(con);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	        return false;
 	      }
 	    try {
 			query.close();
+			dbc.closeConnection(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			dbc.closeConnection(con);
 			return false;
 		}
 	    return result;
 	}
 
-	public boolean setTableEingebucht(Delivery deli, Date deliveryDate) {
-		boolean result = true;
+	public int getGates(String location) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
-		Calendar c = Calendar.getInstance();
-		c.setTime(deliveryDate);
+		int result = 0 ;
 	    Statement query = null;
 	    try {
 	          query = con.createStatement();
-	          
+	 
 	          String sql =
-		                "INSERT INTO Eingebucht (Aviso, Lieferant, Erfasser, LieferDatum, LieferZeit) VALUES ('"
-		                + deli.getAviso() + "','" + deli.getFullSupplier() + "','" + "BM2','" +
-		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getDeparture().getTime().getTime()) + "')";
-	          query.executeUpdate(sql);
+		                "SELECT nr_of_gates"
+		                + " FROM Location Where name = '" + location + "'";
+
+	          ResultSet results = query.executeQuery(sql);
+	          while (results.next()) {
+	        	  result = results.getInt("nr_of_gates");
+	          }
+	      } catch (SQLException e) {
+	        e.printStackTrace();
+			dbc.closeConnection(con);
+			result = -1;
+	      }
+	    try {
+			query.close();
+			dbc.closeConnection(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			dbc.closeConnection(con);
+			result = -1;
+		}
+	return result;
+	}
+
+	public boolean delDelivery(Delivery deli) {
+		boolean result = true;
+		dbc = new DBConnector();
+		con = dbc.openConnection();
+		Statement query = null;
+	    try {
+	          query = con.createStatement();
+	          String sql =
+		                "DELETE FROM Registered"
+		                + " Where supplier = '" + deli.getFullSupplier() + "' and aviso = '" + deli.getAviso() + "'";
+	  		query.executeUpdate(sql);
+			 
+	  		query = con.createStatement();
+	        sql = "UPDATE Delivery Set arrival_date = CAST(NULL As Date)"
+		                + " Where supplier = '" + deli.getFullSupplier() + "' and aviso = '" + deli.getAviso() + "'";
+	  		query.executeUpdate(sql);
 			 
 	          
 	      } catch (SQLException e) {
 	        e.printStackTrace();
+	        try {
+				con.rollback();
+				dbc.closeConnection(con);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	        return false;
 	      }
 	    try {
 			query.close();
+			dbc.closeConnection(con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			dbc.closeConnection(con);
 			return false;
 		}
 	    return result;

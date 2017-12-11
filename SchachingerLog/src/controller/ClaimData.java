@@ -1,31 +1,179 @@
 package controller;
 
-import java.sql.Connection;
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-public class ReklaData extends Data{
+import view.Claim;
+
+public class ClaimData extends Data{
 
 	private String aviso;
-	private String erfasser;
-	private String artNr;
-	private String an = null;
-	private String menge;
-	private String mangel;
+	private String id;
+	private Date date;
+	private String productNr;
+	private String creator;
+	private String to = null;
+	private String amount;
+	private String deficiency;
 	private String ts = "CURRENT_TIMESTAMP";
 	
 	//Constructors
-	public ReklaData(String aviso, String erfasser, String artNr, String an, String menge, String mangel) {
-		super("controller.ReklaData");
+	public ClaimData(String aviso, String creator, String productNr, String to, String amount, String deficiency) {
+		super("controller.ClaimData");
 		this.aviso = aviso;
-		this.erfasser = erfasser;
-		this.artNr = artNr;
-		this.an = an;
-		this.menge = menge;
-		this.mangel = mangel;
+		this.creator = creator;
+		this.productNr = productNr;
+		this.to = to;
+		this.amount = amount;
+		this.deficiency = deficiency;
 	}
-	public ReklaData(){	
-		super("controller.ReklaData");
+	
+	public ClaimData(Claim claim) {	//since 
+		this.aviso=claim.getAviso();
+		this.creator = claim.getCreator();
+		this.productNr = claim.getProductNr();
+		this.to = claim.getTo();
+		this.amount = claim.getAmount();
+		this.deficiency = claim.getDeficiency();
+	}
+	
+	public ClaimData(){	
+		super("controller.ClaimData");
+	}
+	
+	public List<Claim> fetchClaims(){
+		List<Claim> claimList = new ArrayList<>();
+		String fetchClaims = "SELECT * FROM Claim";
+		try {
+			this.con = dbc.openConnection();
+			
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				ResultSet rs = stmt.executeQuery(fetchClaims);
+				while(rs.next()) {
+					Claim claim = new Claim();
+					claim.setAviso(rs.getString("aviso"));
+					claim.setId(rs.getInt("id"));
+					Date date = new Date(rs.getDate("entry_date").getTime());
+					claim.setDate(date);
+					//claim.setDate(claim.convertTsToDate(rs.getTimestamp("Timestamp")));
+					claim.setCreator(rs.getString("creator"));
+					claim.setTo(rs.getString("assigned_to"));
+					claim.setProductNr(rs.getString("product_nr"));
+					claim.setAmount(rs.getString("amount"));
+					claim.setDeficiency(rs.getString("deficiency"));
+					// TEST System.out.println(rs.getString(1) + " " + rs.getInt(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5)+ " " + rs.getString(6)+ " " + rs.getString(7)+ " " + rs.getString(8));
+					claimList.add(claim);
+				}
+				logger.info(fetchClaims + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+            try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+				}
+			} 
+		return claimList;	
+	}
+	
+	public boolean update() {
+		String updateClaim = "UPDATE Claim SET aviso=" + this.aviso + ", id=" + this.id 
+				+ ", entry_date=" + this.date + ", creator=" + this.creator 
+				+ ", assigned_to=" + this.to + ", product_nr=" + this.productNr 
+				+ ", amount=" + this.amount + ", deficiency=" + this.deficiency
+				+ "WHERE aviso=" + this.aviso + "AND id =" + this.id;
+		boolean bool = false;
+		try {
+			this.con = this.dbc.openConnection();
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				stmt.executeUpdate(updateClaim);
+				bool = true;
+				logger.info(updateClaim + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+            try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+				}
+			} 
+		
+		return bool;
+	}
+	
+	//inserts the complaint values from a complaint object to the db
+	public boolean insert() {
+		
+		int newId = getMaxId(this.aviso) + 1;	//get the Id for the current Aviso (Avisos can have more than one complaint)
+		if (newId == 0) return false; 
+		String toString;	//if assigned_to is null, "NULL" has to be passed as SQL parameter
+		if(this.to == null || this.to == "") {
+			toString = "NULL";	
+		}
+		else {
+			toString = "'" + this.to + "'";
+		}
+		String insertClaim="INSERT INTO Claim (aviso, id, entry_date, creator, assigned_to, product_nr, amount, deficiency) "
+				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.ts + ", '" + this.creator + "', " + toString +  ", '" + this.productNr +"', '" + this.amount + "', '" + this.deficiency + "')";
+		System.out.println("Query: " + insertClaim);
+		boolean bool = false;
+		try {
+			this.con = this.dbc.openConnection();
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				stmt.executeUpdate(insertClaim);
+				bool = true;
+				logger.info(insertClaim + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+            try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+				}
+			} 
+		
+		return bool;
 	}
 	
 	//checks whether abbrevation exists
@@ -43,56 +191,11 @@ public class ReklaData extends Data{
 		if(exists(avisoExists)) return true;
 		return false;
 	}
-	//inserts the complaint values from a complaint object to the db
-	public boolean insert() {
-		
-		int newId = getMaxId(this.aviso) + 1;	//get the Id for the current Aviso (Avisos can have more than one complaint)
-		if (newId == 0) return false; 
-		String anString;	//if ZugewiesenAn is null NULL has to be passed as SQL parameter
-		if(this.an == null || this.an == "") {
-			anString = "NULL";	
-		}
-		else {
-			anString = "'" + this.an + "'";
-		}
-		String insertRekla="INSERT INTO Reklamation (Aviso, Id, Timestamp, Erfasser, ZugewiesenAn, ArtikelNr, Menge, Mangel) "
-				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.ts + ", '" + this.erfasser + "', " + anString +  ", '" + this.artNr +"', '" + this.menge + "', '" + this.mangel + "')";
-		System.out.println("Query: " + insertRekla);
-		Connection con = null;
-		boolean bool = false;
-		try {
-			con = dbc.openConnection();
-			con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = con.createStatement();
-				stmt.executeUpdate(insertRekla);
-				bool = true;
-				logger.info(insertRekla + " erfolgreich durchgeführt");
-			} finally {
-				try {
-					stmt.close();
-					con.commit();
-					con.close();
-				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				}
-			} 
-		
-		return bool;
-	}
-	//gets the highest Id of certain Aviso currently existing in the db
+	
+	//gets the highest id of certain aviso currently existing in the db
 	public int getMaxId(String aviso) {
 		
-		String getMaxId = "SELECT max(Id) FROM Reklamation WHERE Aviso = '" + aviso + "'";
+		String getMaxId = "SELECT max(Id) FROM Claims WHERE Aviso = '" + aviso + "'";
 		int maxId = -1;
 		try {
 			con = dbc.openConnection();
@@ -124,56 +227,59 @@ public class ReklaData extends Data{
 	}
 	
 	//Getters and Setters
-
-	public String getTs() {
-		return ts;
-	}
-	public void setTs(String ts) {
-		this.ts = ts;
-	}
+ 
 	public String getAviso() {
 		return aviso;
 	}
 	public void setAviso(String aviso) {
 		this.aviso = aviso;
 	}
-	public String getErfasser() {
-		return erfasser;
+	public String getId() {
+		return id;
 	}
-	public void setErfasser(String erfasser) {
-		this.erfasser = erfasser;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getArtNr() {
-		return artNr;
+	public Date getDate() {
+		return date;
 	}
-
-	public void setArtNr(String artNr) {
-		this.artNr = artNr;
+	public void setDate(Date date) {
+		this.date = date;
 	}
-
-	public String getAn() {
-		return an;
+	public String getProductNr() {
+		return productNr;
 	}
-
-	public void setAn(String an) {
-		this.an = an;
+	public void setProductNr(String productNr) {
+		this.productNr = productNr;
 	}
-
-	public String getMenge() {
-		return menge;
+	public String getCreator() {
+		return creator;
 	}
-
-	public void setMenge(String menge) {
-		this.menge = menge;
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
-
-	public String getMangel() {
-		return mangel;
+	public String getTo() {
+		return to;
 	}
-
-	public void setMangel(String mangel) {
-		this.mangel = mangel;
+	public void setTo(String to) {
+		this.to = to;
 	}
-	//
-	
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getDeficiency() {
+		return deficiency;
+	}
+	public void setDeficiency(String deficiency) {
+		this.deficiency = deficiency;
+	}
+	public String getTs() {
+		return ts;
+	}
+	public void setTs(String ts) {
+		this.ts = ts;
+	}	
 }

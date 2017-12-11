@@ -13,14 +13,19 @@ public class Delivery {
 	private boolean claim;
 	private boolean service;
 	
+	public Delivery(String supplier, Calendar arrival, Calendar departure, String aviso) {
+		this.aviso = aviso;
+		this.supplier = supplier;
+		this.arrival = arrival;
+		this.departure = departure;
+	}
+
 	public Delivery(String supplier, Calendar arrival, String aviso) {
 		this.aviso = aviso;
 		this.supplier = supplier;
 		this.arrival = arrival;
-		Calendar c = Calendar.getInstance();
-		this.departure = c;
+		this.departure = Calendar.getInstance();
 	}
-
 	public String getAviso() {
 		return aviso;
 	}
@@ -83,9 +88,9 @@ public class Delivery {
 
 	public void setTime2(Date date,Calendar c) {
 		this.departure.setTime(date);
-		departure.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY + 1));
-		departure.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
-		departure.set(Calendar.SECOND, c.get(Calendar.SECOND));
+		this.departure.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
+		this.departure.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
+		this.departure.set(Calendar.SECOND, c.get(Calendar.SECOND));
 	}
 	
 	
