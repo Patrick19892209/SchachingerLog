@@ -12,26 +12,31 @@
 <body>
 	<h:form id="form">
 		<p:growl id="msgs" showDetail="true" />
-		<p:dataTable id="claimsDt" var="claim" value="#{dtClaims.claims}"
-			editable="true">
+		<p:dataTable var="claim" value="#{dtClaims.claims}"
+			widgetVar="claimsTable" editable="true"
+			emptyMessage="No cars found with given criteria"
+			filteredValue="#{dtClaims.filteredClaims}">
 			<f:facet name="header">
 		Reklamationsbearbeitung
-		</f:facet>
+			</f:facet>
 			<p:ajax event="rowEdit" listener="#{dtClaims.onRowEdit}"
 				update=":form:msgs" />
 			<p:ajax event="rowEditCancel" listener="#{dtClaims.onRowCancel}"
 				update=":form:msgs" />
-			<p:column filterBy="#{claim.aviso}" headerText="Aviso" footerText="contains" filterMatchMode="contains">
+			<p:column filterBy="#{claim.aviso}" headerText="Aviso"
+				footerText="contains" filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
 						<h:outputText value="#{claim.aviso}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="avisoInput" value="#{claim.aviso}" />
+						<p:inputText id="avisoInput" value="#{claim.aviso}">
+							<f:validator validatorId="model.AvisoValidator" />
+						</p:inputText>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column filterBy="#{claim.id}" headerText="Id" footerText="equals" filterMatchMode="equals">
+			<p:column>
 				<p:cellEditor>
 					<f:facet name="output">
 						<h:outputText value="#{claim.id}" />
@@ -41,13 +46,16 @@
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column filterBy="#{claim.date}" headerText="Erfassungsdatum" footerText="equals" filterMatchMode="equals">
+			<p:column>
 				<p:cellEditor>
 					<f:facet name="output">
 						<h:outputText value="#{claim.date}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="dateInput" value="#{claim.date}" label="Date" />
+						<p:inputText id="dateInput" value="#{claim.date}" label="Date"
+							validatorMessage="Value does not match pattern.">
+							<!--  <f:validateRegex pattern="^[a-zA-Z]+$" />-->
+						</p:inputText>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -58,7 +66,9 @@
 					</f:facet>
 					<f:facet name="input">
 						<p:inputText id="erfasserInput" value="#{claim.creator}"
-							label="Erfasser" />
+							label="Erfasser">
+							<f:validator validatorId="model.AbbrevationValidator" />
+						</p:inputText>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -68,7 +78,9 @@
 						<h:outputText value="#{claim.to}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="ToInput" value="#{claim.to}" label="An" />
+						<p:inputText id="ToInput" value="#{claim.to}" label="An">
+							<f:validator validatorId="model.AbbrevationValidator" />
+						</p:inputText>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>

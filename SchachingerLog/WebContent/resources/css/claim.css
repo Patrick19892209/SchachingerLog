@@ -9,11 +9,11 @@
 	min-height: 49px;
 }
 
-.mangelCol{
+.deficiencyCol{
 	width: 65%;
 	float: left;
 }
-.maengelCol{
+.deficienciesCol{
 	width: 35%;
 	float: right;
 }

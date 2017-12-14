@@ -29,7 +29,7 @@ public class Claim {
 	private String amount;
 	private String deficiency;
 	private UIComponent claimButton;
-	private Date date;
+	private String date;
 
 	//private ClaimData redat;
 	List <String> deficiencyList;
@@ -45,7 +45,7 @@ public class Claim {
 		
 	}
 	
-	public Claim(String aviso, String creator, Date date, String productNr, String to, String amount, String deficiency,
+	public Claim(String aviso, String creator, String date, String productNr, String to, String amount, String deficiency,
 			Timestamp ts) {
 		super();
 		this.aviso = aviso;
@@ -156,11 +156,12 @@ public class Claim {
 		this.claimButton = claimButton;
 	}
 
-	public Date getDate() {
+
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

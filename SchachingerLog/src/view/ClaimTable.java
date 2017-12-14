@@ -22,12 +22,9 @@ public class ClaimTable extends Data implements Serializable {
 	private static final long serialVersionUID = 8725748769196865593L;
 
 	private List<Claim> claims;
-    
+	private List<Claim> filteredClaims;
 	   // @ManagedProperty("#{carService}")
 	    private Claim claim;
-	    public List<Claim> getClaims() {
-			return claims;
-		}
 
 		@PostConstruct
 	    public void init() {
@@ -70,9 +67,21 @@ public class ClaimTable extends Data implements Serializable {
 		public void setClaim(Claim claim) {
 			this.claim = claim;
 		}
-
-		public void setClaims(List<Claim> claims) {
+		
+	    public List<Claim> getClaims() {
+			return claims;
+		}
+		
+	    public void setClaims(List<Claim> claims) {
 			this.claims = claims;
+		}
+
+		public List<Claim> getFilteredClaims() {
+			return filteredClaims;
+		}
+
+		public void setFilteredClaims(List<Claim> filteredClaims) {
+			this.filteredClaims = filteredClaims;
 		}
 	       
     

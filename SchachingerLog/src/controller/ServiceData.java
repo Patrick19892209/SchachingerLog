@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -20,7 +19,7 @@ public class ServiceData extends Data {
 	
 	//Constructors
 	public ServiceData(String aviso, String creator, String productNr, String to, String amount, String service) {
-		super("controller.ClaimData");
+		super("controller.ServiceData");
 		this.aviso = aviso;
 		this.creator = creator;
 		this.productNr = productNr;
@@ -55,6 +54,7 @@ public class ServiceData extends Data {
 		if(exists(avisoExists));
 		return false;
 	}
+	
 	//inserts the complaint values from a complaint object to the db
 	public boolean insert() {
 

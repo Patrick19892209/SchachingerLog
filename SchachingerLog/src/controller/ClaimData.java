@@ -4,6 +4,9 @@ package controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +16,8 @@ import view.Claim;
 public class ClaimData extends Data{
 
 	private String aviso;
-	private String id;
-	private Date date;
+	private int id;
+	private String date;
 	private String productNr;
 	private String creator;
 	private String to = null;
@@ -34,7 +37,9 @@ public class ClaimData extends Data{
 	}
 	
 	public ClaimData(Claim claim) {	//since 
-		this.aviso=claim.getAviso();
+		this.aviso = claim.getAviso();
+		this.id = claim.getId();
+		this.date = claim.getDate();
 		this.creator = claim.getCreator();
 		this.productNr = claim.getProductNr();
 		this.to = claim.getTo();
@@ -44,6 +49,20 @@ public class ClaimData extends Data{
 	
 	public ClaimData(){	
 		super("controller.ClaimData");
+	}
+	
+	/*
+	String input = "2012/01/20 12:05:10.321";
+	DateFormat inputFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+	Date date = inputFormatter.parse(input);
+
+	DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
+	String output = outputFormatter.format(date); // Output : 01/20/2012
+	*/
+	public static Date StringToDate(String sdate) throws ParseException {
+		DateFormat inputFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+		Date date = inputFormatter.parse(sdate);
+		return date;
 	}
 	
 	public List<Claim> fetchClaims(){
@@ -61,8 +80,7 @@ public class ClaimData extends Data{
 					Claim claim = new Claim();
 					claim.setAviso(rs.getString("aviso"));
 					claim.setId(rs.getInt("id"));
-					Date date = new Date(rs.getDate("entry_date").getTime());
-					claim.setDate(date);
+					claim.setDate(rs.getDate("entry_date").toString());
 					//claim.setDate(claim.convertTsToDate(rs.getTimestamp("Timestamp")));
 					claim.setCreator(rs.getString("creator"));
 					claim.setTo(rs.getString("assigned_to"));
@@ -94,11 +112,13 @@ public class ClaimData extends Data{
 	}
 	
 	public boolean update() {
-		String updateClaim = "UPDATE Claim SET aviso=" + this.aviso + ", id=" + this.id 
-				+ ", entry_date=" + this.date + ", creator=" + this.creator 
-				+ ", assigned_to=" + this.to + ", product_nr=" + this.productNr 
-				+ ", amount=" + this.amount + ", deficiency=" + this.deficiency
-				+ "WHERE aviso=" + this.aviso + "AND id =" + this.id;
+		String updateClaim = "UPDATE Claim SET "
+				+ "aviso='" + this.aviso + "', id=" + this.id 
+				+ ", entry_date='" + this.date + "', creator='" + this.creator 
+				+ "', assigned_to='" + this.to + "', product_nr='" + this.productNr 
+				+ "', amount=" + this.amount + ", deficiency='" + this.deficiency
+				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
+		System.out.println(updateClaim);
 		boolean bool = false;
 		try {
 			this.con = this.dbc.openConnection();
@@ -178,7 +198,7 @@ public class ClaimData extends Data{
 	
 	//checks whether abbrevation exists
 	public boolean abbrevationExists(String abbr) {
-		String abbrExists = "SELECT * FROM User WHERE Abbrevation = '" + abbr + "'";
+		String abbrExists = "SELECT * FROM User WHERE abbrevation = '" + abbr + "'";
 		logger.info(abbrExists);
 		if(exists(abbrExists)) return true;
 		return false;
@@ -186,7 +206,7 @@ public class ClaimData extends Data{
 	
 	//checks whether certain Aviso exists in the db
 	public boolean avisoExists(String aviso) {
-		String avisoExists =  "SELECT * FROM Lieferung WHERE Aviso = '" + aviso + "'";
+		String avisoExists =  "SELECT * FROM Delivery WHERE aviso = '" + aviso + "'";
 		logger.info(avisoExists);
 		if(exists(avisoExists)) return true;
 		return false;
@@ -195,7 +215,7 @@ public class ClaimData extends Data{
 	//gets the highest id of certain aviso currently existing in the db
 	public int getMaxId(String aviso) {
 		
-		String getMaxId = "SELECT max(Id) FROM Claims WHERE Aviso = '" + aviso + "'";
+		String getMaxId = "SELECT max(Id) FROM Claim WHERE aviso = '" + aviso + "'";
 		int maxId = -1;
 		try {
 			con = dbc.openConnection();
@@ -234,18 +254,23 @@ public class ClaimData extends Data{
 	public void setAviso(String aviso) {
 		this.aviso = aviso;
 	}
-	public String getId() {
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getDate() {
+
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+
+	public void setDate(String date) {
 		this.date = date;
 	}
+
 	public String getProductNr() {
 		return productNr;
 	}
