@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 //import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -33,7 +35,21 @@ public class Claim {
 
 	//private ClaimData redat;
 	List <String> deficiencyList;
+	private String redirect;
+    @ManagedProperty(value="#{storeView}")
+    StoreView store;
 	
+	@PostConstruct
+	public void init() {
+		if (store != null) {
+			this.aviso = store.getDeliDone().getAviso();
+			this.redirect = "lager";
+		} else {
+			this.redirect = "buero";
+		}
+		
+	}
+
 	public Claim() {
 
 		//Dropdown opts
@@ -106,6 +122,23 @@ public class Claim {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
+	}
+
+	public StoreView getStore() {
+		return store;
+	}
+
+	public void setStore(StoreView store) {
+		this.store = store;
 	}
 
 	public String getCreator() {

@@ -31,4 +31,31 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<display-name>lager/LagerView.xhtml</display-name>
+		<from-view-id>/lager/LagerView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>rekla</from-outcome>
+			<to-view-id>/claimInput.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>lager/LagerView.xhtml</display-name>
+		<from-view-id>/lager/LagerView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>zservice</from-outcome>
+			<to-view-id>/serviceInput.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>serviceInput.xhtml</display-name>
+		<from-view-id>/serviceInput.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>lager</from-outcome>
+			<to-view-id>/lager/LagerView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

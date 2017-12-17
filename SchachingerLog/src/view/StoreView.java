@@ -12,8 +12,10 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
@@ -40,7 +42,7 @@ class TimeComparator implements Comparator<Delivery> {
 }
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class StoreView {
 
 	private List<Delivery> openDeliveries;
@@ -61,6 +63,7 @@ public class StoreView {
 		data = new StoreData();
 		Calendar now = Calendar.getInstance();
 		deliveryDate = now.getTime();
+		this.gate = 1;
 		initOpenDeliveries();
 		initFinishedDeliveries();
 		int maxGates = data.getGates(login.getUser().getLocation());
@@ -68,19 +71,22 @@ public class StoreView {
 		for (int i = 1; i <= maxGates; i++) {
 			gates.add("Tor " + i);
 		}
-		this.gate = 1;
 	}
 
     public void addMessage(String summary) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  "TEST");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void switchGate(String s) {
     	this.gate = Integer.parseInt(Character.toString(s.charAt(4)));
+		initFinishedDeliveries();
+        RequestContext.getCurrentInstance().update("gates");
+        RequestContext.getCurrentInstance().update("lager");
     }
-	private void initFinishedDeliveries() {
-		finishedDeliveries = data.finishedDeliveries(deliveryDate);
+
+    private void initFinishedDeliveries() {
+		finishedDeliveries = data.finishedDeliveries(this.deliveryDate, this.gate);
 	}
 
 	public void setDeliDone(Delivery deliDone) {
@@ -100,7 +106,8 @@ public class StoreView {
 		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
 		initOpenDeliveries();
 		initFinishedDeliveries();
-        RequestContext.getCurrentInstance().update("lager:delivery");
+        RequestContext.getCurrentInstance().update("gates");
+        RequestContext.getCurrentInstance().update("lager");
 		addMessage("Alles Gut");
 	}
 	
@@ -112,7 +119,8 @@ public class StoreView {
 	        updateDeliveries();
 	        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
-	        RequestContext.getCurrentInstance().update("lager:delivery");
+	        RequestContext.getCurrentInstance().update("gates");
+	        RequestContext.getCurrentInstance().update("lager");
 	 }
 
 	private void updateDeliveries() {
@@ -122,14 +130,26 @@ public class StoreView {
 				
 	}
 
+	public String look (String g) {
+		if (Integer.parseInt(Character.toString(g.charAt(4))) == this.gate ) return "success";
+		else return "default";
+	}
+	
+	public String setDeli4Service (Delivery d) {
+		this.deliDone = d;
+		return "zservice";
+	}
+	
+	public String setDeli4Rekla (Delivery d) {		
+		this.deliDone = d;
+		return "rekla";
+	}
 
 	private void initOpenDeliveries() {
 		openDeliveries = data.openDeliveries(deliveryDate);
 		setAverageTime();
 		Collections.sort(openDeliveries, new TimeComparator());
 	}
-
-	
 	
 	public Login getLogin() {
 		return login;
@@ -159,17 +179,13 @@ public class StoreView {
 		data.setArrivals(openDeliveries);
 	}
 
-
 	public List<Delivery> getOpenDeliveries() {
 		return openDeliveries;
 	}
 
-
 	public void setOpenDeliveries(List<Delivery> openDeliveries) {
 		this.openDeliveries = openDeliveries;
 	}
-
-
 	
 	public Delivery getDeliDone() {
 		return deliDone;

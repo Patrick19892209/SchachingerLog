@@ -96,7 +96,7 @@ public class StoreData {
 	    dbc.closeConnection(con);
 	}
 
-	public List<Delivery> finishedDeliveries(Date day) {
+	public List<Delivery> finishedDeliveries(Date day, int gate) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
 		List <Delivery> list = new ArrayList<>();
@@ -109,16 +109,16 @@ public class StoreData {
 	 
 	          String sql =
 		                "SELECT *"
-		                + " FROM Registered Where delivery_date = '" + date + "'";
+		                + " FROM Registered Where delivery_date = '" + date + "' and gate = '" + gate +"'";
 	          ResultSet result = query.executeQuery(sql);
 	 
 	          while (result.next()) {
 		          String aviso = result.getString("aviso");
 		          String supplier = result.getString("supplier");
-		          Date arrivalD = result.getDate("arrival_date");
-		          Time arrivalT = result.getTime("arrival_time");
-		          Date departureD = result.getDate("delivery_date");
-		          Time departureT = result.getTime("delivery_time");
+		          Date departureD = result.getDate("departure_date");
+		          Time departureT = result.getTime("departure_time");
+		          Date arrivalD = result.getDate("delivery_date");
+		          Time arrivalT = result.getTime("delivery_time");
 		          SimpleDateFormat sdfD = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		          String dateInStringD = arrivalD.toString().concat(" ").concat(arrivalT.toString());
 		          SimpleDateFormat sdfT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -167,10 +167,10 @@ public class StoreData {
 			 
 	  		query = con.createStatement();
 	        sql =
-		                "INSERT INTO Registered (aviso, supplier, creator, delivery_date, delivery_time, gate, arrival_date, arrival_time) VALUES ('"
+		                "INSERT INTO Registered (aviso, supplier, creator, delivery_date, delivery_time, gate, departure_date, departure_time) VALUES ('"
 		                + deli.getAviso() + "','" + deli.getFullSupplier() + "','" + name + "','" +
-		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getDeparture().getTime().getTime()) + "','" + gate + "','" +
-		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getArrival().getTime().getTime()) + "')";
+		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getArrival().getTime().getTime()) + "','" + gate + "','" +
+		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getDeparture().getTime().getTime()) + "')";
 	  		query.executeUpdate(sql);
 			 
 	          

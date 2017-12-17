@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 //import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -29,9 +31,11 @@ public class Service {
 	private UIComponent serviceButton;
 	//private ClaimData redat;
 	List <String> serviceList;
+	private String redirect;
+    @ManagedProperty(value="#{storeView}")
+    StoreView store;
 	
 	public Service() {
-
 		//Dropdown opts
 		serviceList = new ArrayList<>();
 		serviceList.add("Verpackung erneuert");
@@ -43,8 +47,36 @@ public class Service {
 		
 	}
 
+	@PostConstruct
+	public void init() {
+		if (store != null) {
+			this.aviso = store.getDeliDone().getAviso();
+			this.redirect = "lager";
+		} else {
+			this.redirect = "buero";
+		}
+		
+	}
+	
 	public Date getDate() {
 		return date;
+	}
+
+	
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
+	}
+
+	public StoreView getStore() {
+		return store;
+	}
+
+	public void setStore(StoreView store) {
+		this.store = store;
 	}
 
 	public void setDate(Date date) {
@@ -54,22 +86,22 @@ public class Service {
 	public String insertService() throws SQLException {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
-		String result;	//result message of the given query
+		String result2;	//result message of the given query
 		Severity sev;
 		//if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=maengelListe.get(0)&&this.menge!=null) {
 			ServiceData servdat = new ServiceData(this);
 			if(servdat.insert()) {
-					result="Service-Leistung erfolgreich erfasst!";
+					result2="Service-Leistung erfolgreich erfasst!";
 					sev = FacesMessage.SEVERITY_INFO;
 			}
 			else {
-					result = "Erfassung der Service-Leistung fehlgeschlagen!";
+					result2 = "Erfassung der Service-Leistung fehlgeschlagen!";
 					sev = FacesMessage.SEVERITY_ERROR;
 			}
 		//}
-		FacesMessage message = new FacesMessage(sev,result,null);
+		FacesMessage message = new FacesMessage(sev,result2,null);
 		context.addMessage(serviceButton.getClientId(context), message);
-		return result;
+		return this.redirect;
 	}
 
 	public String getAviso() {
