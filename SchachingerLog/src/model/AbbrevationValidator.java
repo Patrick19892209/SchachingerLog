@@ -17,7 +17,7 @@ public class AbbrevationValidator implements Validator {
 		if (value!=null) {
 			ClaimData rd = new ClaimData();
 			if(!rd.abbrevationExists(value.toString())) {
-				FacesMessage message = new FacesMessage(value.toString() + " existiert nicht!");
+				FacesMessage message = new FacesMessage("Das Kurzzeichen '" + value.toString() + "' existiert nicht!");
 				message.setSeverity(FacesMessage.SEVERITY_ERROR);
 				throw new ValidatorException(message);
 			}

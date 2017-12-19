@@ -146,6 +146,7 @@ public class Claim {
 	}
 
 	public void setCreator(String creator) {
+		if(creator!=null&&to!="") creator=creator.toUpperCase();
 		this.creator = creator;
 	}
 	
@@ -162,6 +163,7 @@ public class Claim {
 	}
 
 	public void setTo(String to) {
+		if(to!=null&&to!="") to=to.toUpperCase();
 		this.to = to;
 	}
 

@@ -39,7 +39,7 @@ public class ClaimTable extends Data implements Serializable {
 	    	Claim claim = (Claim) event.getObject();
 	    	System.out.print(claim.getDate());
 	    	ClaimData claimdata = new ClaimData(claim);
-	        if(claimdata.update()) msgString1 = "Editing failed"; 
+	        if(!claimdata.update()) msgString1 = "Editing failed"; 
 	        FacesMessage msg = new FacesMessage(msgString1, msgString2);
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
 	    }
