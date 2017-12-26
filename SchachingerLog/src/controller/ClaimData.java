@@ -24,7 +24,16 @@ public class ClaimData extends Data{
 	private String amount;
 	private String deficiency;
 	private String ts = "CURRENT_TIMESTAMP";
-	
+	private int chatId;
+
+	public int getChatId() {
+		return chatId;
+	}
+
+	public void setChatId(int chatId) {
+		this.chatId = chatId;
+	}
+
 	//Constructors
 	public ClaimData(String aviso, String creator, String productNr, String to, String amount, String deficiency) {
 		super("controller.ClaimData");
@@ -34,9 +43,12 @@ public class ClaimData extends Data{
 		this.to = to;
 		this.amount = amount;
 		this.deficiency = deficiency;
-	}
-	
+		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		this.chatId = getMaxId(maxChatId) + 1;
+		}
+
 	public ClaimData(Claim claim) {	//since 
+		super("controller.ClaimData");
 		this.aviso = claim.getAviso();
 		this.id = claim.getId();
 		this.date = claim.getDate();
@@ -45,11 +57,15 @@ public class ClaimData extends Data{
 		this.to = claim.getTo();
 		this.amount = claim.getAmount();
 		this.deficiency = claim.getDeficiency();
+		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		this.chatId = getMaxId(maxChatId) + 1;
 	}
 	
 	public ClaimData(){	
 		super("controller.ClaimData");
-	}
+		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		this.chatId = getMaxId(maxChatId) +1;
+}
 	
 	/*
 	String input = "2012/01/20 12:05:10.321";
@@ -66,8 +82,11 @@ public class ClaimData extends Data{
 	}
 	
 	public List<Claim> fetchClaims(){
+		
+		if(this.chatId<1) return null;
 		List<Claim> claimList = new ArrayList<>();
-		String fetchClaims = "SELECT * FROM Claim";
+		String fetchClaims = "SELECT * FROM Claim ORDER BY aviso DESC, id ASC";
+		logger.info(fetchClaims);
 		try {
 			this.con = dbc.openConnection();
 			
@@ -88,6 +107,7 @@ public class ClaimData extends Data{
 					claim.setAmount(rs.getString("amount"));
 					claim.setDeficiency(rs.getString("deficiency"));
 					// TEST System.out.println(rs.getString(1) + " " + rs.getInt(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5)+ " " + rs.getString(6)+ " " + rs.getString(7)+ " " + rs.getString(8));
+					claim.setChatHistory(fetchHistory(this.chatId));
 					claimList.add(claim);
 				}
 				logger.info(fetchClaims + " erfolgreich durchgeführt");
@@ -109,6 +129,45 @@ public class ClaimData extends Data{
 				}
 			} 
 		return claimList;	
+	}
+	
+	public List<ChatMsgData> fetchHistory(int chatId) {
+		String getHistory = "SELECT * FROM Chat_Message " + "WHERE chatId='" + chatId 
+				+ "' ORDER BY date DESC, time DESC";
+		List<ChatMsgData> history = new ArrayList<>();
+		
+		try {
+			this.con = dbc.openConnection();
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				ResultSet rs = stmt.executeQuery(getHistory);
+				while (rs.next()) {
+					ChatMsgData chatMsg = new ChatMsgData(this.chatId,rs.getString("text"),rs.getString("date"),rs.getString("time"));
+					logger.info(rs.getString("text"));
+					history.add(chatMsg);
+					//	history = rs.getString("history");
+				}
+				logger.info(getHistory + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+			try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+			}
+		}
+		return history;
 	}
 	
 	public boolean update() {
@@ -153,53 +212,34 @@ public class ClaimData extends Data{
 	//inserts the complaint values from a complaint object to the db
 	public boolean insert() {
 		
-		int newId = getMaxId(this.aviso) + 1;	//get the Id for the current Aviso (Avisos can have more than one complaint)
-		if (newId == 0) return false; 
-		String toString;	//if assigned_to is null, "NULL" has to be passed as SQL parameter
+		String getMaxIdAviso = "SELECT max(id) FROM Claim WHERE aviso = '" + aviso + "'";
+		int maxAvisoId = getMaxId(getMaxIdAviso);	//get the Id for the current Aviso (Avisos can have more than one complaint)
+		if (maxAvisoId < 0) {return false;}
+		else {this.id=maxAvisoId+1;}
+		String nullString;	//if assigned_to is null, "NULL" has to be passed as SQL parameter
+		String getMaxChatId = "SELECT max(chatId) FROM Claim";
+		int maxChatId = getMaxId(getMaxChatId);
+		if(maxChatId<0) {return false;}
+		else {this.chatId = maxChatId+1;}
 		if(this.to == null || this.to == "") {
-			toString = "NULL";	
+			nullString = "NULL";	
 		}
 		else {
-			toString = "'" + this.to + "'";
+			nullString = "'" + this.to + "'";
 		}
-		String insertClaim="INSERT INTO Claim (aviso, id, entry_date, creator, assigned_to, product_nr, amount, deficiency) "
-				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.ts + ", '" + this.creator + "', " + toString +  ", '" + this.productNr +"', '" + this.amount + "', '" + this.deficiency + "')";
+		String insertClaim="INSERT INTO Claim (aviso, id, entry_date, creator, assigned_to, product_nr, amount, deficiency, chatId) "
+				+ "VALUES ('" + this.aviso + "', " +  this.id + ", " 
+				+ this.ts + ", '" + this.creator + "', " 
+				+ nullString +  ", '" + this.productNr +"', '" 
+				+ this.amount + "', '" + this.deficiency + "', '"
+				+ this.chatId + "')";
 		System.out.println("Query: " + insertClaim);
-		boolean bool = false;
-		try {
-			this.con = this.dbc.openConnection();
-			this.con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = this.con.createStatement();
-				stmt.executeUpdate(insertClaim);
-				bool = true;
-				logger.info(insertClaim + " erfolgreich durchgeführt");
-			} finally {
-				try {
-					stmt.close();
-					this.con.commit();
-					this.con.close();
-				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				this.con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				}
-			} 
-		
-		return bool;
+		return insert(insertClaim);
 	}
 	
 	//checks whether abbrevation exists
 	public boolean abbrevationExists(String abbr) {
 		String abbrExists = "SELECT * FROM User WHERE abbrevation = '" + abbr + "'";
-		logger.info(abbrExists);
 		if(exists(abbrExists)) return true;
 		return false;
 	}
@@ -207,43 +247,8 @@ public class ClaimData extends Data{
 	//checks whether certain Aviso exists in the db
 	public boolean avisoExists(String aviso) {
 		String avisoExists =  "SELECT * FROM Delivery WHERE aviso = '" + aviso + "'";
-		logger.info(avisoExists);
 		if(exists(avisoExists)) return true;
 		return false;
-	}
-	
-	//gets the highest id of certain aviso currently existing in the db
-	public int getMaxId(String aviso) {
-		
-		String getMaxId = "SELECT max(Id) FROM Claim WHERE aviso = '" + aviso + "'";
-		int maxId = -1;
-		try {
-			con = dbc.openConnection();
-			con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = con.createStatement();
-				this.rs = stmt.executeQuery(getMaxId);
-				if (rs.next()) maxId = this.rs.getInt(1);
-				logger.info("MaxId: " + maxId);
-			} finally {
-				try {
-					stmt.close();
-					con.commit();
-					con.close();
-				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				}
-			} 
-		return maxId;
 	}
 	
 	//Getters and Setters

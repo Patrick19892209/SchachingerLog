@@ -36,7 +36,7 @@
 					</b:column>
 					<b:column class="deficienciesCol">
 						<b:selectOneMenu value="#{claim.deficiency}" id="deficiencies" required="true" 
-							requiredMessage="Mangel erfassen!" ajax="true" update="@form" >
+							requiredMessage="Mangel erfassen!" ajax="true" update="deficiency" >
 						<f:selectItem itemValue="" itemLabel="Mangel erfassen..." />
 						<f:selectItems value="#{claim.deficiencyList}" />
 						</b:selectOneMenu>

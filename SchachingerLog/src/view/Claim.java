@@ -2,9 +2,7 @@ package view;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import controller.ChatMsgData;
 import controller.ClaimData;
 
 @ManagedBean(name="claim")
@@ -32,14 +31,14 @@ public class Claim {
 	private String deficiency;
 	private UIComponent claimButton;
 	private String date;
-
-	//private ClaimData redat;
+	List<ChatMsgData> chatHistory;
 	List <String> deficiencyList;
 	private String redirect;
     @ManagedProperty(value="#{storeView}")
     StoreView store;
-	
-	@PostConstruct
+    
+/*
+    @PostConstruct
 	public void init() {
 		if (store != null) {
 			this.aviso = store.getDeliDone().getAviso();
@@ -49,7 +48,7 @@ public class Claim {
 		}
 		
 	}
-
+*/
 	public Claim() {
 
 		//Dropdown opts
@@ -84,8 +83,8 @@ public class Claim {
 		String result;	//result message of the given query
 		Severity sev;
 		//if (this.creator!=null&&this.productNr!=null&&this.deficiency!=deficiencyList.get(0)&&this.amount!=null) {
-			ClaimData redat = new ClaimData(this);
-			if(redat.insert()) {
+			ClaimData claimDat = new ClaimData(this);
+			if(claimDat.insert()) {
 					result="Reklamationserfassung erfolgreich abgeschlossen";
 					sev = FacesMessage.SEVERITY_INFO;
 			}
@@ -99,12 +98,7 @@ public class Claim {
 		return result;
 	}
 	
-	//converts Timestamp to String e.g. 2017-12-24
-	public String convertTsToDate(Timestamp ts) {
-		Date date = new Date(ts.getTime());
-  	  	SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-  	  	return format1.format(date);	
-	}
+
 	
 	//Getters and Setters
 	
@@ -206,5 +200,16 @@ public class Claim {
 
 	public void setDeficiencyList(List<String> deficiencyList) {
 		this.deficiencyList = deficiencyList;
+	}
+
+	public List<ChatMsgData> getChatHistory() {
+		return chatHistory;
+	}
+
+	public void setChatHistory(List<ChatMsgData> chatHistory) {
+		this.chatHistory = chatHistory;
 	}	
+	
+	
+
 }
