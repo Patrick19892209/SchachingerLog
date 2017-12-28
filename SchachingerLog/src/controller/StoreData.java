@@ -269,5 +269,41 @@ public class StoreData {
 			return false;
 		}
 	    return result;
-	}		
+	}
+
+	public void updateArrDep(Delivery deli, Date deliveryDate, int i) {
+		dbc = new DBConnector();
+		con = dbc.openConnection();
+		Calendar c = Calendar.getInstance();
+		c.setTime(deliveryDate);
+	    Statement query = null;
+	    try {
+	    	  String sql;
+	          query = con.createStatement();
+	          if (i == 1) {
+		          sql =
+			                "UPDATE Registered"
+			                + " Set delivery_date = '" + new java.sql.Date(c.getTime().getTime()) + "', delivery_time = '" + new java.sql.Time(deli.getArrival().getTime().getTime()) + "' Where aviso = '" + deli.getAviso() + 
+			                "' AND supplier = '" + deli.getFullSupplier() + "'";
+	          } else {
+	        	  sql =
+			                "UPDATE Registered"
+			                + " Set departure_date = '" + new java.sql.Date(c.getTime().getTime()) + "', departure_time = '" + new java.sql.Time(deli.getDeparture().getTime().getTime()) + "' Where aviso = '" + deli.getAviso() + 
+			                "' AND supplier = '" + deli.getFullSupplier() + "'";
+		          	        	  
+	          }
+	  		query.executeUpdate(sql);
+			 			 
+	          
+	      } catch (SQLException e) {
+	        e.printStackTrace();
+	        try {
+				con.rollback();
+				dbc.closeConnection(con);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	      }
+	}
 }

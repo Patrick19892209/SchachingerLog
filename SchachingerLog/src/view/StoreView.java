@@ -52,6 +52,7 @@ public class StoreView {
 	private StoreData data;
 	private List<String> gates;
 	private int gate;
+	private boolean entered = false;
     RequestContext context = RequestContext.getCurrentInstance();
     FacesMessage message = null;
     
@@ -117,6 +118,7 @@ public class StoreView {
 	        if (dateNew.compareTo(deliveryDate) != 0) return;
 	        setDeliveryDate(dateNew);
 	        updateDeliveries();
+			initFinishedDeliveries();
 	        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Date Selected", format.format(event.getObject())));
 	        RequestContext.getCurrentInstance().update("gates");
@@ -131,17 +133,27 @@ public class StoreView {
 	}
 
 	public String look (String g) {
-		if (Integer.parseInt(Character.toString(g.charAt(4))) == this.gate ) return "success";
-		else return "default";
+		if (Integer.parseInt(Character.toString(g.charAt(4))) == this.gate ) return "truck2";
+		else return "truck1";
 	}
 	
+	public void updateArrival(Delivery d) {
+		data.updateArrDep(d, deliveryDate, 1);
+	}
+	
+	public void updateDeparture(Delivery d) {
+		data.updateArrDep(d, deliveryDate, 2);
+	}
+
 	public String setDeli4Service (Delivery d) {
 		this.deliDone = d;
+		if (this.entered != true) this.entered = true;
 		return "zservice";
 	}
 	
 	public String setDeli4Rekla (Delivery d) {		
 		this.deliDone = d;
+		if (this.entered != true) this.entered = true;
 		return "rekla";
 	}
 
@@ -161,6 +173,14 @@ public class StoreView {
 
 	public List<String> getGates() {
 		return gates;
+	}
+
+	public boolean isEntered() {
+		return entered;
+	}
+
+	public void setEntered(boolean entered) {
+		this.entered = entered;
 	}
 
 	public void setGates(List<String> gates) {

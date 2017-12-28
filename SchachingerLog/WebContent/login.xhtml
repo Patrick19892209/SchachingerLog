@@ -21,10 +21,17 @@
             <f:facet name="footer">
                 <p:commandButton value="Login" id="withIcon" update="growl" action="#{login.login}" icon="ui-icon-key" ajax="true"/>
             </f:facet>  
+            
         </h:panelGrid>
     
 	</h:form>
+
+	<h:form>
+    <p:growl id="growl2" sticky="true" showDetail="true" life="3000" />
 	
+             <p:commandButton value="CSV Test" id="ajax" update="growl2" actionListener="#{login.loadCSV}" styleClass="ui-priority-primary" />
+    
+	</h:form>	
 
 	
 </h:body>

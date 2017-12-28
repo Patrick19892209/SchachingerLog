@@ -58,4 +58,13 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<display-name>claimInput.xhtml</display-name>
+		<from-view-id>/claimInput.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>lager</from-outcome>
+			<to-view-id>/lager/LagerView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

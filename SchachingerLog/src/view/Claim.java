@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -33,22 +34,23 @@ public class Claim {
 	private String date;
 	List<ChatMsgData> chatHistory;
 	List <String> deficiencyList;
+	
+
 	private String redirect;
     @ManagedProperty(value="#{storeView}")
     StoreView store;
     
-/*
+
     @PostConstruct
 	public void init() {
-		if (store != null) {
+		if (store.isEntered() == true) {
 			this.aviso = store.getDeliDone().getAviso();
 			this.redirect = "lager";
 		} else {
 			this.redirect = "buero";
-		}
-		
+		}		
 	}
-*/
+
 	public Claim() {
 
 		//Dropdown opts
@@ -97,8 +99,6 @@ public class Claim {
 		context.addMessage(claimButton.getClientId(context), message);
 		return result;
 	}
-	
-
 	
 	//Getters and Setters
 	

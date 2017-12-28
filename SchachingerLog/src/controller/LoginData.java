@@ -70,5 +70,56 @@ public class LoginData {
 		return result;
 	}
 
+	public boolean loadCSV() throws Exception {
+		dbc = new DBConnector();
+		con = dbc.openConnection();
+		boolean result = true;
+		try {
+            con.setAutoCommit(false);
+                        
+            Statement stmt = null;
+            ResultSet rs = null;
+            String columns = null, table = null;
+            		columns = "(aviso, delivery_nr,"
+                		+ " @date, nr_of_items, supplier"
+                		+ " ) "
+                		+ "SET date = STR_TO_DATE(@date,'%Y%m%d')";
+                	table = "Delivery";
+             try {
+            	 
+            	String loadQuery = "LOAD DATA LOCAL INFILE '" + "C:/Users/bauer/Downloads/Aviso_METRO.CSV" + 
+            			"' INTO TABLE " + table + " FIELDS TERMINATED BY ';'" + 
+            			" LINES TERMINATED BY '\n' IGNORE 1 LINES " + columns;
+            	stmt = con.createStatement();
+            	System.out.println(loadQuery);
+            	rs = stmt.executeQuery(loadQuery);
+                try {
+                    rs.close();
+                } catch (Exception ignore) {
+                }
+                  
+            } finally {
+                try {
+                    stmt.close();
+                    con.commit();
+                } catch (Exception ignore) {
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error executing transactions ..." + ex.getMessage());
+            try {
+                con.rollback();
+                result = false;
+            } catch (Exception ignore) {
+                throw ignore;
+            }
+            throw ex;
+        }
+		return result;
+    }
+
+	
 }
+
+
 

@@ -11,16 +11,43 @@
 
 <h:head>
 	<style type="text/css">
-	
+
+.ui-button-text{
+   font-size:14px;
+   color: red;
+}
+.truck1 .ui-button-text {
+border-width:1px;
+		border-color: #000000;
+		border-style: solid;
+		text-align: center;
+		font-weight: bold;
+		background: #f4f4f4;
+		color: #FFFFFF;
+		width: 100%;}
+
+.truck2 .ui-button-text {
+border-width:1px;
+		border-color: #000000;
+		border-style: solid;
+		text-align: center;
+		font-weight: bold;
+		background: #00dc6e;
+		color: #FFFFFF;
+		width: 100%;}
+
 </style>
 
 </h:head>
 
 <h:body>
+<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+
 	<h:form id="form"> 
 		<h2 class="first"></h2>
 		<p:calendar value="#{storeView.deliveryDate}" pattern="MM/dd/yyyy" >
-			<p:ajax event="dateSelect" listener="#{storeView.onDateSelect}" render="@all" />
+			<p:ajax event="dateSelect" listener="#{storeView.onDateSelect}"/>
 		</p:calendar>
 	</h:form>
 
@@ -28,9 +55,8 @@
    		<table border="1">
        		<tr>
     	   		<ui:repeat value="#{storeView.gates}" var="gate" >
-					<b:commandButton style="margin-top:20px" icon-size="1x" iconAwesome="truck"
-                         value="#{gate}" onclick="ajax:storeView.switchGate(gate)"
-                         look="#{storeView.look(gate)}" title="icon-size='1x'" />
+					<p:commandButton  id="actGate"  value="#{gate}" styleClass="#{storeView.look(gate)}" icon="fa fa-truck" title="Tor" action="#{storeView.switchGate(gate)}" >
+					</p:commandButton>
    		   		</ui:repeat>
        		</tr>
 	    </table>
@@ -48,7 +74,7 @@
         			<h:outputText value="#{delivery.supplier}" />
    				</p:column>
 			     <p:column>
-					<p:commandButton  id="iconOnly"  style="color:green" icon="fa fa-share" title="OK" >
+					<p:commandButton  id="iconOnly"  style="color:green" icon="fa fa-share" title="OK">
 					<f:setPropertyActionListener value="#{delivery}" target="#{storeView.deliDone}" />
 					</p:commandButton>
 				</p:column>
@@ -58,18 +84,23 @@
         			<h:outputText value="#{delivery.supplier}" />
     			</p:column>   
     			<p:column headerText="Ankunft">
-        <h:outputLabel for="basic"/>
-          <p:inplace id="basic">
-            <p:inputText value="#{delivery.arrival.time}" required="true" >
+<h:outputLabel for="arrival" />
+        <p:inplace id="arrival" editor="true">
+            <p:ajax event="save" listener="#{storeView.updateArrival(delivery)}" />
+            <p:inputText value="#{delivery.arrival.time}" required="true" label="text" >
             <f:convertDateTime pattern="HH:mm" timeZone="GMT+1"/>
             </p:inputText>
         </p:inplace>
-        
+
      			</p:column>
     			<p:column headerText="Abfahrt">
-        			<h:outputText value="#{delivery.departure.time}">
-       				<f:convertDateTime pattern="HH:mm" timeZone="GMT+1"/>
-        			</h:outputText>
+<h:outputLabel for="departure" />
+        <p:inplace id="departure" editor="true">
+            <p:ajax event="save" listener="#{storeView.updateDeparture(delivery)}" />
+            <p:inputText value="#{delivery.departure.time}" required="true" label="text" >
+            <f:convertDateTime pattern="HH:mm" timeZone="GMT+1"/>
+            </p:inputText>
+        </p:inplace>
     			</p:column>
     			<p:column headerText="Rekla">
 					<p:commandButton  id="iconOnly2"  style="color:green" icon="fa fa-plus-square" title="Reklamation" action="#{storeView.setDeli4Rekla(delivery)}">
@@ -80,10 +111,9 @@
 					</p:commandButton>
     			</p:column>
     			<p:column headerText="Ausb.">
-					<b:commandButton style="margin-top:20px" icon-size="1x" iconAwesome="close"
-                         onclick="ajax:storeView.cancel(delivery)"
-                         look="danger" title="icon-size='1x'" />
-    			</p:column>
+					<p:commandButton  id="iconOnly4"  style="color:red" icon="fa fa-close" action="#{storeView.cancel(delivery)}" >
+					</p:commandButton>
+       			</p:column>
 			 </p:dataTable>
 		</h:panelGrid>
 	</h:form>

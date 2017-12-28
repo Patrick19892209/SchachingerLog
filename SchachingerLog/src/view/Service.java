@@ -34,7 +34,18 @@ public class Service {
 	private String redirect;
     @ManagedProperty(value="#{storeView}")
     StoreView store;
-	
+    
+
+    @PostConstruct
+	public void init() {
+		if (store.isEntered() == true) {
+			this.aviso = store.getDeliDone().getAviso();
+			this.redirect = "lager";
+		} else {
+			this.redirect = "buero";
+		}		
+	}
+
 	public Service() {
 		//Dropdown opts
 		serviceList = new ArrayList<>();
@@ -44,19 +55,7 @@ public class Service {
 		serviceList.add("Ware umsortiert");
 
 		this.creator="DP";
-		
-	}
-
-	@PostConstruct
-	public void init() {
-		if (store != null) {
-			this.aviso = store.getDeliDone().getAviso();
-			this.redirect = "lager";
-		} else {
-			this.redirect = "buero";
-		}
-		
-	}
+	}	
 	
 	public Date getDate() {
 		return date;
@@ -101,7 +100,7 @@ public class Service {
 		//}
 		FacesMessage message = new FacesMessage(sev,result2,null);
 		context.addMessage(serviceButton.getClientId(context), message);
-		return this.redirect;
+		return result2;
 	}
 
 	public String getAviso() {
