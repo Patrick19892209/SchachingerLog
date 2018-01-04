@@ -60,11 +60,11 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "lager";
     			break;
-    		case 3: //B�ro
+    		case 3: //buero
     			loggedIn = true;
                 logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
-                answer = "b�ro";
+                answer = "buero";
     			break;
 
     		default:
@@ -98,11 +98,6 @@ public class Login {
 	
 	public String validate(){
 		if (user.getName() == null || !this.loggedIn) return "logout";
-		return "stay";
-	}
-
-	public String loadCSV(ActionEvent e) throws Exception {
-			System.out.println(data.loadCSV());
 		return "stay";
 	}
 

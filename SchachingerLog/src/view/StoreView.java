@@ -52,6 +52,8 @@ public class StoreView {
 	private StoreData data;
 	private List<String> gates;
 	private int gate;
+	private String tempSupplier;
+	private String tempAviso;
 	private boolean entered = false;
     RequestContext context = RequestContext.getCurrentInstance();
     FacesMessage message = null;
@@ -93,7 +95,7 @@ public class StoreView {
 	public void setDeliDone(Delivery deliDone) {
 		this.deliDone = deliDone;
 		Calendar c = Calendar.getInstance();
-		deliDone.setTime2(deliveryDate, c);
+		deliDone.setTimeDep(deliveryDate, c);
 		boolean result = data.setTables(deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
 		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
 		initOpenDeliveries();
@@ -112,6 +114,22 @@ public class StoreView {
 		addMessage("Alles Gut");
 	}
 	
+	public void add() {
+		Calendar c = Calendar.getInstance();
+		Calendar d = Calendar.getInstance();
+		c.setTime(deliveryDate);
+		Delivery add = new Delivery(tempSupplier, c, c, tempAviso);
+		this.deliDone = add;
+		deliDone.setTimeDep(deliveryDate, d);
+		deliDone.setTimeArr(deliveryDate, d);
+		boolean result = data.setTables(deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
+		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
+		initOpenDeliveries();
+		initFinishedDeliveries();
+        RequestContext.getCurrentInstance().update("lager:delivery");
+		addMessage("Alles Gut");	
+	}
+		
 	public void onDateSelect(SelectEvent event) {
 	        FacesContext facesContext = FacesContext.getCurrentInstance();
 	        Date dateNew = (Date) event.getObject();
@@ -143,6 +161,14 @@ public class StoreView {
 	
 	public void updateDeparture(Delivery d) {
 		data.updateArrDep(d, deliveryDate, 2);
+	}
+
+	public String getTempAviso() {
+		return tempAviso;
+	}
+
+	public void setTempAviso(String tempAviso) {
+		this.tempAviso = tempAviso;
 	}
 
 	public String setDeli4Service (Delivery d) {
@@ -201,6 +227,15 @@ public class StoreView {
 
 	public List<Delivery> getOpenDeliveries() {
 		return openDeliveries;
+	}
+
+
+	public String getTempSupplier() {
+		return tempSupplier;
+	}
+
+	public void setTempSupplier(String tempSupplier) {
+		this.tempSupplier = tempSupplier;
 	}
 
 	public void setOpenDeliveries(List<Delivery> openDeliveries) {

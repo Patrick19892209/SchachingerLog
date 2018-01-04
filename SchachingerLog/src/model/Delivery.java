@@ -86,12 +86,18 @@ public class Delivery {
 		this.service = service;
 	}
 
-	public void setTime2(Date date,Calendar c) {
+	public void setTimeDep(Date date,Calendar c) {
 		this.departure.setTime(date);
 		this.departure.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
 		this.departure.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
 		this.departure.set(Calendar.SECOND, c.get(Calendar.SECOND));
 	}
 	
+	public void setTimeArr(Date date,Calendar c) {
+		this.arrival.setTime(date);
+		this.arrival.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
+		this.arrival.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
+		this.arrival.set(Calendar.SECOND, c.get(Calendar.SECOND));
+	}
 	
 }

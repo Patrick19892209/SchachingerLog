@@ -35,14 +35,12 @@ public class DBConnector {
 		return con;
 	}
 	
-	public boolean closeConnection(Connection con) {
+	public void closeConnection(Connection con) {
 		try {
 			con.close();
 		} catch (SQLException e) {
             logger.info("Couldnt close DB-Connection with error: " + e.getMessage());
-            return false;
+       }
 		}
-		return true;
-	}
 	
 }

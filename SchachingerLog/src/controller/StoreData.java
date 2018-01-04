@@ -39,16 +39,29 @@ public class StoreData {
 		          String aviso = result.getString("aviso");
 		          String supplier = result.getString("supplier");
 		          Calendar arrivalC = Calendar.getInstance();
-		          list.add(new Delivery(supplier, arrivalC, aviso));}
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-	      }
-	    try {
+		          list.add(new Delivery(supplier, arrivalC, aviso));
+		      }
+	          query.close();
+	          result.close();
+	          con.close();
+		}catch(SQLException se){
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      e.printStackTrace();
+	} finally {
+		try {
+		if (query != null) 
 			query.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch(SQLException e) {
 		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
 	return list;
 	}
 
@@ -69,12 +82,13 @@ public class StoreData {
 		          ResultSet result = query.executeQuery(sql);
 		 
 		          while (result.next()) {
-		          Time time = result.getTime("delivery_time");
-		          list.add(time);
+		        	  Time time = result.getTime("delivery_time");
+		        	  list.add(time);
 		          }
 
-		          if (!list.isEmpty()) {int counter = 0;
-		      	        for (Time t : list)
+		          if (!list.isEmpty()) {
+		        	  int counter = 0;
+		      	      for (Time t : list)
 		      	            {
 		      	                sum += t.getTime();
 		      	                counter++;
@@ -89,11 +103,29 @@ public class StoreData {
 		        	  temp.set(Calendar.SECOND, 0);
 		        	  deli.setArrival(temp);
 		          }
+		          
 	       	 }
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-	      }
-	    dbc.closeConnection(con);
+	          query.close();
+	          con.close();
+		}catch(SQLException se){
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      e.printStackTrace();
+	} finally {
+		try {
+		if (query != null) 
+			query.close();
+		}catch(SQLException e) {
+		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
+
 	}
 
 	public List<Delivery> finishedDeliveries(Date day, int gate) {
@@ -133,20 +165,30 @@ public class StoreData {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		          list.add(new Delivery(supplier, arrivalC, departureC, aviso));	          
+		          list.add(new Delivery(supplier, arrivalC, departureC, aviso));
+		          query.close();
+		          result.close();
+		          con.close();
 	          }
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-			dbc.closeConnection(con);
-	      }
-	    try {
+		}catch(SQLException se){
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      e.printStackTrace();
+	} finally {
+		try {
+		if (query != null) 
 			query.close();
-			dbc.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dbc.closeConnection(con);
+		}catch(SQLException e) {
 		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
+
 	return list;
 	}
 
@@ -158,13 +200,14 @@ public class StoreData {
 		c.setTime(deliveryDate);
 	    Statement query = null;
 	    try {
+	    	  con.setAutoCommit(false);
 	          query = con.createStatement();
 	          String sql =
 		                "UPDATE Delivery"
 		                + " Set arrival_date = '" + new java.sql.Date(deli.getDeparture().getTime().getTime()) + "' Where aviso = '" + deli.getAviso() + 
 		                "' AND supplier = '" + deli.getFullSupplier() + "'";
 	  		query.executeUpdate(sql);
-			 
+			query.close();
 	  		query = con.createStatement();
 	        sql =
 		                "INSERT INTO Registered (aviso, supplier, creator, delivery_date, delivery_time, gate, departure_date, departure_time) VALUES ('"
@@ -172,28 +215,32 @@ public class StoreData {
 		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getArrival().getTime().getTime()) + "','" + gate + "','" +
 		                new java.sql.Date(c.getTime().getTime()) + "','" + new java.sql.Time(deli.getDeparture().getTime().getTime()) + "')";
 	  		query.executeUpdate(sql);
-			 
-	          
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-	        try {
-				con.rollback();
-				dbc.closeConnection(con);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	        return false;
-	      }
-	    try {
 			query.close();
-			dbc.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dbc.closeConnection(con);
-			return false;
+			con.close();
+		}catch(SQLException se){
+		      try {
+				con.rollback();
+				result = false;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      e.printStackTrace();
+	} finally {
+		try {
+		if (query != null) 
+			query.close();
+		}catch(SQLException e) {
 		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
 	    return result;
 	}
 
@@ -213,20 +260,29 @@ public class StoreData {
 	          while (results.next()) {
 	        	  result = results.getInt("nr_of_gates");
 	          }
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-			dbc.closeConnection(con);
-			result = -1;
-	      }
-	    try {
+	          query.close();
+	          results.close();
+	          con.close();
+		}catch(SQLException se){
+		      se.printStackTrace();
+		      result = -1;
+		   }catch(Exception e){
+		      e.printStackTrace();
+		      result = -1;
+	} finally {
+		try {
+		if (query != null) 
 			query.close();
-			dbc.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dbc.closeConnection(con);
-			result = -1;
+		}catch(SQLException e) {
 		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
 	return result;
 	}
 
@@ -236,38 +292,45 @@ public class StoreData {
 		con = dbc.openConnection();
 		Statement query = null;
 	    try {
+	    	  con.setAutoCommit(false);
 	          query = con.createStatement();
 	          String sql =
 		                "DELETE FROM Registered"
 		                + " Where supplier = '" + deli.getFullSupplier() + "' and aviso = '" + deli.getAviso() + "'";
 	  		query.executeUpdate(sql);
-			 
+			query.close(); 
 	  		query = con.createStatement();
 	        sql = "UPDATE Delivery Set arrival_date = CAST(NULL As Date)"
 		                + " Where supplier = '" + deli.getFullSupplier() + "' and aviso = '" + deli.getAviso() + "'";
 	  		query.executeUpdate(sql);
-			 
-	          
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-	        try {
-				con.rollback();
-				dbc.closeConnection(con);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	        return false;
-	      }
-	    try {
 			query.close();
-			dbc.closeConnection(con);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dbc.closeConnection(con);
-			return false;
+			con.close();
+	          
+		}catch(SQLException se){
+		      try {
+				result = false;
+				con.rollback();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		      se.printStackTrace();
+		   }catch(Exception e){
+				result = false;
+		      e.printStackTrace();
+	} finally {
+		try {
+		if (query != null) 
+			query.close();
+		}catch(SQLException e) {
 		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
 	    return result;
 	}
 
@@ -278,6 +341,7 @@ public class StoreData {
 		c.setTime(deliveryDate);
 	    Statement query = null;
 	    try {
+	    	  con.setAutoCommit(false);
 	    	  String sql;
 	          query = con.createStatement();
 	          if (i == 1) {
@@ -293,17 +357,31 @@ public class StoreData {
 		          	        	  
 	          }
 	  		query.executeUpdate(sql);
-			 			 
+	  		query.close();
+	  		con.close(); 
 	          
-	      } catch (SQLException e) {
-	        e.printStackTrace();
-	        try {
+		}catch(SQLException se){
+		      try {
 				con.rollback();
-				dbc.closeConnection(con);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-	      }
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      e.printStackTrace();
+	} finally {
+		try {
+		if (query != null) 
+			query.close();
+		}catch(SQLException e) {
+		}
+		try {
+		if (con != null) 
+			con.close();
+		
+		} catch (SQLException ignore) {
+		}
+	}
+
 	}
 }

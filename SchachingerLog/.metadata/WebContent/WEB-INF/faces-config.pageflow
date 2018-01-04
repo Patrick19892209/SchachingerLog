@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15110157718320" configfile="/SchachingerLog/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="122" y="562" id="pf151120723486413" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf151120723486414 pf151120730962917 pf15126674888310" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="admin/WelcomeAdmin.xhtml" x="338" y="178" id="pf151120723486415" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf151120723486414" path="/admin/WelcomeAdmin.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="büro/WelcomeBüro.xhtml" x="338" y="562" id="pf151120730962919" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf151120730962917" path="/büro/WelcomeBüro.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="lager/LagerView.xhtml" x="338" y="946" id="pf15126674888311" referenceLink="//@navigationRule.6/@navigationCase.0/@toViewId|" outlinks="pf15130091477810 pf15130095957542" inlinks="pf15126674888310 pf15144553599040 pf15144553599041" path="/lager/LagerView.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="claimInput.xhtml" x="554" y="946" id="pf15130091477811" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf15144553599041" inlinks="pf15130091477810" path="/claimInput.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="serviceInput.xhtml" x="122" y="946" id="pf15130095957543" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf15144553599040" inlinks="pf15130095957542" path="/serviceInput.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="122" y="1143" id="pf151120723486413" referenceLink="//@navigationRule.10/@navigationCase.0/@toViewId|" outlinks="pf151120723486414 pf151120730962917 pf15149718266917" inlinks="pf151497447304115" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="admin/WelcomeAdmin.xhtml" x="338" y="563" id="pf151120723486415" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf151120723486414" path="/admin/WelcomeAdmin.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="WelcomeBüro.xhtml" x="338" y="947" id="pf151120730962919" referenceLink="//@navigationRule.9/@fromViewId|" outlinks="pf15148887687361 pf15148887687363 pf15148899555388 pf15148899555389" inlinks="pf151120730962917" path="/büro/WelcomeBüro.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="lager/LagerView.xhtml" x="770" y="562" id="pf15126674888311" referenceLink="//@navigationRule.11/@navigationCase.0/@toViewId|" outlinks="pf15130091477810 pf15130095957542" inlinks="pf15144553599040 pf15144553599041 pf15149719025909" path="/lager/LagerView.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="claimInput.xhtml" x="554" y="178" id="pf15130091477811" referenceLink="//@navigationRule.7/@navigationCase.0/@toViewId|" outlinks="pf15144553599041" inlinks="pf15130091477810 pf15148899555388 pf151497190259010" path="/büro/claimInput.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="serviceInput.xhtml" x="554" y="562" id="pf15130095957543" referenceLink="//@navigationRule.10/@navigationCase.0/@toViewId|" outlinks="pf15144553599040" inlinks="pf15130095957542 pf15148899555389 pf151497190259011" path="/büro/serviceInput.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="büro/claimInput.xhtml" x="122" y="1527" id="pf15148887687364" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" path="/büro/claimInput.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="büro/officeView.xhtml" x="554" y="946" id="pf15148887687365" referenceLink="//@navigationRule.8/@navigationCase.0/@toViewId|" inlinks="pf15148887687361 pf151497190259012" path="/büro/officeView.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="büro/serviceInput.xhtml" x="122" y="1911" id="pf15148887687366" referenceLink="//@navigationRule.4/@navigationCase.0/@toViewId|" path="/büro/serviceInput.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="büro/ServiceView.xhtml" x="554" y="1330" id="pf15148887687367" referenceLink="//@navigationRule.10/@navigationCase.0/@toViewId|" inlinks="pf15148887687363 pf151497190259013" path="/büro/ServiceView.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="WelcomeLager.xhtml" id="pf15149718266918" referenceLink="//@navigationRule.10/@fromViewId|" outlinks="pf151497190259010 pf151497190259012 pf151497190259011 pf151497190259013 pf15149719025909" inlinks="pf15149718266917" path="/lager/WelcomeLager.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" id="pf151497447304216" referenceLink="//@navigationRule.10/@fromViewId|" outlinks="pf151497447304115" path="*"/>
   <links id="pf151120723486414" target="pf151120723486415" source="pf151120723486413" outcome="admin" redirect="true"/>
-  <links id="pf151120730962917" target="pf151120730962919" source="pf151120723486413" outcome="büro" redirect="true"/>
-  <links id="pf15126674888310" target="pf15126674888311" source="pf151120723486413" outcome="lager" redirect="true"/>
+  <links id="pf151120730962917" target="pf151120730962919" source="pf151120723486413" outcome="buero" redirect="true"/>
   <links id="pf15130091477810" target="pf15130091477811" source="pf15126674888311" outcome="rekla" redirect="true"/>
   <links id="pf15130095957542" target="pf15130095957543" source="pf15126674888311" outcome="zservice" redirect="true"/>
   <links id="pf15144553599040" target="pf15126674888311" source="pf15130095957543" outcome="lager" redirect="true"/>
   <links id="pf15144553599041" target="pf15126674888311" source="pf15130091477811" outcome="lager" redirect="true"/>
+  <links id="pf15148887687361" target="pf15148887687365" source="pf151120730962919" outcome="SeeRekla" redirect="true"/>
+  <links id="pf15148887687363" target="pf15148887687367" source="pf151120730962919" outcome="SeeService" redirect="true"/>
+  <links id="pf15148899555388" target="pf15130091477811" source="pf151120730962919" outcome="DoRekla" redirect="true"/>
+  <links id="pf15148899555389" target="pf15130095957543" source="pf151120730962919" outcome="DoService" redirect="true"/>
+  <links id="pf15149718266917" target="pf15149718266918" source="pf151120723486413" outcome="lager" redirect="true"/>
+  <links id="pf151497190259010" target="pf15130091477811" source="pf15149718266918" outcome="DoRekla" redirect="true"/>
+  <links id="pf151497190259012" target="pf15148887687365" source="pf15149718266918" outcome="SeeRekla" redirect="true"/>
+  <links id="pf151497190259011" target="pf15130095957543" source="pf15149718266918" outcome="DoService" redirect="true"/>
+  <links id="pf151497190259013" target="pf15148887687367" source="pf15149718266918" outcome="SeeService" redirect="true"/>
+  <links id="pf15149719025909" target="pf15126674888311" source="pf15149718266918" outcome="DoLager" redirect="true"/>
+  <links id="pf151497447304115" target="pf151120723486413" source="pf151497447304216" outcome="logout"/>
 </pageflow:Pageflow>

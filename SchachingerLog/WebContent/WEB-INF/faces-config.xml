@@ -17,7 +17,7 @@
 		<display-name>login.xhtml</display-name>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>büro</from-outcome>
+			<from-outcome>buero</from-outcome>
 			<to-view-id>/büro/WelcomeBüro.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
@@ -27,16 +27,125 @@
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>lager</from-outcome>
+			<to-view-id>/lager/WelcomeLager.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<display-name>WelcomeBüro.xhtml</display-name>
+		<from-view-id>/büro/WelcomeBüro.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>DoRekla</from-outcome>
+			<to-view-id>/büro/claimInput.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<display-name>WelcomeBüro.xhtml</display-name>
+		<from-view-id>/büro/WelcomeBüro.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SeeRekla</from-outcome>
+			<to-view-id>/büro/officeView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<display-name>WelcomeBüro.xhtml</display-name>
+		<from-view-id>/büro/WelcomeBüro.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>DoService</from-outcome>
+			<to-view-id>/büro/serviceInput.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<display-name>WelcomeBüro.xhtml</display-name>
+		<from-view-id>/büro/WelcomeBüro.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SeeService</from-outcome>
+			<to-view-id>/büro/ServiceView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<display-name>WelcomeLager.xhtml</display-name>
+		<from-view-id>/lager/WelcomeLager.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>DoRekla</from-outcome>
+			<to-view-id>/büro/claimInput.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<display-name>WelcomeLager.xhtml</display-name>
+		<from-view-id>/lager/WelcomeLager.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SeeRekla</from-outcome>
+			<to-view-id>/büro/officeView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<display-name>WelcomeLager.xhtml</display-name>
+		<from-view-id>/lager/WelcomeLager.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>DoService</from-outcome>
+			<to-view-id>/büro/serviceInput.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+   <from-view-id>*</from-view-id>
+   <navigation-case>
+	<from-outcome>logout</from-outcome>
+	<to-view-id>/login.xhtml</to-view-id>
+   </navigation-case>
+</navigation-rule>
+
+
+
+	<navigation-rule>
+		<display-name>WelcomeLager.xhtml</display-name>
+		<from-view-id>/lager/WelcomeLager.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>SeeService</from-outcome>
+			<to-view-id>/büro/ServiceView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<display-name>WelcomeLager.xhtml</display-name>
+		<from-view-id>/lager/WelcomeLager.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>DoLager</from-outcome>
 			<to-view-id>/lager/LagerView.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+
+
 	<navigation-rule>
 		<display-name>lager/LagerView.xhtml</display-name>
 		<from-view-id>/lager/LagerView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>rekla</from-outcome>
-			<to-view-id>/claimInput.xhtml</to-view-id>
+			<to-view-id>/büro/claimInput.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -45,13 +154,13 @@
 		<from-view-id>/lager/LagerView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>zservice</from-outcome>
-			<to-view-id>/serviceInput.xhtml</to-view-id>
+			<to-view-id>/büro/serviceInput.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>serviceInput.xhtml</display-name>
-		<from-view-id>/serviceInput.xhtml</from-view-id>
+		<from-view-id>/büro/serviceInput.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>lager</from-outcome>
 			<to-view-id>/lager/LagerView.xhtml</to-view-id>
@@ -60,7 +169,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>claimInput.xhtml</display-name>
-		<from-view-id>/claimInput.xhtml</from-view-id>
+		<from-view-id>/büro/claimInput.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>lager</from-outcome>
 			<to-view-id>/lager/LagerView.xhtml</to-view-id>
