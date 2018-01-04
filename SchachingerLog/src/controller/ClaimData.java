@@ -25,6 +25,7 @@ public class ClaimData extends Data{
 	private String deficiency;
 	private String ts = "CURRENT_TIMESTAMP";
 	private int chatId;
+	private boolean done;
 
 	public int getChatId() {
 		return chatId;
@@ -43,7 +44,7 @@ public class ClaimData extends Data{
 		this.to = to;
 		this.amount = amount;
 		this.deficiency = deficiency;
-		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		String maxChatId = "SELECT max(id) FROM Chat WHERE chatId = '" + chatId + "'";
 		this.chatId = getMaxId(maxChatId) + 1;
 		}
 
@@ -59,6 +60,7 @@ public class ClaimData extends Data{
 		this.deficiency = claim.getDeficiency();
 		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
 		this.chatId = getMaxId(maxChatId) + 1;
+		this.done = claim.isDone();
 	}
 	
 	public ClaimData(){	
@@ -106,8 +108,10 @@ public class ClaimData extends Data{
 					claim.setProductNr(rs.getString("product_nr"));
 					claim.setAmount(rs.getString("amount"));
 					claim.setDeficiency(rs.getString("deficiency"));
+					claim.setChatId(rs.getInt("chatId"));
+					claim.setDone(rs.getBoolean("done"));
 					// TEST System.out.println(rs.getString(1) + " " + rs.getInt(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5)+ " " + rs.getString(6)+ " " + rs.getString(7)+ " " + rs.getString(8));
-					claim.setChatHistory(fetchHistory(this.chatId));
+					//claim.setChatHistory(fetchHistory(this.chatId));
 					claimList.add(claim);
 				}
 				logger.info(fetchClaims + " erfolgreich durchgeführt");
@@ -131,45 +135,6 @@ public class ClaimData extends Data{
 		return claimList;	
 	}
 	
-	public List<ChatMsgData> fetchHistory(int chatId) {
-		String getHistory = "SELECT * FROM Chat_Message " + "WHERE chatId='" + chatId 
-				+ "' ORDER BY date DESC, time DESC";
-		List<ChatMsgData> history = new ArrayList<>();
-		
-		try {
-			this.con = dbc.openConnection();
-			this.con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = this.con.createStatement();
-				ResultSet rs = stmt.executeQuery(getHistory);
-				while (rs.next()) {
-					ChatMsgData chatMsg = new ChatMsgData(this.chatId,rs.getString("text"),rs.getString("date"),rs.getString("time"));
-					logger.info(rs.getString("text"));
-					history.add(chatMsg);
-					//	history = rs.getString("history");
-				}
-				logger.info(getHistory + " erfolgreich durchgeführt");
-			} finally {
-				try {
-					stmt.close();
-					this.con.commit();
-					this.con.close();
-				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-			try {
-				this.con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-			}
-		}
-		return history;
-	}
-	
 	public boolean update() {
 		String updateClaim = "UPDATE Claim SET "
 				+ "aviso='" + this.aviso + "', id=" + this.id 
@@ -178,35 +143,7 @@ public class ClaimData extends Data{
 				+ "', amount=" + this.amount + ", deficiency='" + this.deficiency
 				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
 		System.out.println(updateClaim);
-		boolean bool = false;
-		try {
-			this.con = this.dbc.openConnection();
-			this.con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = this.con.createStatement();
-				stmt.executeUpdate(updateClaim);
-				bool = true;
-				logger.info(updateClaim + " erfolgreich durchgeführt");
-			} finally {
-				try {
-					stmt.close();
-					this.con.commit();
-					this.con.close();
-				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				this.con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				}
-			} 
-		
-		return bool;
+		return update(updateClaim);
 	}
 	
 	//inserts the complaint values from a complaint object to the db
@@ -227,14 +164,20 @@ public class ClaimData extends Data{
 		else {
 			nullString = "'" + this.to + "'";
 		}
-		String insertClaim="INSERT INTO Claim (aviso, id, entry_date, creator, assigned_to, product_nr, amount, deficiency, chatId) "
+		String insertClaim="INSERT INTO Claim (aviso, id, entry_date, creator, assigned_to, product_nr, amount, deficiency, chatId, done) "
 				+ "VALUES ('" + this.aviso + "', " +  this.id + ", " 
 				+ this.ts + ", '" + this.creator + "', " 
 				+ nullString +  ", '" + this.productNr +"', '" 
-				+ this.amount + "', '" + this.deficiency + "', '"
-				+ this.chatId + "')";
+				+ this.amount + "', '" + this.deficiency + "', "
+				+ this.chatId + ", " + done + ")";
 		System.out.println("Query: " + insertClaim);
-		return insert(insertClaim);
+		return update(insertClaim);
+	}
+	
+	public boolean delete() {
+		String delete="DELETE FROM Claim WHERE aviso='" + this.aviso
+				+ "' AND id=" + this.id;
+		return update(delete);
 	}
 	
 	//checks whether abbrevation exists
