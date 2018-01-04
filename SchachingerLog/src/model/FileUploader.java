@@ -12,43 +12,84 @@ import java.sql.Statement;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import view.Claim;
+
 @ManagedBean
 public class FileUploader {
 	// private String destination="C:\\temp\\";
-	private final String PATH = "C:\\reklaImg\\";
+	private String path = "/reklaImg/";
 	private UploadedFile file;
+	private static int index=0;
 
-	public String getPATH() {
-		return PATH;
-	}
-
-	public UploadedFile getFile() {
-		return file;
-	}
-
-	public void setFile(UploadedFile file) {
-		this.file = file;
-	}
+	@ManagedProperty(value = "#{claim}")
+	private Claim claim;
 
 	public void handleFileUpload(FileUploadEvent event) {
 		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		// Do what you want with the file
+		this.path = this.path + this.claim.getAviso() + "_" + this.claim.getId();
+		String fileName = "";
 		try {
-			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), "C:\\reklaImg\\");
+			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), this.path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
 
+	// write the inputStream to a FileOutputStream
+	// if directory doesn't exist create directory
+	public boolean copyFile(String fileName, InputStream in, String path) {
+		boolean ok = false;
+		try {
+			File newFile = new File(this.path);
+			System.out.println(this.path);
+			if (!newFile.exists()) {
+				System.out.println("creating directory: " + newFile.getName());
+				try {
+					newFile.mkdir();
+					System.out.println("DIR created");
+				} catch (SecurityException se) {
+					// handle it
+				}
+			}
+			//int index = 0;
+			//do {
+			//	index++;
+			index++;
+				System.out.println("index: " + index);
+				newFile = new File(path + "/" + fileName + "_" + index + ".jpg");
+				System.out.println("path: " + path + "/" + fileName + "_" + index + ".jpg");
+			//} while (newFile.exists());
+			System.out.println(index);
+			
+			OutputStream out = new FileOutputStream(newFile);
+
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = in.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+
+			in.close();
+			out.flush();
+			out.close();
+
+			System.out.println("New file created!");
+			ok = true;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		return ok;
 	}
 	
-	public String loadCSV(FileUploadEvent event) throws Exception {
+		public String loadCSV(FileUploadEvent event) throws Exception {
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), "C:/CSVDateien/");
 		} catch (IOException e) {
@@ -157,44 +198,21 @@ public class FileUploader {
 			e.printStackTrace();
 		}
 	return "stay";*/
-}
+	}
+	
+	public UploadedFile getFile() {
+		return file;
+	}
 
-	public void copyFile(String fileName, InputStream in, String path) {
-		try {
+	public Claim getClaim() {
+		return claim;
+	}
 
-			// write the inputStream to a FileOutputStream
-			File newFile = new File(path);
-			if (!newFile.exists()) {
-				System.out.println("creating directory: " + newFile.getName());
-				boolean result = false;
-		    try{
-		        newFile.mkdir();
-		        result = true;
-		    } 
-		    catch(SecurityException se){
-		        //handle it
-		    }        
-		    if(result) {    
-		        System.out.println("DIR created");  
-		    }
-			}
-			newFile = new File(newFile.getPath() + "\\" + fileName);
-			OutputStream out = new FileOutputStream(newFile);
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
 
-			int read = 0;
-			byte[] bytes = new byte[1024];
-
-			while ((read = in.read(bytes)) != -1) {
-				out.write(bytes, 0, read);
-			}
-
-			in.close();
-			out.flush();
-			out.close();
-
-			System.out.println("New file created!");
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
+	public void setClaim(Claim claim) {
+		this.claim = claim;
 	}
 }
