@@ -11,15 +11,18 @@
 </f:metadata>
 <h:head>
 	<title>Lieferungen verwalten</title>
+	<h:outputStylesheet name="css/buero.css" />
 </h:head>
 <body>
 	<h:form id="form">
 		<p:growl id="msgs" showDetail="true" />
 		<p:dataTable id="claimsDt" var="claim" value="#{dtClaims.claims}"
-			editable="true" emptyMessage="Es konnten keine Reklamationen gefunden werden, die die Kriterien erfüllen!"
+			editable="true" resizableColumns="true"
+			tableStyle="table-layout: auto;"
+			emptyMessage="Es konnten keine Reklamationen gefunden werden, die die Kriterien erfüllen!"
 			filteredValue="#{dtClaims.filteredClaims}">
 			<f:facet name="header">
-		Reklamationsbearbeitung
+				Reklamationsbearbeitung
 			</f:facet>
 			<p:ajax event="rowEdit" listener="#{dtClaims.onRowEdit}"
 				update=":form:msgs" />
@@ -32,7 +35,8 @@
 						<h:outputText value="#{claim.aviso}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText disabled="true" id="avisoInput" value="#{claim.aviso}"/>
+						<p:inputText disabled="true" id="avisoInput"
+							value="#{claim.aviso}" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -42,7 +46,8 @@
 						<h:outputText value="#{claim.id}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText disabled="true" id="idInput" value="#{claim.id}" label="Id" />
+						<p:inputText disabled="true" id="idInput" value="#{claim.id}"
+							label="Id" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -60,7 +65,8 @@
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column headerText="Erfasser" filterBy="#{claim.creator}" filterMatchMode="contains">
+			<p:column headerText="Erfasser" filterBy="#{claim.creator}"
+				filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
 						<h:outputText value="#{claim.creator}" />
@@ -113,7 +119,76 @@
 			<p:column id="editColumn">
 				<p:rowEditor />
 			</p:column>
+			<p:column id="chatColumn">
+				<p:commandButton id="chatLink" icon="fab fa-rocketchat"
+					action="#{claim.fetchChatHistory}">
+				</p:commandButton>
+				<p:overlayPanel id="chatPanel" title="Chat" for="chatLink"
+					hideEffect="fade" dynamic="true" style="width:800px">
+					<h:form id="formChat">
+						<p:dataTable id="chatHistory" var="chatMsg"
+							value="#{claim.chatHistory}" tableStyle="table-layout: auto;">
+							<p:column id="vonColumn" headerText="Von:">
+								<h:outputText value="#{chatMsg.user}" />
+							</p:column>
+							<p:column headerText="Nachricht:">
+								<h:outputText value="#{chatMsg.text}" />
+							</p:column>
+							<p:column headerText="Datum:">
+								<h:outputText value="#{chatMsg.date}" />
+							</p:column>
+							<p:column headerText="Uhrzeit:">
+								<h:outputText value="#{chatMsg.time}" />
+							</p:column>
+						</p:dataTable>
+						<b:row>
+							<b:inputTextarea class="chatInput" rows="6" cols="33"
+								placeholder="Nachricht erfasssen.." value="#{claim.text}" />
+						</b:row>
+						<b:row>
+							<b:column>
+								<b:commandButton id="claimButton" value="Nachricht speichern"
+									action="#{claim.insertChatMsg}" update="chatHistory"
+									look="primary" />
+							</b:column>
+						</b:row>
+					</h:form>
+				</p:overlayPanel>
+			</p:column>
+			<p:column>
+				<p:commandButton id="imageButton" value="Images"
+					action="#{image.fetchPaths(claim)}" />
+				<p:overlayPanel style="width:800px" for="imageButton" dynamic="true">
+					<p:galleria value="#{image.paths}" var="image" panelWidth="500"
+						panelHeight="313" showCaption="true">
+						<p:graphicImage value="reklaImg/1.jpg"
+							alt="Image Description for 1" title="1" />
+					</p:galleria>
+				</p:overlayPanel>
+			</p:column>
+			<p:column>
+				<p:commandButton value="Delete"
+					actionListener="#{dtClaims.deleteClaim(claim)}"
+					update=":form:claimsDt">
+					<p:confirm header="Löschen bestätigen"
+						message="Reklamation wirklich löschen?" icon="ui-icon-alert" />
+				</p:commandButton>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					<p:commandButton value="Ja" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+					<p:commandButton value="Nein" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				</p:confirmDialog>
+			</p:column>
+			<p:column headerText="Erledigt">
+				<p:selectBooleanButton id="done" value="#{claim.done}"
+					onLabel="Yes" offLabel="No" onIcon="ui-icon-check"
+					offIcon="ui-icon-close" style="width:60px">
+					<p:ajax update=":form:msgs" listener="#{claim.addDoneMsg}" />
+				</p:selectBooleanButton>
+			</p:column>
 		</p:dataTable>
+
 		<h3>Export Page Data Only</h3>
 		<h:commandLink>
 			<p:graphicImage name="/images/excel_logo.jpg" />
@@ -142,12 +217,9 @@
 		</h:commandLink>
 		-->
 	</h:form>
-	
-		
 	<p:stack icon="/resources/menu/stack.png" expanded="false">
     	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="WelcomeBüro.xhtml"/>
     	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
 	</p:stack>
-	
 </body>
 </html>
