@@ -41,5 +41,9 @@
     <param-name>primefaces.THEME</param-name>
     <param-value>sunny</param-value>
 </context-param>
+<session-config>
+      <!-- Session idle timeout in min. -->
+      <session-timeout>30</session-timeout>
+    </session-config>
 
 </web-app>
