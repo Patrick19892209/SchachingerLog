@@ -23,12 +23,15 @@ public class Claim {
 
 	private String aviso;
 	private int id;
+	//@ManagedProperty(value="#{login.user}") 
 	private String creator;
 	private String productNr;
 	private String to;
 	private String amount;
 	private String deficiency;
+	private String deficiencyL;
 	private UIComponent claimButton;
+	private UIComponent inputDeficiency;
 	private String date;
 	private int chatId;
 	private String text;
@@ -43,17 +46,6 @@ public class Claim {
 	@ManagedProperty(value = "#{storeView}")
 	StoreView store;
 	
-	@ManagedProperty(value = "#{login.user}")
-	String user;
-	
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
 	@PostConstruct
 	public void init() {
 		if (store.isEntered() == true) {
@@ -71,7 +63,7 @@ public class Claim {
 		deficiencyList.add("Artikel beschädigt");
 		deficiencyList.add("Verpackung beschädigt");
 		deficiencyList.add("Menge inkorrekt");
-		this.creator = "DP";
+		this.creator="DP";
 
 	}
 
@@ -95,8 +87,18 @@ public class Claim {
 	public String insertClaim(){
 
 		FacesContext context = FacesContext.getCurrentInstance();
-		String result; // result message of the given query
 		Severity sev;
+		
+		if((this.deficiency==""||this.deficiency==null)&&(this.deficiencyL==""||this.deficiencyL==null)) {
+			sev=FacesMessage.SEVERITY_ERROR;
+			FacesMessage msg = new FacesMessage(sev,"Mangel erfassen!","");
+			context.addMessage(this.inputDeficiency.getClientId(), msg);
+			System.out.println("Hallo");
+			return "Fail";	
+		}
+		
+		String result; // result message of the given query
+		if(this.deficiency==""||this.deficiency==null) this.deficiency=this.deficiencyL;
 		ClaimData claimDat = new ClaimData(this);
 		this.chatId = claimDat.getChatId();
 		if (claimDat.insert()) {
@@ -166,10 +168,8 @@ public class Claim {
 	//Message is written and value done from table Claim is refreshed
 	public void addDoneMsg() {
 		String msg = "Reklamation erledigt!";
-		if(!done) msg = "Reklamation offen!";
+		if(!this.done) msg = "Reklamation offen!";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		int doneValue = 1;
-		if(!this.done) doneValue=0;
 		String query = "UPDATE Claim SET done=" + this.done 
 				+ " WHERE aviso='" + this.aviso + "' AND id='" + this.id + "'";
 		
@@ -330,4 +330,18 @@ public class Claim {
 	
 	}
 
+	public String getDeficiencyL() {
+		return deficiencyL;
+	}
+
+	public void setDeficiencyL(String deficiencyL) {
+		this.deficiencyL = deficiencyL;
+	}
+	public UIComponent getInputDeficiency() {
+		return inputDeficiency;
+	}
+
+	public void setInputDeficiency(UIComponent inputDeficiency) {
+		this.inputDeficiency = inputDeficiency;
+	}
 }

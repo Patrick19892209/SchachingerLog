@@ -3,6 +3,8 @@ package view;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean
@@ -10,9 +12,16 @@ public class Image {
 
 	private String path;
 	private List<String> paths;
+	
+	@PostConstruct
+	public void init() {
+		List<String> list = new ArrayList<>();
+		list.add("ausbuchen.jpg");
+		list.add("barcode.jpg");
+	}
 
 	public void fetchPaths(Claim claim) {
-		String path = "/reklaImg/";
+		String path = "/images/claims/";
 		System.out.println("Claim: " + claim.getAviso() + " \npath: " + path);
 		List<String> list = new ArrayList<>();
 		File folder = new File(path);
@@ -27,7 +36,6 @@ public class Image {
 
 			}
 		}
-		this.paths = list;
 		System.out.println(list.size());
 	}
 
