@@ -12,8 +12,15 @@
 <h:head>
 	<title>Erfassung von zusätzlichen Serviceleistungen</title>
 	<h:outputStylesheet name="css/service.css" />
+	<style type="text/css">
+.image{
+  	background-image: url(../resources/images/Schachinger.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
 </h:head>
-<h:body>
+<h:body styleClass="image">
 	<h:form>
 		<b:container layout="fluid">
 			<b:panel title="Service-Erfassung" look="success">
@@ -74,6 +81,10 @@
 				</b:row>
 			</b:panel>
 		</b:container>
+	<p:stack icon="/resources/menu/stack.png" expanded="false">
+ 	  	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
+     	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
+	</p:stack>
 	</h:form>
 </h:body>
 </html>

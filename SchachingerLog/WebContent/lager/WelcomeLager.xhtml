@@ -13,9 +13,15 @@
 
 <h:head>
 <title>Hauptmenü</title>
+	<style type="text/css">
+.image{
+  	background-image: url(../resources/images/Schachinger.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
 </h:head>
-
-<body>
+<h:body styleClass="image">
 
 
 <h3>Menu</h3>
@@ -36,11 +42,11 @@
 
 
 	<p:stack icon="/resources/menu/stack.png" expanded="false">
-    	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="WelcomeLager.xhtml"/>
-    	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
+      	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
+  	 	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
  	</p:stack>
 
 </h:form>
-</body>
+</h:body>
 
 </html>

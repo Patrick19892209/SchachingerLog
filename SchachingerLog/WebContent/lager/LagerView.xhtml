@@ -38,12 +38,15 @@ border-width:1px;
 		background: #00dc6e;
 		color: #FFFFFF;
 		width: 100%;}
-
+	
+.image{
+  	background-image: url(../resources/images/Schachinger.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 </style>
-
 </h:head>
-
-<h:body>
+<h:body styleClass="image">
 <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 
 
@@ -141,13 +144,13 @@ border-width:1px;
 
    </p:dialog>
     
-
-	</h:form>
-	
 	<p:stack icon="/resources/menu/stack.png" expanded="false">
-    	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="WelcomeLager.xhtml"/>
+  	 	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
     	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
 	</p:stack>
+	
+	
+	</h:form>
 	
 	
 	</h:body>

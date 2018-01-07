@@ -53,18 +53,24 @@ public class Login {
                 logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "admin";
+                user.setRole("admin");
+                user.setHomepage("WelcomeAdmin.xhtml");
     			break;
     		case 2: //Lager
     			loggedIn = true;
                 logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "lager";
+                user.setRole("lager");
+                user.setHomepage("WelcomeLager.xhtml");
     			break;
     		case 3: //buero
     			loggedIn = true;
                 logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "buero";
+                user.setRole("buero");
+                user.setHomepage("WelcomeBüro.xhtml");
     			break;
 
     		default:
@@ -92,7 +98,7 @@ public class Login {
 		);
 		user.setName(null);
 		user.setPassword(null);
-		return "logout";
+		return "";
 		
 	}
 	

@@ -8,6 +8,8 @@ public class User {
 	private String location;
 	private String role;
 	private String abbrevation;
+	private String homepage;
+	private String redirect;
 
 	
 	public String getAbbrevation() {
@@ -26,6 +28,22 @@ public class User {
 		this.user = user;
 	}
 	
+	public String getHomepage() {
+		return homepage;
+	}
+
+	public void setHomepage(String homepage) {
+		this.homepage = homepage;
+	}
+
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
+	}
+
 	public String getPassword() {
 		return password;
 	}

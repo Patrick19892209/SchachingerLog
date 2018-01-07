@@ -12,8 +12,15 @@
 <h:head>
 	<h:outputStylesheet name="css/claim.css" position="last" />
 	<title>Reklamationserfassung</title>
+	<style type="text/css">
+.image{
+   	background-image: url(../resources/images/Schachinger.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+</style>
 </h:head>
-<h:body>
+<h:body styleClass="image">
 	<h:form>
 		<b:container layout="fluid">
 			<b:panel title="Reklamationserfassung" look="primary">
@@ -94,6 +101,12 @@
 					fileUploadListener="#{fileUploader.handleFileUpload}">
 				</p:fileUpload>
 			</h:panelGroup>
+
+	<p:stack icon="/resources/menu/stack.png" expanded="false">
+ 	  	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
+     	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
+	</p:stack>
+
 	</h:form>
 </h:body>
 </html>
