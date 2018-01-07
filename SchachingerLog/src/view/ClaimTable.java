@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -23,11 +24,13 @@ public class ClaimTable extends Data implements Serializable {
 
 	private List<Claim> claims;
 	private List<Claim> filteredClaims;
+	@ManagedProperty(value="#{login}") 
+	private Login login;
 
 	@PostConstruct
 	public void init() {
 		ClaimData claimdat = new ClaimData();
-		this.claims = claimdat.fetchClaims();
+		this.claims = claimdat.fetchClaims(login.getUser().getAbbrevation());
 	}
 
 	// Reklas aus Datenbank holen und ReklaListe füllen
@@ -88,6 +91,14 @@ public class ClaimTable extends Data implements Serializable {
 
 	public void setFilteredClaims(List<Claim> filteredClaims) {
 		this.filteredClaims = filteredClaims;
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 
 }

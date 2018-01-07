@@ -12,7 +12,8 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class Image {
 
-	private String path="C:/Users/Paci/git/SchachingerRep/SchachingerLog/WebContent/resources/images/claims/";;
+	private String path = "C:/Users/Paci/git/SchachingerRep/SchachingerLog/WebContent/resources/images/claims/";
+	//private String path="C:/reklaImg/";
 	private List<String> paths;
 	private Claim claim;
 	

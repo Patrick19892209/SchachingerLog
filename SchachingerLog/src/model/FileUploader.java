@@ -24,6 +24,7 @@ import view.Claim;
 public class FileUploader {
 	// private String destination="C:\\temp\\";
 	private String path = "C:/Users/Paci/git/SchachingerRep/SchachingerLog/WebContent/resources/images/claims/";
+	//private String path="C:/reklaImg/";
 	private UploadedFile file;
 	private static int index=0;
 

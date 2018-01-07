@@ -3,15 +3,9 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<style type="text/css">
-.image{
-  	background-image: url(resources/images/Schachinger.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-</style>
+<h:outputStylesheet name="css/background.css"/>
 </h:head>
-<h:body styleClass="image">
+<h:body class="image">
     <h:form>            
     <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
     

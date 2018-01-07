@@ -23,7 +23,10 @@ public class Claim {
 
 	private String aviso;
 	private int id;
-	//@ManagedProperty(value="#{login.user}") 
+	
+	@ManagedProperty(value="#{login}") 
+	private Login login;
+	
 	private String creator;
 	private String productNr;
 	private String to;
@@ -54,6 +57,8 @@ public class Claim {
 		} else {
 			this.redirect = "buero";
 		}
+		this.creator = this.store.login.getUser().getAbbrevation();
+		System.out.println(login.getUser().getAbbrevation());
 	}
 
 	public Claim() {
@@ -63,7 +68,7 @@ public class Claim {
 		deficiencyList.add("Artikel beschädigt");
 		deficiencyList.add("Verpackung beschädigt");
 		deficiencyList.add("Menge inkorrekt");
-		this.creator="DP";
+		//this.creator="DP";
 
 	}
 
@@ -343,5 +348,13 @@ public class Claim {
 
 	public void setInputDeficiency(UIComponent inputDeficiency) {
 		this.inputDeficiency = inputDeficiency;
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 }

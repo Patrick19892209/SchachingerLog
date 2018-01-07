@@ -1,5 +1,5 @@
 .image{
-  	background: url(resources/images/Schachinger.png);
-    background-repeat: no-repeat;
-    background-size: cover;
+  	background: url("file:///C:/Users/Paci/git/SchachingerRep/SchachingerLog/WebContent/resources/images/Schachinger.png") !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
 }

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.bean.ManagedProperty;
+
 import view.Claim;
 
 public class ClaimData extends Data{
@@ -19,7 +21,6 @@ public class ClaimData extends Data{
 	private int id;
 	private String date;
 	private String productNr;
-	//@ManagedProperty(value="#{login.user.abbrevation}") 
 	private String creator;
 	private String to = null;
 	private String amount;
@@ -59,7 +60,7 @@ public class ClaimData extends Data{
 	public ClaimData(){	
 		super("controller.ClaimData");
 		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
-		this.creator="DP";
+		//this.creator="DP";
 		this.chatId = getMaxId(maxChatId) +1;
 }
 	
@@ -77,12 +78,12 @@ public class ClaimData extends Data{
 		return date;
 	}
 	
-	public List<Claim> fetchClaims(){
+	public List<Claim> fetchClaims(String creator){
 		
 		if(this.chatId<1) return null;
 		List<Claim> claimList = new ArrayList<>();
 		String fetchClaims = "SELECT * FROM Claim "
-				+ "WHERE creator='" + this.creator + 
+				+ "WHERE creator='" + creator + 
 				"' OR assigned_to='" + this.creator + "' "
 				+ "ORDER BY aviso DESC, id ASC";
 		logger.info(fetchClaims);

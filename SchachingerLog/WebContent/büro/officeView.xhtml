@@ -11,16 +11,10 @@
 </f:metadata>
 <h:head>
 	<title>Lieferungen verwalten</title>
+	<h:outputStylesheet name="css/background.css"/>
 	<h:outputStylesheet name="css/buero.css" />
-	<style type="text/css">
-.image {
-	background-image: url(../resources/images/Schachinger.png);
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-</style>
 </h:head>
-<h:body styleClass="image">
+<h:body class="image">
 	<h:form id="form">
 		<p:growl id="msgs" showDetail="true" />
 		<p:dataTable id="claimsDt" var="claim" widgetVar="claimsTable"
