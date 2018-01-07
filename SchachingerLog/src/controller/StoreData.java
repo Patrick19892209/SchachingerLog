@@ -208,6 +208,7 @@ public class StoreData {
 					+ new java.sql.Time(deli.getDeparture().getTime().getTime()) + "')";
 			query.executeUpdate(sql);
 			query.close();
+			con.commit();
 			con.close();
 		} catch (SQLException se) {
 			try {
@@ -293,6 +294,7 @@ public class StoreData {
 					+ deli.getFullSupplier() + "' and aviso = '" + deli.getAviso() + "'";
 			query.executeUpdate(sql);
 			query.close();
+			con.commit();
 			con.close();
 
 		} catch (SQLException se) {
@@ -345,6 +347,7 @@ public class StoreData {
 			}
 			query.executeUpdate(sql);
 			query.close();
+			con.commit();
 			con.close();
 
 		} catch (SQLException se) {
