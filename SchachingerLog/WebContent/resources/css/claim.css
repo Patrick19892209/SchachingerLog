@@ -26,6 +26,10 @@
 	align: center !important;
 	border-color: rgba(66, 139 , 202, 0.3) !important;
 }	
+.ui-fileupload{
+	padding: 20px;
+	padding-bottom: 5px;
+}
 .ui-fileupload-buttonbar {
 	background-color: rgb(230, 242, 255) !important;
 	background-image: none !important;
@@ -34,6 +38,7 @@
   	background-color: rgba(66, 139 , 202, 0.3) !important;
   	background-image: none !important;
 }
-.panelUpload{
-	margin-top: 5px;
+.ui-panelGroup{
+	padding-top: 20px;
+	
 }

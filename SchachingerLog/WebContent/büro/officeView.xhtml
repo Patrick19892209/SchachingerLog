@@ -164,11 +164,11 @@
 			</p:column>
 			<p:column>
 				<p:commandButton id="imageButton" value="Images"
-					action="#{image.fetchPaths(claim)}" />
+					 />
 				<p:overlayPanel style="width:800px" for="imageButton" dynamic="true">
 					<p:galleria value="#{image.paths}" var="image" panelWidth="500"
 						panelHeight="313" showCaption="true">
-						<p:graphicImage value="reklaImg/1.jpg"
+						<p:graphicImage value="resources/images/claims/#{image}"
 							alt="Image Description for 1" title="1" />
 					</p:galleria>
 				</p:overlayPanel>
@@ -223,11 +223,13 @@
 				pageOnly="true" />
 		</h:commandLink>
 		-->
-	</h:form>
 	<h:form>	<p:stack icon="/resources/menu/stack.png" expanded="false">
     	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
  	  	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
 	</p:stack>
+
+	</h:form>
+
 	</h:form>
 </h:body>
 </html>
