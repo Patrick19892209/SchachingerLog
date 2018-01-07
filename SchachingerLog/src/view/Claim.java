@@ -80,7 +80,7 @@ public class Claim {
 		deficiencyList = new ArrayList<>();
 		deficiencyList.add("Artikel beschädigt");
 		deficiencyList.add("Verpackung beschädigt");
-		deficiencyList.add("amount inkorrekt");
+		deficiencyList.add("Menge inkorrekt");
 	}
 
 	// inserts data from this Claim into Table Claim

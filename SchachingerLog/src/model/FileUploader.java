@@ -23,7 +23,7 @@ import view.Claim;
 @ManagedBean
 public class FileUploader {
 	// private String destination="C:\\temp\\";
-	private String path = "/reklaImg/";
+	private String path = "C:/Users/Paci/git/SchachingerRep/SchachingerLog/WebContent/resources/images/claims/";
 	private UploadedFile file;
 	private static int index=0;
 
@@ -34,7 +34,7 @@ public class FileUploader {
 		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
 		FacesContext.getCurrentInstance().addMessage(null, message);
 		this.path = this.path + this.claim.getAviso() + "_" + this.claim.getId();
-		String fileName = "";
+
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), this.path);
 		} catch (IOException e) {
@@ -60,11 +60,10 @@ public class FileUploader {
 			}
 			//int index = 0;
 			//do {
-			//	index++;
 			index++;
 				System.out.println("index: " + index);
-				newFile = new File(path + "/" + fileName + "_" + index + ".jpg");
-				System.out.println("path: " + path + "/" + fileName + "_" + index + ".jpg");
+				newFile = new File(path + "/" + fileName);	// + "_" + index + ".jpg");
+				System.out.println("path: " + path + "/" + fileName);
 			//} while (newFile.exists());
 			System.out.println(index);
 			

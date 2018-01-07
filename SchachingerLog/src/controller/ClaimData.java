@@ -19,6 +19,7 @@ public class ClaimData extends Data{
 	private int id;
 	private String date;
 	private String productNr;
+	//@ManagedProperty(value="#{login.user.abbrevation}") 
 	private String creator;
 	private String to = null;
 	private String amount;
@@ -26,14 +27,6 @@ public class ClaimData extends Data{
 	private String ts = "CURRENT_TIMESTAMP";
 	private int chatId;
 	private boolean done;
-
-	public int getChatId() {
-		return chatId;
-	}
-
-	public void setChatId(int chatId) {
-		this.chatId = chatId;
-	}
 
 	//Constructors
 	public ClaimData(String aviso, String creator, String productNr, String to, String amount, String deficiency) {
@@ -66,6 +59,7 @@ public class ClaimData extends Data{
 	public ClaimData(){	
 		super("controller.ClaimData");
 		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		this.creator="DP";
 		this.chatId = getMaxId(maxChatId) +1;
 }
 	
@@ -87,7 +81,10 @@ public class ClaimData extends Data{
 		
 		if(this.chatId<1) return null;
 		List<Claim> claimList = new ArrayList<>();
-		String fetchClaims = "SELECT * FROM Claim ORDER BY aviso DESC, id ASC";
+		String fetchClaims = "SELECT * FROM Claim "
+				+ "WHERE creator='" + this.creator + 
+				"' OR assigned_to='" + this.creator + "' "
+				+ "ORDER BY aviso DESC, id ASC";
 		logger.info(fetchClaims);
 		try {
 			this.con = dbc.openConnection();
@@ -254,5 +251,21 @@ public class ClaimData extends Data{
 	}
 	public void setTs(String ts) {
 		this.ts = ts;
+	}
+
+	public int getChatId() {
+		return chatId;
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
+	public void setChatId(int chatId) {
+		this.chatId = chatId;
+	}
+
+	public void setDone(boolean done) {
+		this.done = done;
 	}	
 }

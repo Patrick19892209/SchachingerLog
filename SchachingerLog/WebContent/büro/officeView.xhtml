@@ -7,24 +7,24 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <f:metadata>
-    <f:viewAction action="#{login.validate}" />
+	<f:viewAction action="#{login.validate}" />
 </f:metadata>
 <h:head>
 	<title>Lieferungen verwalten</title>
 	<h:outputStylesheet name="css/buero.css" />
 	<style type="text/css">
-.image{
-  	background-image: url(../resources/images/Schachinger.png);
-    background-repeat: no-repeat;
-    background-size: cover;
+.image {
+	background-image: url(../resources/images/Schachinger.png);
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 </style>
 </h:head>
 <h:body styleClass="image">
 	<h:form id="form">
 		<p:growl id="msgs" showDetail="true" />
-		<p:dataTable id="claimsDt" var="claim" value="#{dtClaims.claims}"
-			editable="true" resizableColumns="true"
+		<p:dataTable id="claimsDt" var="claim" widgetVar="claimsTable"
+			value="#{dtClaims.claims}" editable="true" resizableColumns="true"
 			tableStyle="table-layout: auto;"
 			emptyMessage="Es konnten keine Reklamationen gefunden werden, die die Kriterien erfüllen!"
 			filteredValue="#{dtClaims.filteredClaims}">
@@ -152,24 +152,23 @@
 							<b:inputTextarea class="chatInput" rows="6" cols="33"
 								placeholder="Nachricht erfasssen.." value="#{claim.text}" />
 						</b:row>
-						<b:row>
+						<p:row>
 							<b:column>
 								<b:commandButton id="claimButton" value="Nachricht speichern"
 									action="#{claim.insertChatMsg}" update="chatHistory"
 									look="primary" />
 							</b:column>
-						</b:row>
+						</p:row>
 					</h:form>
 				</p:overlayPanel>
 			</p:column>
 			<p:column>
-				<p:commandButton id="imageButton" value="Images"
-					 />
-				<p:overlayPanel style="width:800px" for="imageButton" dynamic="true">
-					<p:galleria value="#{image.paths}" var="image" panelWidth="500"
-						panelHeight="313" showCaption="true">
-						<p:graphicImage value="resources/images/claims/#{image}"
-							alt="Image Description for 1" title="1" />
+				<p:commandButton id="imageButton" value="Images" />
+				<p:overlayPanel style="width:530px" for="imageButton" dynamic="true">
+					<p:galleria value="#{image.fetchPaths(claim)}" var="image"
+						panelWidth="500" panelHeight="400" showCaption="true">
+						<p:graphicImage name="images/claims/#{image}"
+							alt="Image Description for #{image}" title="#{image}" />
 					</p:galleria>
 				</p:overlayPanel>
 			</p:column>
@@ -187,18 +186,28 @@
 						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 			</p:column>
-			<p:column headerText="Erledigt">
-				<p:selectBooleanButton id="done" value="#{claim.done}"
-					onLabel="Yes" offLabel="No" onIcon="ui-icon-check"
-					offIcon="ui-icon-close" style="width:60px">
+			<p:column filterBy="#{claim.done}" headerText="Erledigt"
+				footerText="equals" filterMatchMode="equals">
+				<f:facet name="filter">
+					<p:selectOneButton onchange="PF('claimsTable').filter()">
+						<f:converter converterId="javax.faces.Boolean" />
+						<f:selectItem itemLabel="Alle" itemValue="" />
+						<f:selectItem itemLabel="Erledigt" itemValue="true" />
+						<f:selectItem itemLabel="Offen" itemValue="false" />
+					</p:selectOneButton>
+				</f:facet>
+				<p:selectBooleanButton id="done" value="#{claim.done}" onLabel="Yes"
+					offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close"
+					style="width:60px">
 					<p:ajax update=":form:msgs" listener="#{claim.addDoneMsg}" />
 				</p:selectBooleanButton>
 			</p:column>
+
 		</p:dataTable>
 
 		<h3>Export Page Data Only</h3>
 		<h:commandLink>
-			<p:graphicImage name="/images/excel_logo.jpg" />
+			<p:graphicImage name="/images/icons/excel_logo.jpg" />
 			<p:dataExporter type="xls" target="claimsDt" fileName="claims"
 				pageOnly="true" />
 		</h:commandLink>
@@ -223,16 +232,12 @@
 				pageOnly="true" />
 		</h:commandLink>
 		-->
-	<h:form>	<p:stack icon="/resources/menu/stack.png" expanded="false">
-    	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
- 	  	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
-	<p:stack icon="/resources/menu/stack.png" expanded="false">
-    	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="WelcomeBüro.xhtml"/>
-    	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
-	</p:stack>
-
+		<p:stack icon="/resources/menu/stack.png" expanded="false">
+			<p:menuitem value="Home" icon="/resources/menu/home.png"
+				title="Startseite" url="WelcomeBüro.xhtml" />
+			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
+				title="Logout" action="#{login.logout}" />
+		</p:stack>
 	</h:form>
-
-	</h:form>
-</h:body>
+	</h:body>
 </html>
