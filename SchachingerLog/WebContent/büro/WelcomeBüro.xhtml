@@ -30,10 +30,7 @@
 		<p:fileUpload fileUploadListener="#{fileUploader.loadCSV}"
 			mode="advanced" update="messages" sizeLimit="100000"
 			allowTypes="/(\.|\/)(csv)$/" />
-
 		<p:growl id="messages" showDetail="true" />
-
-
 		<p:stack icon="/resources/menu/stack.png" expanded="false">
 			<p:menuitem value="Home" icon="/resources/menu/home.png"
 				title="Startseite" url="#{login.user.homepage}" />
