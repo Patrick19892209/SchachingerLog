@@ -8,45 +8,40 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <f:metadata>
-    <f:viewAction action="#{login.validate}" />
+	<f:viewAction action="#{login.validate}" />
 </f:metadata>
 
 <h:head>
-<title>Hauptmenü</title>
-	<style type="text/css">
-.image{
-  	background-image: url(../resources/images/Schachinger.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-</style>
+	<title>Hauptmenü</title>
 </h:head>
-<h:body styleClass="image">
+<h:body>
+	<h3>Menu</h3>
+	<h:form>
+		<b:panel class="menuPanel" title="Menu">
+			<p:menu>
+				<p:submenu label="Lager">
+					<p:menuitem value="Start" action="DoLager" icon="fa fa-plus" />
+				</p:submenu>
+				<p:submenu label="Reklamationen">
+					<p:menuitem value="Erfassen" action="DoRekla" icon="fa fa-plus" />
+					<p:menuitem value="Bearbeiten" action="SeeRekla" icon="fa fa-edit" />
+				</p:submenu>
+				<p:submenu label="Zusatzservices">
+					<p:menuitem value="Erfassen" action="DoService" icon="fa fa-plus" />
+					<p:menuitem value="Bearbeiten" action="SeeService"
+						icon="fa fa-edit" />
+				</p:submenu>
+			</p:menu>
+		</b:panel>
 
+		<p:stack icon="/resources/menu/stack.png" expanded="false">
+			<p:menuitem value="Home" icon="/resources/menu/home.png"
+				title="Startseite" url="#{login.user.homepage}" />
+			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
+				title="Logout" action="#{login.logout}" />
+		</p:stack>
 
-<h3>Menu</h3>
-<h:form >
-<p:menu>
-    <p:submenu label="Lager">
-        <p:menuitem value="Start" action="DoLager" icon="fa fa-plus" />
-    </p:submenu>
-    <p:submenu label="Reklamationen">
-        <p:menuitem value="Erfassen" action="DoRekla" icon="fa fa-plus" />
-        <p:menuitem value="Bearbeiten" action="SeeRekla" icon="fa fa-edit"/>
-    </p:submenu>
-    <p:submenu label="Zusatzservices">
-        <p:menuitem value="Erfassen" action="DoService" icon="fa fa-plus"/>
-        <p:menuitem value="Bearbeiten" action="SeeService" icon="fa fa-edit"/>
-    </p:submenu>
-</p:menu>
-
-
-	<p:stack icon="/resources/menu/stack.png" expanded="false">
-      	<p:menuitem value="Home" icon="/resources/menu/home.png" title="Startseite" url="#{login.user.homepage}"/>
-  	 	<p:menuitem value="Logout" icon="/resources/menu/logout.png" title="Logout" action="#{login.logout}"/>
- 	</p:stack>
-
-</h:form>
+	</h:form>
 </h:body>
 
 </html>

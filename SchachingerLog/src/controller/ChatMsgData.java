@@ -41,10 +41,12 @@ public class ChatMsgData extends Data {
 	//add new Message to Chat_Message
 	public boolean insertMessage(int chatId) {
 		if(chatId<1) chatId=this.chatId;
-		if(!exists("SELECT * FROM Chat WHERE id='" + chatId + "'")) {
+		/*
+		if(!exists("SELECT * FROM Chat_Message WHERE chat_id='" + chatId + "'")) {
 			logger.info("Chat mit chatId: " + chatId + " existiert nicht!");
 			return false;
 		}
+		*/
 		String getMaxIdMsg = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
 		int maxMsgId = getMaxId(getMaxIdMsg);	//get the Id for the current Aviso (Avisos can have more than one complaint)
 		if (maxMsgId < 0) {return false;}

@@ -38,7 +38,7 @@ public class ClaimData extends Data{
 		this.to = to;
 		this.amount = amount;
 		this.deficiency = deficiency;
-		String maxChatId = "SELECT max(id) FROM Chat WHERE chatId = '" + chatId + "'";
+		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
 		this.chatId = getMaxId(maxChatId) + 1;
 		}
 
@@ -52,14 +52,14 @@ public class ClaimData extends Data{
 		this.to = claim.getTo();
 		this.amount = claim.getAmount();
 		this.deficiency = claim.getDeficiency();
-		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
 		this.chatId = getMaxId(maxChatId) + 1;
 		this.done = claim.isDone();
 	}
 	
 	public ClaimData(){	
 		super("controller.ClaimData");
-		String maxChatId = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
+		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
 		//this.creator="DP";
 		this.chatId = getMaxId(maxChatId) +1;
 }
@@ -84,7 +84,7 @@ public class ClaimData extends Data{
 		List<Claim> claimList = new ArrayList<>();
 		String fetchClaims = "SELECT * FROM Claim "
 				+ "WHERE creator='" + creator + 
-				"' OR assigned_to='" + this.creator + "' "
+				"' OR assigned_to='" + creator + "' "
 				+ "ORDER BY aviso DESC, id ASC";
 		logger.info(fetchClaims);
 		try {

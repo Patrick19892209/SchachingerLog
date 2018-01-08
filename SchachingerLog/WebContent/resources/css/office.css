@@ -1,0 +1,35 @@
+.ui-datatable{
+	width: 98%;
+	margin: 0 auto;
+}
+.ui-datatable table{
+	table-layout: auto;
+}
+.form-control.chatInput{
+	margin: 0 auto;
+	width: 95%;
+	margin-top: 5px;
+}
+.overlayImage{
+	width: 630px;
+}
+.dtMessages{
+	width: 95%;
+}
+.ui-widget-content{
+	margin: 0 auto;
+}
+.col-md-12{
+	text-align: center;
+	min-height: 49px;
+}
+.ui-button-text-only{
+	max-width: 50px;
+	min-width: 40px;
+}
+.ui-widget .ui-widget{
+	font-size: 10px;
+}
+td{
+	text-align: center;
+}

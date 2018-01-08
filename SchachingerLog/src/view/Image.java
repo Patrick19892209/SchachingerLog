@@ -27,11 +27,11 @@ public class Image {
 		File folder = new File(path);
 		System.out.println("Folder path: " + folder.getPath());
 		File[] listOfFiles = folder.listFiles();
-		if(listOfFiles==null) {
-			System.out.println("wrong Path");
-			return null;
+		if(listOfFiles==null||listOfFiles.length < 1) {
+			list.add("emptyBox - keine Bilder gefunden.jpg");
+			return list;
 		}
-		if (listOfFiles!=null&&listOfFiles.length > 0) {
+		else {
 			for (File file : listOfFiles) {
 				if (file.isFile()) {
 					System.out.println(file.getName());
@@ -39,9 +39,6 @@ public class Image {
 					list.add(claim.getAviso() + "_" + claim.getId() + "/" + file.getName());
 				}
 			}
-		}
-		else {
-			list.add("empty");
 		}
 		this.paths=list;
 		System.out.println(list.size());

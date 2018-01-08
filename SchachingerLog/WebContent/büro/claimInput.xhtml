@@ -10,13 +10,6 @@
 <h:head>
 	<h:outputStylesheet name="css/claim.css" position="last" />
 	<title>Reklamationserfassung</title>
-	<style type="text/css">
-.image {
-	background-image: url(../resources/images/Schachinger.png);
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-</style>
 </h:head>
 <h:body styleClass="image">
 	<h:form>
@@ -66,7 +59,7 @@
 				<b:row>
 					<b:column>
 						<b:message for="aviso" errorClass="errorMessage" />
-						<b:inputText class="InputText" placeholder="A000037162" id="aviso"
+						<b:inputText class="InputText" placeholder="Aviso eingeben..." id="aviso"
 							value="#{claim.aviso}" required="true"
 							disabled="#{claim.disableInput}"
 							requiredMessage="Aviso eingeben!" ajax="true"

@@ -10,168 +10,122 @@
 <f:metadata>
 	<f:viewAction action="#{login.validate}" />
 </f:metadata>
-
-
 <h:head>
-	<style type="text/css">
-.ui-button-text {
-	font-size: 14px;
-	color: red;
-}
-
-.truck1 .ui-button-text {
-	border-width: 1px;
-	border-color: #000000;
-	border-style: solid;
-	text-align: center;
-	font-weight: bold;
-	background: #f4f4f4;
-	color: #FFFFFF;
-	width: 100%;
-}
-
-.truck2 .ui-button-text {
-	border-width: 1px;
-	border-color: #000000;
-	border-style: solid;
-	text-align: center;
-	font-weight: bold;
-	background: #00dc6e;
-	color: #FFFFFF;
-	width: 100%;
-}
-
-.image {
-	background-image: url(../resources/images/Schachinger.png);
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-</style>
 </h:head>
-<h:body styleClass="image">
+<h:body>
+	<h:outputStylesheet name="css/warehouse.css" />
 	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+	<b:container>
+		<h:form id="form">
+			<b:iconAwesome name="fa-calendar fa-lg"></b:iconAwesome>
+			<p:calendar styleClass="calendar" value="#{storeView.deliveryDate}"
+				pattern="MM/dd/yyyy">
+				<p:ajax event="dateSelect" listener="#{storeView.onDateSelect}" />
+			</p:calendar>
+			<table border="1">
+				<tr>
+					<ui:repeat value="#{storeView.gates}" var="gate">
+						<p:commandButton styleClass="gateButton" id="actGate"
+							value="#{gate}" icon="fa fa-truck" title="Tor"
+							action="#{storeView.switchGate(gate)}">
+						</p:commandButton>
+					</ui:repeat>
+				</tr>
+			</table>
+		</h:form>
+		<div class="ui-fluid">
+			<h:form id="lager">
+				<h:panelGrid styleClass="panelGrid" id="delivery" columns="2" layout="grid">
+					<p:dataTable styleClass="dtIncoming" var="delivery"
+						value="#{storeView.openDeliveries}" reflow="true">
+						<p:column headerText="Ankunft">
+							<h:outputText value="#{delivery.arrival.time}">
+								<f:convertDateTime pattern="HH:mm" timeZone="GMT+1" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Lieferant">
+							<h:outputText value="#{delivery.supplier}" />
+						</p:column>
+						<p:column>
+							<p:commandButton styleClass="greenIcon" id="iconOnly"
+								icon="fa fa-share" title="OK">
+								<f:setPropertyActionListener value="#{delivery}"
+									target="#{storeView.deliDone}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					<p:dataTable class="table2" var="delivery" reflow="true"
+						value="#{storeView.finishedDeliveries}">
+						<p:column headerText="Lieferant">
+							<h:outputText value="#{delivery.supplier}" />
+						</p:column>
+						<p:column headerText="Ankunft">
+							<h:outputLabel for="arrival" />
+							<p:inplace id="arrival" editor="true">
+								<p:ajax event="save"
+									listener="#{storeView.updateArrival(delivery)}" />
+								<p:inputText value="#{delivery.arrival.time}" required="true"
+									label="text">
+									<f:convertDateTime pattern="HH:mm" timeZone="GMT+1" />
+								</p:inputText>
+							</p:inplace>
+						</p:column>
+						<p:column headerText="Abfahrt">
+							<h:outputLabel for="departure" />
+							<p:inplace id="departure" editor="true">
+								<p:ajax event="save"
+									listener="#{storeView.updateDeparture(delivery)}" />
+								<p:inputText value="#{delivery.departure.time}" required="true"
+									label="text">
+									<f:convertDateTime pattern="HH:mm" timeZone="GMT+1" />
+								</p:inputText>
+							</p:inplace>
+						</p:column>
+						<p:column headerText="Rekla">
+							<p:commandButton id="iconOnly2" icon="fa fa-plus-square"
+								title="Reklamation"
+								action="#{storeView.setDeli4Rekla(delivery)}">
+							</p:commandButton>
+						</p:column>
+						<p:column headerText="Zusatz">
+							<p:commandButton id="iconOnly3" icon="fa fa-plus-square"
+								title="Zusatzservice"
+								action="#{storeView.setDeli4Service(delivery)}">
+							</p:commandButton>
+						</p:column>
+						<p:column headerText="Ausb.">
+							<p:commandButton styleClass="bookOut" id="iconOnly4"
+								icon="fa fa-close" action="#{storeView.cancel(delivery)}">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</h:form>
+		</div>
+		<h:form>
+			<p:commandButton value="Lieferung hinzufügen"
+				onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
+			<p:dialog header="Lieferung hinzufügen" widgetVar="dlg">
+				<h:panelGrid columns="2" cellpadding="5">
+					<h:outputLabel for="name" value="Name Lieferant:" />
+					<p:inputText id="name" value="#{storeView.tempSupplier}"
+						required="true" />
+					<h:outputLabel for="aviso" value="Aviso:" />
+					<p:inputText id="aviso" value="#{storeView.tempAviso}"
+						required="true" />
+				</h:panelGrid>
+				<p:commandButton value="Ok" action="#{storeView.add}"
+					oncomplete="PF('dlg').hide();" />
+			</p:dialog>
+			<p:stack icon="/resources/menu/stack.png" expanded="false">
+				<p:menuitem value="Home" icon="/resources/menu/home.png"
+					title="Startseite" url="#{login.user.homepage}" />
+				<p:menuitem value="Logout" icon="/resources/menu/logout.png"
+					title="Logout" action="#{login.logout}" />
+			</p:stack>
+		</h:form>
+	</b:container>
 
-
-	<h:form id="form">
-		<h2 class="first"></h2>
-		<p:calendar value="#{storeView.deliveryDate}" pattern="MM/dd/yyyy">
-			<p:ajax event="dateSelect" listener="#{storeView.onDateSelect}" />
-		</p:calendar>
-	</h:form>
-
-	<h:form id="gates">
-		<table border="1">
-			<tr>
-				<ui:repeat value="#{storeView.gates}" var="gate">
-					<p:commandButton id="actGate" value="#{gate}"
-						styleClass="#{storeView.look(gate)}" icon="fa fa-truck"
-						title="Tor" action="#{storeView.switchGate(gate)}">
-					</p:commandButton>
-				</ui:repeat>
-			</tr>
-		</table>
-	</h:form>
-
-	<h:form id="lager">
-		<h:panelGrid id="delivery" columns="2">
-			<p:dataTable class="table1" var="delivery"
-				value="#{storeView.openDeliveries}">
-				<p:column headerText="Ankunft">
-					<h:outputText value="#{delivery.arrival.time}">
-						<f:convertDateTime pattern="HH:mm" timeZone="GMT+1" />
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Lieferant">
-					<h:outputText value="#{delivery.supplier}" />
-				</p:column>
-				<p:column>
-					<p:commandButton id="iconOnly" style="color:green"
-						icon="fa fa-share" title="OK">
-						<f:setPropertyActionListener value="#{delivery}"
-							target="#{storeView.deliDone}" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
-			<p:dataTable class="table2" var="delivery"
-				value="#{storeView.finishedDeliveries}">
-				<p:column headerText="Lieferant">
-					<h:outputText value="#{delivery.supplier}" />
-				</p:column>
-				<p:column headerText="Ankunft">
-					<h:outputLabel for="arrival" />
-					<p:inplace id="arrival" editor="true">
-						<p:ajax event="save"
-							listener="#{storeView.updateArrival(delivery)}" />
-						<p:inputText value="#{delivery.arrival.time}" required="true"
-							label="text">
-							<f:convertDateTime pattern="HH:mm" timeZone="GMT+1" />
-						</p:inputText>
-					</p:inplace>
-
-				</p:column>
-				<p:column headerText="Abfahrt">
-					<h:outputLabel for="departure" />
-					<p:inplace id="departure" editor="true">
-						<p:ajax event="save"
-							listener="#{storeView.updateDeparture(delivery)}" />
-						<p:inputText value="#{delivery.departure.time}" required="true"
-							label="text">
-							<f:convertDateTime pattern="HH:mm" timeZone="GMT+1" />
-						</p:inputText>
-					</p:inplace>
-				</p:column>
-				<p:column headerText="Rekla">
-					<p:commandButton id="iconOnly2" style="color:green"
-						icon="fa fa-plus-square" title="Reklamation"
-						action="#{storeView.setDeli4Rekla(delivery)}">
-					</p:commandButton>
-				</p:column>
-				<p:column headerText="Zusatz">
-					<p:commandButton id="iconOnly3" style="color:green"
-						icon="fa fa-plus-square" title="Zusatzservice"
-						action="#{storeView.setDeli4Service(delivery)}">
-					</p:commandButton>
-				</p:column>
-				<p:column headerText="Ausb.">
-					<p:commandButton id="iconOnly4" style="color:red"
-						icon="fa fa-close" action="#{storeView.cancel(delivery)}">
-					</p:commandButton>
-				</p:column>
-
-			</p:dataTable>
-		</h:panelGrid>
-
-	</h:form>
-	<h:form>
-		<p:commandButton value="Lieferung hinzufügen"
-			onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
-
-		<p:dialog header="Lieferung hinzufügen" widgetVar="dlg">
-			<h:panelGrid columns="2" cellpadding="5">
-
-				<h:outputLabel for="name" value="Name Lieferant:" />
-				<p:inputText id="name" value="#{storeView.tempSupplier}"
-					required="true" />
-
-				<h:outputLabel for="aviso" value="Aviso:" />
-				<p:inputText id="aviso" value="#{storeView.tempAviso}"
-					required="true" />
-
-
-			</h:panelGrid>
-			<p:commandButton value="Ok" action="#{storeView.add}"
-				oncomplete="PF('dlg').hide();" />
-
-		</p:dialog>
-
-		<p:stack icon="/resources/menu/stack.png" expanded="false">
-			<p:menuitem value="Home" icon="/resources/menu/home.png"
-				title="Startseite" url="#{login.user.homepage}" />
-			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-				title="Logout" action="#{login.logout}" />
-		</p:stack>
-
-	</h:form>
 </h:body>
 </html>
 
