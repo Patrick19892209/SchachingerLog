@@ -13,12 +13,11 @@
 <h:head>
 </h:head>
 <h:body>
-
 	<h:outputStylesheet name="css/warehouse.css" />
 	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 	<b:panel title="Schachinger Logistik - Anlieferung" look="info"
 		collapsible="false">
-		<h:form id="form">
+		<h:form styleClass="formTop" id="form">
 			<b:iconAwesome name="fa-calendar fa-lg"></b:iconAwesome>
 			<p:calendar styleClass="calendar" value="#{storeView.deliveryDate}"
 				pattern="MM/dd/yyyy">
@@ -34,6 +33,10 @@
 					</ui:repeat>
 				</tr>
 			</table>
+
+			<img src="../resources/images/SchachingerLogo.JPG"
+				alt="Schachinger - wir liefern alles!" />
+
 		</h:form>
 		<h:form id="lager">
 			<h:panelGrid styleClass="panelGrid" id="delivery" columns="2"
@@ -105,27 +108,27 @@
 		<h:form>
 			<p:commandButton value="Lieferung hinzufügen"
 				onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
-			<p:dialog header="Lieferung hinzufügen" widgetVar="dlg">
-				<h:panelGrid columns="2" cellpadding="5">
+			<p:dialog header="Lieferung hinzufügen" widgetVar="dlg"
+				resizable="false">
+				<h:panelGrid styleClass="panelGrid" columns="2" cellpadding="5">
 					<h:outputLabel for="name" value="Name Lieferant:" />
-					<p:inputText id="name" value="#{storeView.tempSupplier}"
-						required="true" />
+					<p:inputText styleClass="dialogInput" id="name"
+						value="#{storeView.tempSupplier}" required="true" />
 					<h:outputLabel for="aviso" value="Aviso:" />
-					<p:inputText id="aviso" value="#{storeView.tempAviso}"
-						required="true" />
+					<p:inputText styleClass="dialogInput" id="aviso"
+						value="#{storeView.tempAviso}" required="true" />
 				</h:panelGrid>
 				<p:commandButton value="Ok" action="#{storeView.add}"
 					oncomplete="PF('dlg').hide();" />
 			</p:dialog>
-			<p:stack icon="/resources/menu/stack.png" expanded="false">
-				<p:menuitem value="Home" icon="/resources/menu/home.png"
-					title="Startseite" url="#{login.user.homepage}" />
-				<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-					title="Logout" action="#{login.logout}" />
-			</p:stack>
+		<p:stack icon="/resources/menu/stack.png" expanded="false">
+			<p:menuitem value="Home" icon="/resources/menu/home.png"
+				title="Startseite" url="WelcomeBüro.xhtml" />
+			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
+				title="Logout" action="#{login.logout}" />
+		</p:stack>
 		</h:form>
 	</b:panel>
-
 </h:body>
 </html>
 

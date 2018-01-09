@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
@@ -36,6 +39,7 @@ public class LoginData {
 			try {
 				String sql = "Select * From User Where abbrevation = '" + user.getAbbrevation() + 
 						"' and password = '" + user.getPassword() + "'";
+				if(con==null) return -1;
 				stmt = con.createStatement();
 				rs = stmt.executeQuery(sql);
 				if (rs.next()) {
@@ -46,7 +50,7 @@ public class LoginData {
 					user.setLocation(rs.getString("location"));
 					if (role.trim().equalsIgnoreCase("Admin")) result = 1;
 					if (role.trim().equalsIgnoreCase("Lager")) result = 2;
-					if (role.trim().equalsIgnoreCase("Büro")) result = 3;
+					if (role.trim().equalsIgnoreCase("Bï¿½ro")) result = 3;
 				}
 				stmt.close();
 				rs.close();

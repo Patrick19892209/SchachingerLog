@@ -159,11 +159,11 @@
 						</p:dataTable>
 						<b:row>
 							<b:inputTextarea styleClass="chatInput" rows="6" cols="33"
-								placeholder="Nachricht erfasssen.." value="#{claim.text}" />
+								placeholder="Nachricht erfasssen.." value="#{claim.text}" resizable="false"/>
 						</b:row>
 						<p:row>
 							<b:column>
-								<b:commandButton id="claimButton" value="Nachricht speichern"
+								<b:commandButton styleClass="msgButton" id="claimButton" value="Nachricht speichern"
 									action="#{claim.insertChatMsg}" update="chatHistory"
 									look="primary" />
 							</b:column>
@@ -181,7 +181,7 @@
 					</p:galleria>
 				</p:overlayPanel>
 			</p:column>
-			<p:column filterBy="#{claim.done}" headerText="Erledigt"
+			<p:column styleClass="doneColumn" filterBy="#{claim.done}" headerText="Erledigt"
 				filterMatchMode="equals">
 				<f:facet name="filter">
 					<p:selectOneButton onchange="PF('claimsTable').filter()">

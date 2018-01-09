@@ -70,9 +70,13 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "buero";
                 user.setRole("buero");
-                user.setHomepage("WelcomeBüro.xhtml");
+                user.setHomepage("WelcomeBï¿½ro.xhtml");
     			break;
-
+    		case -1:
+    			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Keine Connection :( So ein Mist aber auch!",null);
+    			answer ="Connection problem";
+    			System.out.println("Login con prob");
+    			break;
     		default:
     			loggedIn = false;
                 logger.warn(user.getName() + " tried to log in and failed (wrong user or pw)");

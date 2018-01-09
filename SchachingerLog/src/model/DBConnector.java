@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
@@ -30,14 +33,14 @@ public class DBConnector {
 	        System.out.println("SQLException: " + e.getMessage());
 	        System.out.println("SQLState: " + e.getSQLState());
 	        System.out.println("VendorError: " + e.getErrorCode());
+	        con=null;
 	    }
-	 
 		return con;
 	}
 	
 	public void closeConnection(Connection con) {
 		try {
-			con.close();
+			if(con!=null) con.close();
 		} catch (SQLException e) {
             logger.info("Couldnt close DB-Connection with error: " + e.getMessage());
        }

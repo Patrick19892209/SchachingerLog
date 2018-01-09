@@ -3,9 +3,13 @@
   	background-image: url(../resources/images/Schachinger.png);
     background-repeat: no-repeat;
 }
+
 .panel{
-	max-width: 50%;
+	position: relative;
+	max-width: 95%;
+	height: 95%; 
 	margin: 0 auto;
+	margin-top: 10px;
 }
 .panel-title{
 	text-align: center;
@@ -18,15 +22,31 @@
 }
 .panelGrid{
 	margin: 0 auto;
+	width: 100%;
 }
 .ui-datatable table{
 	table-layout: auto;
 	vertical-align: top;
+	border-radius: 20px;
 }
 form{
 	width: 100%;
-
 	margin-bottom: 20px;
+	
+}
+.formTop{
+	margin-left: 20px;
+	text-align: left;
+	min-height: 70px;
+}
+img {
+    height: auto; 
+    width: auto; 
+    max-width: 40%; 
+    max-height: 20%;
+    position: absolute;
+	right: 15px;
+	top: 45px;
 }
 .calendar{
 
@@ -44,7 +64,19 @@ form{
 	margin-bottom: 10px;
 }
 td{
+	padding: 5px;
 	vertical-align: top;
+	text-align: center;
+}
+tr{
+	text-align: center;
+}
+label{
+	margin: 0 auto;
+}
+.dialogInput{
+	margin-left: 10px;
+	margin-bottom: 3px;
 }
 .ui-widget-content .ui-state-default{
 	color: green;
@@ -52,4 +84,8 @@ td{
 }
 .ui-button-icon-only.bookOut{
 	color: red;
+}
+.ui-button-text-only{
+	margin: 0 auto;
+	margin-top: 10px;
 }

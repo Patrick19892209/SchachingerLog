@@ -30,6 +30,9 @@
 .ui-widget .ui-widget{
 	font-size: 10px;
 }
+.doneColumn{
+		font-size: 20px;
+}
 td{
 	text-align: center;
 }

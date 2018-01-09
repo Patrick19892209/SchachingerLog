@@ -58,7 +58,6 @@ public class Claim {
 			this.redirect = "buero";
 		}
 		this.creator = this.store.login.getUser().getAbbrevation();
-		System.out.println(login.getUser().getAbbrevation());
 	}
 
 	public Claim() {
