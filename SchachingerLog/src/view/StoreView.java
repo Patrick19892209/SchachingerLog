@@ -90,13 +90,19 @@ public class StoreView {
 
     private void initFinishedDeliveries() {
 		finishedDeliveries = data.finishedDeliveries(this.deliveryDate, this.gate);
+		Collections.sort(finishedDeliveries, new TimeComparator());
 	}
 
 	public void setDeliDone(Delivery deliDone) {
-		this.deliDone = deliDone;
 		Calendar c = Calendar.getInstance();
-		deliDone.setTimeDep(deliveryDate, c);
-		boolean result = data.setTables(deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
+		if (this.deliDone != null ) { 
+			this.deliDone.setTimeDep(deliveryDate, c);
+			data.updateArrDep(this.deliDone, deliveryDate, 2);
+		}
+		this.deliDone = deliDone;
+		this.deliDone.setTimeArr(deliveryDate, c);
+		this.deliDone.setTimeDep(deliveryDate, c);
+		boolean result = data.setTables(this.deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
 		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
 		initOpenDeliveries();
 		initFinishedDeliveries();
@@ -117,12 +123,16 @@ public class StoreView {
 	public void add() {
 		Calendar c = Calendar.getInstance();
 		Calendar d = Calendar.getInstance();
-		c.setTime(deliveryDate);
 		Delivery add = new Delivery(tempSupplier, c, c, tempAviso);
+		if (this.deliDone != null) {
+			this.deliDone.setTimeDep(deliveryDate, c);
+			data.updateArrDep(this.deliDone, deliveryDate, 2);			
+		}
+		
 		this.deliDone = add;
-		deliDone.setTimeDep(deliveryDate, d);
-		deliDone.setTimeArr(deliveryDate, d);
-		boolean result = data.setTables(deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
+		this.deliDone.setTimeDep(deliveryDate, d);
+		this.deliDone.setTimeArr(deliveryDate, d);
+		boolean result = data.setTables(this.deliDone, deliveryDate, this.gate, this.login.getUser().getAbbrevation());
 		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
 		initOpenDeliveries();
 		initFinishedDeliveries();

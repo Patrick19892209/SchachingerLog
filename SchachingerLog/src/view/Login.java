@@ -54,7 +54,7 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "admin";
                 user.setRole("admin");
-                user.setHomepage("WelcomeAdmin.xhtml");
+                user.setHomepage("../admin/WelcomeAdmin.xhtml");
     			break;
     		case 2: //Lager
     			loggedIn = true;
@@ -62,7 +62,7 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "lager";
                 user.setRole("lager");
-                user.setHomepage("WelcomeLager.xhtml");
+                user.setHomepage("../lager/WelcomeLager.xhtml");
     			break;
     		case 3: //buero
     			loggedIn = true;
@@ -70,7 +70,7 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "buero";
                 user.setRole("buero");
-                user.setHomepage("WelcomeBï¿½ro.xhtml");
+                user.setHomepage("../büro/WelcomeBï¿½ro.xhtml");
     			break;
     		case -1:
     			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Keine Connection :( So ein Mist aber auch!",null);
