@@ -7,9 +7,7 @@
 	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-<f:metadata>
-	<f:viewAction action="#{login.validate}" />
-</f:metadata>
+
 <h:head>
 </h:head>
 <h:body>
@@ -34,7 +32,7 @@
 				</tr>
 			</table>
 
-			<img src="../resources/images/SchachingerLogo.JPG"
+			<img class="logo" src="../resources/images/SchachingerLogo.JPG"
 				alt="Schachinger - wir liefern alles!" />
 
 		</h:form>
@@ -106,6 +104,12 @@
 			</h:panelGrid>
 		</h:form>
 		<h:form>
+			<p:stack icon="/resources/menu/stack.png" expanded="false">
+				<p:menuitem value="Home" icon="/resources/menu/home.png"
+					title="Startseite" url="WelcomeBüro.xhtml" />
+				<p:menuitem value="Logout" icon="/resources/menu/logout.png"
+					title="Logout" action="#{login.logout}" />
+			</p:stack>
 			<p:commandButton value="Lieferung hinzufügen"
 				onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
 			<p:dialog header="Lieferung hinzufügen" widgetVar="dlg"
@@ -121,12 +125,7 @@
 				<p:commandButton value="Ok" action="#{storeView.add}"
 					oncomplete="PF('dlg').hide();" />
 			</p:dialog>
-		<p:stack icon="/resources/menu/stack.png" expanded="false">
-			<p:menuitem value="Home" icon="/resources/menu/home.png"
-				title="Startseite" url="WelcomeBüro.xhtml" />
-			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-				title="Logout" action="#{login.logout}" />
-		</p:stack>
+
 		</h:form>
 	</b:panel>
 </h:body>

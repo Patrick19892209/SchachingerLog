@@ -42,3 +42,11 @@
 	padding-top: 20px;
 	
 }
+.logo {
+    height: auto; 
+    width: auto; 
+    max-width: 25%; 
+    max-height: 20%;
+    float: right;
+    margin-bottom: 20px;
+}

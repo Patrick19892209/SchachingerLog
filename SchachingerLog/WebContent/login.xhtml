@@ -1,26 +1,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui">
 <h:head>
-<h:outputStylesheet name="css/background.css"/>
+	<h:outputStylesheet name="css/background.css" />
 </h:head>
 <h:body class="image">
-    <h:form>            
-    <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-        <h:panelGrid columns="2" cellpadding="5">
-            <h:outputLabel for="username" value="Username:" />
-            <p:inputText id="username" value="#{login.user.abbrevation}" required="true" label="username" />
- 			<h:outputLabel for="password" value="Password:" />
-            <p:password id="password" value="#{login.user.password}" required="true" label="password" />           
-            <f:facet name="footer">
-                <p:commandButton value="Login" id="withIcon" update="growl" action="#{login.login}" icon="ui-icon-key" ajax="true"/>
-            </f:facet>  
-            
-        </h:panelGrid>
-    
+	<f:facet name="last">
+		<h:outputStylesheet name="css/login.css" />
+	</f:facet>
+	<h:form>
+		<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+		<b:panel look="info" collapsible="false" title="Schachinger Logistik - Login">
+			<img class="logo" src="resources/images/SchachingerLogo.JPG"
+				alt="Schachinger - wir liefern alles!" />
+
+			<h:panelGrid styleClass="login" columns="2" cellpadding="5">
+				<h:outputLabel for="username" value="Username:" />
+				<p:inputText styleClass="dialogInput" id="username" value="#{login.user.abbrevation}"
+					required="true" label="username" />
+				<h:outputLabel for="password" value="Password:" />
+				<p:password styleClass="dialogInput" id="password" value="#{login.user.password}"
+					required="true" label="password" />
+
+
+			</h:panelGrid>
+					<f:facet name="footer">
+					<p:commandButton styleClass="loginButton" value="Login" id="withIcon" update="growl"
+						action="#{login.login}" icon="ui-icon-key" ajax="true" />
+				</f:facet>
+		</b:panel>
 	</h:form>
 
-	
+
 </h:body>
 </html>

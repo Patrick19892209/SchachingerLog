@@ -1,9 +1,11 @@
 .ui-datatable{
 	width: 98%;
 	margin: 0 auto;
+	text-alig: center;
 }
 .ui-datatable table{
 	table-layout: auto;
+	font-size:14px;
 }
 .form-control.chatInput{
 	margin: 0 auto;
@@ -25,14 +27,20 @@
 }
 .ui-button-text-only{
 	max-width: 50px;
-	min-width: 40px;
+	min-width: 45px;
+}
+.msgButton.ui-widget button{
+	font-size:16px !important;
 }
 .ui-widget .ui-widget{
-	font-size: 10px;
+	font-size: 0.7em;
 }
 .doneColumn{
 		font-size: 20px;
 }
 td{
 	text-align: center;
+}
+.ui-widget textarea{
+	font-size: 14px;
 }

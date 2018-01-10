@@ -14,7 +14,9 @@
 	<h:outputStylesheet name="css/background.css" />
 </h:head>
 <h:body>
-	<h:outputStylesheet name="css/office.css" />
+	<f:facet name="last">
+		<h:outputStylesheet name="css/office.css" />
+	</f:facet>
 	<h:form id="form">
 		<p:growl id="msgs" showDetail="true" />
 		<p:dataTable styleClass="dtClaims" id="claimsDt" var="claim"
@@ -118,7 +120,7 @@
 				</p:cellEditor>
 			</p:column>
 			<p:column id="editColumn">
-				<p:rowEditor icon="fa fa-remove"/>
+				<p:rowEditor icon="fa fa-remove" />
 			</p:column>
 			<p:column>
 				<p:commandButton icon="fa fa-remove fa-lg"
@@ -134,7 +136,6 @@
 						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 				</p:confirmDialog>
 			</p:column>
-
 			<p:column id="chatColumn">
 				<p:commandButton id="chatLink" icon="fa fa-wechat fa-lg"
 					action="#{claim.fetchChatHistory}">
@@ -159,15 +160,16 @@
 						</p:dataTable>
 						<b:row>
 							<b:inputTextarea styleClass="chatInput" rows="6" cols="33"
-								placeholder="Nachricht erfasssen.." value="#{claim.text}" resizable="false"/>
+								placeholder="Nachricht erfasssen.." value="#{claim.text}"
+								resizable="false" />
 						</b:row>
-						<p:row>
+						<b:row>
 							<b:column>
-								<b:commandButton styleClass="msgButton" id="claimButton" value="Nachricht speichern"
-									action="#{claim.insertChatMsg}" update="chatHistory"
-									look="primary" />
+								<b:commandButton styleClass="msgButton" id="claimButton"
+									value="Nachricht speichern" action="#{claim.insertChatMsg}"
+									update="chatHistory" look="primary" />
 							</b:column>
-						</p:row>
+						</b:row>
 					</h:form>
 				</p:overlayPanel>
 			</p:column>
@@ -181,8 +183,8 @@
 					</p:galleria>
 				</p:overlayPanel>
 			</p:column>
-			<p:column styleClass="doneColumn" filterBy="#{claim.done}" headerText="Erledigt"
-				filterMatchMode="equals">
+			<p:column styleClass="doneColumn" filterBy="#{claim.done}"
+				headerText="Erledigt" filterMatchMode="equals">
 				<f:facet name="filter">
 					<p:selectOneButton onchange="PF('claimsTable').filter()">
 						<f:converter converterId="javax.faces.Boolean" />

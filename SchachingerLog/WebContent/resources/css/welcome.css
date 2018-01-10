@@ -1,0 +1,27 @@
+@charset "ISO-8859-1";
+.panel{
+	position: relative;
+	max-width: 95%;
+	height: 95%; 
+	margin: 0 auto;
+	margin-top: 10px;
+}
+.panel-title{
+	text-align: center;
+	font-weight: bold;
+}
+.panel-body{
+	text-align: center;
+	margin: 0 auto;
+}
+.menu{
+	margin: 0 auto;
+}
+.logo {
+    height: auto; 
+    width: auto; 
+    max-width: 40%; 
+    max-height: 20%;
+    position: absolute;
+	right: 15px;
+	top: 45px;

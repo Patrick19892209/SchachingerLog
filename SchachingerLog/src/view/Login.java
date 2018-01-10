@@ -70,7 +70,7 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "buero";
                 user.setRole("buero");
-                user.setHomepage("../büro/WelcomeBï¿½ro.xhtml");
+                user.setHomepage("../bï¿½ro/WelcomeBï¿½ro.xhtml");
     			break;
     		case -1:
     			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Keine Connection :( So ein Mist aber auch!",null);
@@ -107,6 +107,7 @@ public class Login {
 	}
 	
 	public String validate(){
+		
 		if (user.getName() == null || !this.loggedIn) return "logout";
 		return "stay";
 	}

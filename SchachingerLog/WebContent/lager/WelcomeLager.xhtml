@@ -7,18 +7,16 @@
 	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-<f:metadata>
-	<f:viewAction action="#{login.validate}" />
-</f:metadata>
 
 <h:head>
 	<title>Hauptmenü</title>
 </h:head>
 <h:body>
-	<h3>Menu</h3>
+	<h:outputStylesheet name="css/welcome.css" />
 	<h:form>
-		<b:panel class="menuPanel" title="Menu">
-			<p:menu>
+		<b:panel class="menuPanel" title="Schachinger Logisitk - Menü"
+			look="info" collapsible="false">
+			<p:menu styleClass="menu">
 				<p:submenu label="Lager">
 					<p:menuitem value="Start" action="DoLager" icon="fa fa-plus" />
 				</p:submenu>
@@ -32,8 +30,9 @@
 						icon="fa fa-edit" />
 				</p:submenu>
 			</p:menu>
+						<img class="logo" src="../resources/images/SchachingerLogo.JPG"
+				alt="Schachinger - wir liefern alles!" />
 		</b:panel>
-
 		<p:stack icon="/resources/menu/stack.png" expanded="false">
 			<p:menuitem value="Home" icon="/resources/menu/home.png"
 				title="Startseite" url="#{login.user.homepage}" />

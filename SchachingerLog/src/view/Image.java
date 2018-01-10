@@ -19,13 +19,9 @@ public class Image {
 	
 	public List<String> fetchPaths(Claim claim) {
 		String path = this.path + claim.getAviso() + "_" + claim.getId() + "/";
-
 		System.out.println("Claim: " + claim.getAviso() + " \npath: " + path);
 		List<String> list = new ArrayList<>();
-	    String basePath = new File("").getAbsolutePath();
-	    System.out.println("basepath: " + basePath);
 		File folder = new File(path);
-		System.out.println("Folder path: " + folder.getPath());
 		File[] listOfFiles = folder.listFiles();
 		if(listOfFiles==null||listOfFiles.length < 1) {
 			list.add("emptyBox - keine Bilder gefunden.jpg");
@@ -35,7 +31,6 @@ public class Image {
 			for (File file : listOfFiles) {
 				if (file.isFile()) {
 					System.out.println(file.getName());
-
 					list.add(claim.getAviso() + "_" + claim.getId() + "/" + file.getName());
 				}
 			}
