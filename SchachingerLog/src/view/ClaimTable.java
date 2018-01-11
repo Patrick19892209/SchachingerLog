@@ -1,6 +1,7 @@
 package view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -29,8 +30,12 @@ public class ClaimTable extends Data implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		ClaimData claimdat = new ClaimData();
-		this.claims = claimdat.fetchClaims(login.getUser().getAbbrevation());
+		//ClaimData claimdat = new ClaimData();
+		Claim claim = new Claim("A000","DP","010101","A","B","C","D");
+		List<Claim> list = new ArrayList<>();
+		list.add(claim);
+		this.claims=list;
+		//this.claims = claimdat.fetchClaims(login.getUser().getAbbrevation());
 	}
 
 	// Reklas aus Datenbank holen und ReklaListe füllen

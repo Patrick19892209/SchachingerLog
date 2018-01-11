@@ -1,10 +1,9 @@
 @charset "ISO-8859-1";
 .panel{
 	position: relative;
-	max-width: 95%;
-	height: 95%; 
+	max-width: 600px;
 	margin: 0 auto;
-	margin-top: 10px;
+	margin-top: 7%;
 }
 .panel-title{
 	text-align: center;
@@ -16,12 +15,15 @@
 }
 .menu{
 	margin: 0 auto;
+	margin-bottom: 30px;
 }
 .logo {
-    height: auto; 
-    width: auto; 
+	margin: 0 auto;
+	margin-bottom: 30px;
     max-width: 40%; 
     max-height: 20%;
-    position: absolute;
-	right: 15px;
-	top: 45px;
+}
+.upload{
+	margin: 0 auto;
+	max-width: 400px;
+}

@@ -27,9 +27,10 @@ public class Service {
 	private String productNr;
 	private String amount;
 	private String service;
+	private String serviceL;
 	private Date date;
 	private UIComponent serviceButton;
-	//private ClaimData redat;
+	private UIComponent inputService;
 	List <String> serviceList;
 	private String redirect;
     @ManagedProperty(value="#{storeView}")
@@ -85,22 +86,27 @@ public class Service {
 	public String insertService() throws SQLException {
 		
 		FacesContext context = FacesContext.getCurrentInstance();
-		String result2;	//result message of the given query
+		String result;	//result message of the given query
 		Severity sev;
-		//if (this.erfasser!=null&&this.artNr!=null&&this.mangel!=maengelListe.get(0)&&this.menge!=null) {
+		if((this.service==""||this.service==null)&&(this.serviceL==""||this.serviceL==null)) {
+			sev=FacesMessage.SEVERITY_ERROR;
+			FacesMessage msg = new FacesMessage(sev,"Mangel erfassen!","");
+			context.addMessage(this.inputService.getClientId(), msg);
+			System.out.println("Hallo");
+			return "Fail";	
+		}
 			ServiceData servdat = new ServiceData(this);
 			if(servdat.insert()) {
-					result2="Service-Leistung erfolgreich erfasst!";
+					result="Service-Leistung erfolgreich erfasst!";
 					sev = FacesMessage.SEVERITY_INFO;
 			}
 			else {
-					result2 = "Erfassung der Service-Leistung fehlgeschlagen!";
+					result = "Erfassung der Service-Leistung fehlgeschlagen!";
 					sev = FacesMessage.SEVERITY_ERROR;
-			}
-		//}
-		FacesMessage message = new FacesMessage(sev,result2,null);
+			}		
+		FacesMessage message = new FacesMessage(sev,result,null);
 		context.addMessage(serviceButton.getClientId(context), message);
-		return result2;
+		return result;
 	}
 
 	public String getAviso() {
@@ -166,6 +172,21 @@ public class Service {
 	public void setServiceList(List<String> serviceList) {
 		this.serviceList = serviceList;
 	}
-	
+
+	public String getServiceL() {
+		return serviceL;
+	}
+
+	public void setServiceL(String serviceL) {
+		this.serviceL = serviceL;
+	}
+
+	public UIComponent getInputService() {
+		return inputService;
+	}
+
+	public void setInputService(UIComponent inputService) {
+		this.inputService = inputService;
+	}
 	
 }

@@ -9,11 +9,19 @@
 	min-height: 49px;
 }
 
-.mangelCol{
+.serviceCol{
 	width: 65%;
 	float: left;
 }
-.maengelCol{
+.servicesCol{
 	width: 35%;
 	float: right;
+}
+.logo {
+    height: auto; 
+    width: auto; 
+    max-width: 25%; 
+    max-height: 20%;
+    float: right;
+    margin-bottom: 20px;
 }

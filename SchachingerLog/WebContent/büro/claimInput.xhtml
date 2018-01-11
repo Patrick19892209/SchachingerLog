@@ -6,17 +6,19 @@
 	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-
+<f:metadata>
+	<f:viewAction action="#{login.validate}" />
+</f:metadata>
 <h:head>
-	<h:outputStylesheet name="css/claim.css" position="last" />
 	<title>Reklamationserfassung</title>
 </h:head>
 <h:body styleClass="image">
+	<h:outputStylesheet name="css/claim.css" position="last" />
 	<h:form>
 		<b:container layout="fluid">
 			<b:panel title="Reklamationserfassung" look="primary">
-						<img class="logo" src="../resources/images/SchachingerLogo.JPG"
-				alt="Schachinger - wir liefern alles!" />
+				<img class="logo" src="../resources/images/SchachingerLogo.JPG"
+					alt="Schachinger - wir liefern alles!" />
 				<b:row>
 					<b:column>
 						<b:message for="productNr" errorClass="errorMessage" />

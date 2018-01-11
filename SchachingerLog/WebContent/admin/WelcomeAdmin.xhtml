@@ -4,28 +4,49 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui">
 <f:metadata>
-    <f:viewAction action="#{login.validate}" />
+	<f:viewAction action="#{login.validate}" />
 </f:metadata>
-
 <h:head>
-	<h:outputText>Main-Page</h:outputText>
-	<style type="text/css">
-.image{
-  	background-image: url(../resources/images/Schachinger.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-</style>
+	<title>Hauptmenü</title>
 </h:head>
-<h:body styleClass="image">
-    <h1>HUHU</h1>
-
-	You entered: #{login.name}
+<h:body>
+	<h:outputStylesheet name="css/welcome.css" />
+	<h:form>
+		<b:panel class="menuPanel" title="Schachinger Logisitk - Menü"
+			look="info" collapsible="false">
+				<img class="logo" src="../resources/images/SchachingerLogo.JPG"
+				alt="Schachinger - wir liefern alles!" />
+			
+			<p:menu styleClass="menu">
+				<p:submenu label="Lager">
+					<p:menuitem value="Start" action="DoLager" icon="fa fa-plus"/>
+				</p:submenu>
+				<p:submenu label="Reklamationen">
+					<p:menuitem value="Erfassen" action="DoRekla" icon="fa fa-plus" />
+					<p:menuitem value="Bearbeiten" action="SeeRekla" icon="fa fa-edit"
+						/>
+				</p:submenu>
+				<p:submenu label="Zusatzservices">
+					<p:menuitem value="Erfassen" action="DoService" icon="fa fa-plus" />
+					<p:menuitem value="Bearbeiten" action="SeeService" 
+						icon="fa fa-edit" />
+				</p:submenu>
+			</p:menu>
+			<p:fileUpload styleClass="upload" fileUploadListener="#{fileUploader.loadCSV}"
+				mode="advanced" update="messages" sizeLimit="100000"
+				allowTypes="/(\.|\/)(csv)$/" />
+			<p:growl id="messages" showDetail="true" />
+		</b:panel>
+		<p:stack icon="/resources/menu/stack.png" expanded="false">
+			<p:menuitem value="Home" icon="/resources/menu/home.png"
+				title="Startseite" url="#{login.user.homepage}" />
+			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
+				title="Logout" action="#{login.logout}" />
+		</p:stack>
+	</h:form>
 </h:body>
-	
-    
-	
 </html>

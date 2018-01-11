@@ -1,11 +1,15 @@
 .ui-datatable{
 	width: 98%;
 	margin: 0 auto;
-	text-alig: center;
+	margin-top: 30px;
+	text-align: center;
 }
 .ui-datatable table{
 	table-layout: auto;
 	font-size:14px;
+}
+form{
+	text-align: center;
 }
 .form-control.chatInput{
 	margin: 0 auto;
@@ -22,7 +26,6 @@
 	margin: 0 auto;
 }
 .col-md-12{
-	text-align: center;
 	min-height: 49px;
 }
 .ui-button-text-only{
@@ -33,14 +36,13 @@
 	font-size:16px !important;
 }
 .ui-widget .ui-widget{
-	font-size: 0.7em;
+	font-size: 0.9em;
 }
-.doneColumn{
-		font-size: 20px;
-}
-td{
-	text-align: center;
-}
+
 .ui-widget textarea{
 	font-size: 14px;
+}
+.logo{
+	margin-top: 10px;
+	max-width: 25%; 
 }

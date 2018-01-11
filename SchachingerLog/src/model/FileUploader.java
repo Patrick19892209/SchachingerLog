@@ -13,7 +13,9 @@ import java.sql.Statement;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -23,7 +25,10 @@ import view.Claim;
 @ManagedBean
 public class FileUploader {
 	// private String destination="C:\\temp\\";
-	private String path = "C:/Users/Paci/git/SchachingerRep/SchachingerLog/WebContent/resources/images/claims/";
+	ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+	ServletContext servletContext = (ServletContext) context.getContext();
+	private String path = "/resources/images/claims/";
+	private String path2 = "/resources/csv/";
 	//private String path="C:/reklaImg/";
 	private UploadedFile file;
 	private static int index=0;
@@ -34,7 +39,7 @@ public class FileUploader {
 	public void handleFileUpload(FileUploadEvent event) {
 		FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
 		FacesContext.getCurrentInstance().addMessage(null, message);
-		this.path = this.path + this.claim.getAviso() + "_" + this.claim.getId();
+		this.path = servletContext.getRealPath(this.path);this.path = this.path + this.claim.getAviso() + "_" + this.claim.getId();
 
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), this.path);
@@ -90,8 +95,9 @@ public class FileUploader {
 	}
 	
 		public String loadCSV(FileUploadEvent event) throws Exception {
+			this.path2 = servletContext.getRealPath(this.path2);
 		try {
-			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), "C:/CSVDateien/");
+			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), this.path2);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -112,7 +118,7 @@ public class FileUploader {
                 	table = "Delivery";
              try {
             	 
-            	String loadQuery = "LOAD DATA LOCAL INFILE '" + "C:/CSVDateien/".concat(event.getFile().getFileName()) + 
+            	String loadQuery = "LOAD DATA LOCAL INFILE '" + this.path2.concat(event.getFile().getFileName()) + 
             			"' INTO TABLE " + table + " FIELDS TERMINATED BY ';'" + 
             			" LINES TERMINATED BY '\n' IGNORE 1 LINES " + columns;
             	stmt = con.createStatement();

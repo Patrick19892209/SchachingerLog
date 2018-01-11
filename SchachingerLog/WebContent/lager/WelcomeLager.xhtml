@@ -7,7 +7,9 @@
 	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-
+<f:metadata>
+	<f:viewAction action="#{login.validate}" />
+</f:metadata>
 <h:head>
 	<title>Hauptmenü</title>
 </h:head>
@@ -16,22 +18,23 @@
 	<h:form>
 		<b:panel class="menuPanel" title="Schachinger Logisitk - Menü"
 			look="info" collapsible="false">
+									<img class="logo" src="../resources/images/SchachingerLogo.JPG"
+				alt="Schachinger - wir liefern alles!" />
+			
 			<p:menu styleClass="menu">
 				<p:submenu label="Lager">
 					<p:menuitem value="Start" action="DoLager" icon="fa fa-plus" />
 				</p:submenu>
 				<p:submenu label="Reklamationen">
 					<p:menuitem value="Erfassen" action="DoRekla" icon="fa fa-plus" />
-					<p:menuitem value="Bearbeiten" action="SeeRekla" icon="fa fa-edit" />
+					<p:menuitem value="Bearbeiten" action="SeeRekla" icon="fa fa-edit" disabled="true"/>
 				</p:submenu>
 				<p:submenu label="Zusatzservices">
 					<p:menuitem value="Erfassen" action="DoService" icon="fa fa-plus" />
-					<p:menuitem value="Bearbeiten" action="SeeService"
+					<p:menuitem value="Bearbeiten" action="SeeService" disabled="true"
 						icon="fa fa-edit" />
 				</p:submenu>
 			</p:menu>
-						<img class="logo" src="../resources/images/SchachingerLogo.JPG"
-				alt="Schachinger - wir liefern alles!" />
 		</b:panel>
 		<p:stack icon="/resources/menu/stack.png" expanded="false">
 			<p:menuitem value="Home" icon="/resources/menu/home.png"
@@ -39,8 +42,6 @@
 			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
 				title="Logout" action="#{login.logout}" />
 		</p:stack>
-
 	</h:form>
 </h:body>
-
 </html>

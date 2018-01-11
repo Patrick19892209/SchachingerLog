@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class Claim {
 	}
 
 	public Claim(String aviso, String creator, String date, String productNr, String to, String amount,
-			String deficiency, Timestamp ts) {
+			String deficiency) {
 		super();
 		this.aviso = aviso;
 		this.creator = creator;
