@@ -15,7 +15,7 @@ public class DBConnector {
 
 	private static Connection con = null;
 	private static String dbHost = "localhost";
-	private static String dbPort = "3333";      
+	private static String dbPort = "3306";      
 	private static String dbName = "schachinger_log"; 
 	private static String dbUser = "Manuel"; 
 	private static String dbPass = "tr1ckster";

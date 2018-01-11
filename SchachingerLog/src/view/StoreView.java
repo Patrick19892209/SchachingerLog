@@ -86,6 +86,7 @@ public class StoreView {
 		initFinishedDeliveries();
         RequestContext.getCurrentInstance().update("gates");
         RequestContext.getCurrentInstance().update("lager");
+        RequestContext.getCurrentInstance().update("test");
     }
 
     private void initFinishedDeliveries() {

@@ -102,7 +102,7 @@ public class Login {
 		);
 		user.setName(null);
 		user.setPassword(null);
-		return "";
+		return "logout";
 		
 	}
 	
