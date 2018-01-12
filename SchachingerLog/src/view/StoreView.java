@@ -92,6 +92,7 @@ public class StoreView {
     private void initFinishedDeliveries() {
 		finishedDeliveries = data.finishedDeliveries(this.deliveryDate, this.gate);
 		Collections.sort(finishedDeliveries, new TimeComparator());
+		if (!finishedDeliveries.isEmpty()) this.deliDone = finishedDeliveries.get(finishedDeliveries.size() - 1);
 	}
 
 	public void setDeliDone(Delivery deliDone) {

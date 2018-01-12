@@ -23,6 +23,7 @@ public class Login {
 	private User user;
 	private LoginData data;
     private boolean loggedIn = false;
+    private final String out = "../login.xhtml";
     
 	@PostConstruct
 	public void init() {
@@ -36,6 +37,10 @@ public class Login {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getOut() {
+		return out;
 	}
 
 	public boolean isLoggedIn() {
@@ -70,7 +75,7 @@ public class Login {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "buero";
                 user.setRole("buero");
-                user.setHomepage("../b�ro/WelcomeB�ro.xhtml");
+                user.setHomepage("../buero/WelcomeBuero.xhtml");
     			break;
     		case -1:
     			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Keine Connection :( So ein Mist aber auch!",null);
@@ -102,7 +107,7 @@ public class Login {
 		);
 		user.setName(null);
 		user.setPassword(null);
-		return "logout";
+		return "../login.xhtml";
 		
 	}
 	

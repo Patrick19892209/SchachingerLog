@@ -114,9 +114,9 @@
 		<h:form>
 			<p:stack icon="/resources/menu/stack.png" expanded="false">
 				<p:menuitem value="Home" icon="/resources/menu/home.png"
-					title="Startseite" url="WelcomeBüro.xhtml" />
+					title="Startseite" url="#{login.user.homepage}" />
 				<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-					title="Logout" action="#{login.logout}" />
+					title="Logout" action="#{login.logout}" url="#{login.out}"/>
 			</p:stack>
 			<p:commandButton value="Lieferung hinzufügen"
 				onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />

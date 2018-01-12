@@ -50,7 +50,7 @@ public class LoginData {
 					user.setLocation(rs.getString("location"));
 					if (role.trim().equalsIgnoreCase("Admin")) result = 1;
 					if (role.trim().equalsIgnoreCase("Lager")) result = 2;
-					if (role.trim().equalsIgnoreCase("B�ro")) result = 3;
+					if (role.trim().equalsIgnoreCase("Buero")) result = 3;
 				}
 				stmt.close();
 				rs.close();

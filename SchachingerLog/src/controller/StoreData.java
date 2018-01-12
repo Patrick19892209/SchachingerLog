@@ -93,7 +93,7 @@ public class StoreData {
 					deli.setArrival(c);
 				} else {
 					Calendar temp = Calendar.getInstance();
-					temp.set(Calendar.HOUR_OF_DAY, 12);
+					temp.set(Calendar.HOUR_OF_DAY, 0);
 					temp.set(Calendar.MINUTE, 0);
 					temp.set(Calendar.SECOND, 0);
 					deli.setArrival(temp);
