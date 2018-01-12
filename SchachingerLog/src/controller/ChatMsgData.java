@@ -8,6 +8,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedProperty;
+
+import view.Login;
+
 public class ChatMsgData extends Data {
 
 	private int id;
@@ -17,17 +22,23 @@ public class ChatMsgData extends Data {
 	private String date;
 	private String time;
 	private String to;
-	//LocalDateTime time;
+	@ManagedProperty(value = "#{login}")
+	private Login login;
+	// LocalDateTime time;
 	
+	@PostConstruct
+	public void init() {
+		this.user = this.login.getUser().getAbbrevation(); 
+	}
+
 	public ChatMsgData(int chatId, String text, String date, String time) {
 		super();
 		this.text = text;
-		this.user = "DP";	//TODO: userbean abgreifen!!
 		this.date = date;
 		this.time = time;
 
 	}
-	
+
 	public ChatMsgData(int chatId, String text, String user) {
 		super();
 		this.chatId = chatId;
@@ -38,35 +49,38 @@ public class ChatMsgData extends Data {
 	public ChatMsgData() {
 		super();
 	}
-	//add new Message to Chat_Message
+
+	// add new Message to Chat_Message
 	public boolean insertMessage(int chatId) {
-		if(chatId<1) chatId=this.chatId;
+		if (chatId < 1)
+			chatId = this.chatId;
 		/*
-		if(!exists("SELECT * FROM Chat_Message WHERE chat_id='" + chatId + "'")) {
-			logger.info("Chat mit chatId: " + chatId + " existiert nicht!");
-			return false;
-		}
-		*/
+		 * if(!exists("SELECT * FROM Chat_Message WHERE chat_id='" + chatId + "'")) {
+		 * logger.info("Chat mit chatId: " + chatId + " existiert nicht!"); return
+		 * false; }
+		 */
 		String getMaxIdMsg = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
-		int maxMsgId = getMaxId(getMaxIdMsg);	//get the Id for the current Aviso (Avisos can have more than one complaint)
-		if (maxMsgId < 0) {return false;}
-		else {this.id=maxMsgId+1;}
+		int maxMsgId = getMaxId(getMaxIdMsg); // get the Id for the current Aviso (Avisos can have more than one
+												// complaint)
+		if (maxMsgId < 0) {
+			return false;
+		} else {
+			this.id = maxMsgId + 1;
+		}
 		String date = LocalDate.now().toString();
 		String time = convertTime(LocalTime.now());
-		String insertMsg="INSERT INTO Chat_Message (chatId, id, text, user, date, time) "
-				+ "VALUES (" + chatId + ", " +  this.id + ", '" 
-				+ this.text + "', '" + this.user + "', '" 
-				+ date +"', '" + time + "')";
+		String insertMsg = "INSERT INTO Chat_Message (chatId, id, text, user, date, time) " + "VALUES (" + chatId + ", "
+				+ this.id + ", '" + this.text + "', '" + this.user + "', '" + date + "', '" + time + "')";
 		this.date = date;
 		this.time = time;
 		return update(insertMsg);
 	}
-	
+
 	public List<ChatMsgData> fetchHistory(int chatId) {
-		String fetchHistory = "SELECT * FROM Chat_Message " + "WHERE chatId='" + chatId 
+		String fetchHistory = "SELECT * FROM Chat_Message " + "WHERE chatId='" + chatId
 				+ "' ORDER BY date ASC, time ASC";
 		List<ChatMsgData> history = new ArrayList<>();
-		
+
 		try {
 			this.con = dbc.openConnection();
 			this.con.setAutoCommit(false);
@@ -75,7 +89,8 @@ public class ChatMsgData extends Data {
 				stmt = this.con.createStatement();
 				ResultSet rs = stmt.executeQuery(fetchHistory);
 				while (rs.next()) {
-					ChatMsgData chatMsg = new ChatMsgData(this.chatId,rs.getString("text"),rs.getString("date"),rs.getString("time"));
+					ChatMsgData chatMsg = new ChatMsgData(this.chatId, rs.getString("text"), rs.getString("date"),
+							rs.getString("time"));
 					logger.info(rs.getString("text"));
 					history.add(chatMsg);
 				}
@@ -154,6 +169,14 @@ public class ChatMsgData extends Data {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 
 }

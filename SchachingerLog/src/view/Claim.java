@@ -66,7 +66,6 @@ public class Claim {
 		deficiencyList.add("Artikel beschädigt");
 		deficiencyList.add("Verpackung beschädigt");
 		deficiencyList.add("Menge inkorrekt");
-		//this.creator="DP";
 
 	}
 

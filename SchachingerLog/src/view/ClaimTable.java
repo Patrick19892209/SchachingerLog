@@ -64,7 +64,6 @@ public class ClaimTable extends Data implements Serializable {
 	}
 
 	public void deleteClaim(Claim claim) {
-		System.out.println("sjdfkldsjlfk");
 		String msgString1 = "Reklamation gelöscht";
 		String msgString2 = claim.getAviso() + "/" + claim.getId();
 		ClaimData claimdata = new ClaimData(claim);
