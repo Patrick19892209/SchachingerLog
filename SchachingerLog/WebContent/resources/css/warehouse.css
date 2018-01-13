@@ -1,5 +1,6 @@
 @charset "ISO-8859-1";
 .panel{
+	background-repeat: no-repeat;
 	position: relative;
 	max-width: 95%;
 	height: 95%; 
@@ -12,10 +13,19 @@
 }
 .panel-body{
 	text-align: center;
-	margin: 0 auto;
 }
 .panelGrid{
 	margin: 0 auto;
+	width: 100%;
+}
+.topGrid{
+	margin: 0 auto;
+	width: 100%;
+	background: transparent;
+
+}
+table{
+	margin-right: 10%;
 	width: 100%;
 }
 .ui-datatable table{
@@ -34,13 +44,16 @@ form{
 	min-height: 70px;
 }
 .logo {
-    height: auto; 
-    width: auto; 
-    max-width: 40%; 
-    max-height: 20%;
-    position: absolute;
-	right: 15px;
-	top: 45px;
+	height: auto;
+	width: auto;
+	max-width: 90%;
+	margin-right: 5%;
+}
+.second{
+	width:20%;
+}
+.first{
+	
 }
 .gateButton{
 	margin-right: 30px;
@@ -57,7 +70,7 @@ form{
 td{
 	padding: 5px;
 	vertical-align: top;
-	text-align: center;
+	text-align: left;
 }
 tr{
 	text-align: center;

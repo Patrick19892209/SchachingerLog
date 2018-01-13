@@ -19,7 +19,9 @@
 	<b:panel title="Schachinger Logistik - Anlieferung" look="info"
 		collapsible="false">
 		<h:form styleClass="formTop" id="form">
-			<b:iconAwesome name="fa-calendar fa-lg"></b:iconAwesome>
+			<h:panelGrid styleClass="topGrid" columns="2" columnClasses="first,second">
+			<h:panelGroup>
+			<b:iconAwesome styleClass="fa" name="fa-calendar fa-lg"></b:iconAwesome>
 			<p:calendar styleClass="calendar" value="#{storeView.deliveryDate}"
 				pattern="MM/dd/yyyy">
 				<p:ajax event="dateSelect" listener="#{storeView.onDateSelect}" />
@@ -34,16 +36,15 @@
 					</ui:repeat>
 				</tr>
 			</table>
-
-			<img class="logo" src="../resources/images/SchachingerLogo.JPG"
-				alt="Schachinger - wir liefern alles!" />
+			</h:panelGroup>
+			<p:graphicImage class="logo" name="images/SchachingerLogo.JPG" />
+			</h:panelGrid>
 
 		</h:form>
 		<h:form id="test">
-    		<td><b:button look="info" value="Aktuell: Tor #{storeView.gate}" style="zoom: 150%"/></td>
+			<td><b:button look="info" value="Aktuell: Tor #{storeView.gate}"
+					style="zoom: 150%" /></td>
 		</h:form>
-		
-		
 		<h:form id="lager">
 			<h:panelGrid styleClass="panelGrid" id="delivery" columns="2"
 				layout="grid">
@@ -116,7 +117,7 @@
 				<p:menuitem value="Home" icon="/resources/menu/home.png"
 					title="Startseite" url="#{login.user.homepage}" />
 				<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-					title="Logout" action="#{login.logout}" url="#{login.out}"/>
+					title="Logout" action="#{login.logout}" url="#{login.out}" />
 			</p:stack>
 			<p:commandButton value="Lieferung hinzufügen"
 				onclick="PF('dlg').show();" type="button" icon="ui-icon-extlink" />
@@ -138,4 +139,3 @@
 	</b:panel>
 </h:body>
 </html>
-

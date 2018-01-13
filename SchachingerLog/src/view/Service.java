@@ -35,6 +35,8 @@ public class Service {
 	private String redirect;
     @ManagedProperty(value="#{storeView}")
     StoreView store;
+    @ManagedProperty(value="#{login}")
+    private Login login;
     
 
     @PostConstruct
@@ -44,7 +46,8 @@ public class Service {
 			this.redirect = "lager";
 		} else {
 			this.redirect = "buero";
-		}		
+		}	
+		this.creator=this.login.getUser().getAbbrevation();
 	}
 
 	public Service() {
@@ -55,7 +58,6 @@ public class Service {
 		serviceList.add("Palette repariert");
 		serviceList.add("Ware umsortiert");
 
-		this.creator="DP";
 	}	
 	
 	public Date getDate() {
@@ -187,6 +189,14 @@ public class Service {
 
 	public void setInputService(UIComponent inputService) {
 		this.inputService = inputService;
+	}
+
+	public Login getLogin() {
+		return login;
+	}
+
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 	
 }
