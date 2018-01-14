@@ -31,11 +31,12 @@ public class ChatMsgData extends Data {
 		this.user = this.login.getUser().getAbbrevation(); 
 	}
 
-	public ChatMsgData(int chatId, String text, String date, String time) {
+	public ChatMsgData(int chatId, String text, String date, String time, String user) {
 		super();
 		this.text = text;
 		this.date = date;
 		this.time = time;
+		this.user = user;
 
 	}
 
@@ -89,9 +90,10 @@ public class ChatMsgData extends Data {
 				stmt = this.con.createStatement();
 				ResultSet rs = stmt.executeQuery(fetchHistory);
 				while (rs.next()) {
-					ChatMsgData chatMsg = new ChatMsgData(this.chatId, rs.getString("text"), rs.getString("date"),
-							rs.getString("time"));
+					ChatMsgData chatMsg = new ChatMsgData(chatId, rs.getString("text"), rs.getString("date"),
+							rs.getString("time"), getUserFromChatId(chatId));
 					logger.info(rs.getString("text"));
+					
 					history.add(chatMsg);
 				}
 				logger.info(fetchHistory + " erfolgreich durchgeführt");
@@ -113,6 +115,41 @@ public class ChatMsgData extends Data {
 			}
 		}
 		return history;
+	}
+	
+	private String getUserFromChatId(int chatId) {
+		String getUser = "SELECT creator FROM Claim " + "WHERE chatId='" + chatId +
+				"' UNION SELECT creator FROM Additional_Service WHERE chatId='" + chatId + "'";
+		String user = "";
+		try {
+			this.con = dbc.openConnection();
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				ResultSet rs = stmt.executeQuery(getUser);
+				while (rs.next()) {
+					user = rs.getString("creator");
+				}
+				logger.info(getUser + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+			try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+			}
+		}
+		return user;
 	}
 
 	public int getId() {

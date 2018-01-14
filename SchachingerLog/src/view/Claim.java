@@ -131,9 +131,7 @@ public class Claim {
 			sev = FacesMessage.SEVERITY_WARN;
 		} 
 		else {
-			// Claim claim = (Claim) this.dt.getRowData();
-			ChatMsgData chatMsg = new ChatMsgData(this.chatId, this.text, "DP"); // TODO: userbean abgreifen!!
-			// chatMsg.setText(this.text);
+			ChatMsgData chatMsg = new ChatMsgData(this.chatId, this.text, this.creator);
 
 			if(chatMsg.insertMessage(this.chatId)) {
 				result = "Nachricht erfasst!";

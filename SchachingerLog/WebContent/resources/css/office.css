@@ -8,6 +8,9 @@
 	table-layout: auto;
 	font-size:14px;
 }
+.ui-row-edititing{
+	table-layout: auto;
+}
 form{
 	text-align: center;
 }

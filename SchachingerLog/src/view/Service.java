@@ -17,7 +17,7 @@ import javax.faces.context.FacesContext;
 
 import controller.ServiceData;
 
-@ManagedBean(name="service")
+@ManagedBean(name = "service")
 @ViewScoped
 public class Service {
 
@@ -31,40 +31,38 @@ public class Service {
 	private Date date;
 	private UIComponent serviceButton;
 	private UIComponent inputService;
-	List <String> serviceList;
+	List<String> serviceList;
 	private String redirect;
-    @ManagedProperty(value="#{storeView}")
-    StoreView store;
-    @ManagedProperty(value="#{login}")
-    private Login login;
-    
+	@ManagedProperty(value = "#{storeView}")
+	StoreView store;
+	@ManagedProperty(value = "#{login}")
+	private Login login;
 
-    @PostConstruct
+	@PostConstruct
 	public void init() {
 		if (store.isEntered() == true) {
 			this.aviso = store.getDeliDone().getAviso();
 			this.redirect = "lager";
 		} else {
 			this.redirect = "buero";
-		}	
-		this.creator=this.login.getUser().getAbbrevation();
+		}
+		this.creator = this.login.getUser().getAbbrevation();
 	}
 
 	public Service() {
-		//Dropdown opts
+		// Dropdown opts
 		serviceList = new ArrayList<>();
 		serviceList.add("Verpackung erneuert");
 		serviceList.add("Artikel repariert");
 		serviceList.add("Palette repariert");
 		serviceList.add("Ware umsortiert");
 
-	}	
-	
+	}
+
 	public Date getDate() {
 		return date;
 	}
 
-	
 	public String getRedirect() {
 		return redirect;
 	}
@@ -86,27 +84,27 @@ public class Service {
 	}
 
 	public String insertService() throws SQLException {
-		
+
 		FacesContext context = FacesContext.getCurrentInstance();
-		String result;	//result message of the given query
+		String result; // result message of the given query
 		Severity sev;
-		if((this.service==""||this.service==null)&&(this.serviceL==""||this.serviceL==null)) {
-			sev=FacesMessage.SEVERITY_ERROR;
-			FacesMessage msg = new FacesMessage(sev,"Mangel erfassen!","");
+		if ((this.service == "" || this.service == null) && (this.serviceL == "" || this.serviceL == null)) {
+			sev = FacesMessage.SEVERITY_ERROR;
+			FacesMessage msg = new FacesMessage(sev, "Mangel erfassen!", "");
 			context.addMessage(this.inputService.getClientId(), msg);
 			System.out.println("Hallo");
-			return "Fail";	
+			return "Fail";
 		}
-			ServiceData servdat = new ServiceData(this);
-			if(servdat.insert()) {
-					result="Service-Leistung erfolgreich erfasst!";
-					sev = FacesMessage.SEVERITY_INFO;
-			}
-			else {
-					result = "Erfassung der Service-Leistung fehlgeschlagen!";
-					sev = FacesMessage.SEVERITY_ERROR;
-			}		
-		FacesMessage message = new FacesMessage(sev,result,null);
+		if(this.service==""||this.service==null) this.service=this.serviceL;
+		ServiceData servdat = new ServiceData(this);
+		if (servdat.insert()) {
+			result = "Service-Leistung erfolgreich erfasst!";
+			sev = FacesMessage.SEVERITY_INFO;
+		} else {
+			result = "Erfassung der Service-Leistung fehlgeschlagen!";
+			sev = FacesMessage.SEVERITY_ERROR;
+		}
+		FacesMessage message = new FacesMessage(sev, result, null);
 		context.addMessage(serviceButton.getClientId(context), message);
 		return result;
 	}
@@ -198,5 +196,5 @@ public class Service {
 	public void setLogin(Login login) {
 		this.login = login;
 	}
-	
+
 }

@@ -16,6 +16,7 @@ public class ServiceData extends Data {
 	private String creator;
 	private String amount;
 	private String service;
+	private int chatId;
 	
 	//Constructors
 	public ServiceData(String aviso, String creator, String productNr, String to, String amount, String service) {
@@ -61,9 +62,14 @@ public class ServiceData extends Data {
 		int newId = getMaxId(getMaxIdService);	//get the new Id for the current Aviso (Avisos can have more than one complaint, thus they have an Id)
 		if (newId < 0) {return false;}
 		else {this.id=newId+1;}
-		String insertService="INSERT INTO Additional_Service (aviso, id, date, creator, product_nr, service, amount) "
-				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + "CURRENT_TIMESTAMP" + ", '" + this.creator + "', '" 
-				+ this.productNr + "', '" + this.service + "', '" + this.amount +  "')";
+		String getMaxChatId = "SELECT max(chatId) FROM Claim";
+		int maxChatId = getMaxId(getMaxChatId);
+		if(maxChatId<0) {return false;}
+		else {this.chatId = maxChatId+1;}
+
+		String insertService="INSERT INTO Additional_Service (aviso, id, date, creator, product_nr, service, amount, chatId) "
+				+ "VALUES ('" + this.aviso + "', " +  this.id + ", " + "CURRENT_TIMESTAMP" + ", '" + this.creator + "', " 
+				+ this.productNr + ", '" + this.service + "', " + this.amount + ", " + this.chatId +   ")";
 		
 		this.logger.info("Insert Query: " + insertService);
 		Connection con = null;
@@ -153,6 +159,10 @@ public class ServiceData extends Data {
 
 	public void setService(String service) {
 		this.service = service;
+	}
+
+	public void setChatId(int chatId) {
+		this.chatId = chatId;
 	}
 
 
