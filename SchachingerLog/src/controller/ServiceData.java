@@ -10,7 +10,7 @@ import view.Service;
 public class ServiceData extends Data {
 
 	private String aviso;
-	private String id;
+	private int id;
 	private Date date;
 	private String productNr;
 	private String creator;
@@ -57,12 +57,12 @@ public class ServiceData extends Data {
 	
 	//inserts the complaint values from a complaint object to the db
 	public boolean insert() {
-
-		ClaimData rd = new ClaimData();
-		int newId = rd.getMaxId(this.aviso) + 1;	//get the new Id for the current Aviso (Avisos can have more than one complaint, thus they have an Id)
-		if (newId == 0) return false; 
+		String getMaxIdService = "SELECT max(id) FROM Additional_Service WHERE aviso = '" + aviso + "'";
+		int newId = getMaxId(getMaxIdService);	//get the new Id for the current Aviso (Avisos can have more than one complaint, thus they have an Id)
+		if (newId < 0) {return false;}
+		else {this.id=newId+1;}
 		String insertService="INSERT INTO Additional_Service (aviso, id, date, creator, product_nr, service, amount) "
-				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + this.date + ", '" + this.creator + "', '" 
+				+ "VALUES ('" + this.aviso + "', " +  newId + ", " + "CURRENT_TIMESTAMP" + ", '" + this.creator + "', '" 
 				+ this.productNr + "', '" + this.service + "', '" + this.amount +  "')";
 		
 		this.logger.info("Insert Query: " + insertService);
@@ -107,12 +107,11 @@ public class ServiceData extends Data {
 	public void setAviso(String aviso) {
 		this.aviso = aviso;
 	}
-
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

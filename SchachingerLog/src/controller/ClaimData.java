@@ -25,7 +25,6 @@ public class ClaimData extends Data{
 	private String to = null;
 	private String amount;
 	private String deficiency;
-	private String ts = "CURRENT_TIMESTAMP";
 	private int chatId;
 	private boolean done;
 
@@ -42,7 +41,7 @@ public class ClaimData extends Data{
 		this.chatId = getMaxId(maxChatId) + 1;
 		}
 
-	public ClaimData(Claim claim) {	//since 
+	public ClaimData(Claim claim) {	
 		super("controller.ClaimData");
 		this.aviso = claim.getAviso();
 		this.id = claim.getId();
@@ -60,7 +59,6 @@ public class ClaimData extends Data{
 	public ClaimData(){	
 		super("controller.ClaimData");
 		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
-		//this.creator="DP";
 		this.chatId = getMaxId(maxChatId) +1;
 }
 	
@@ -164,7 +162,7 @@ public class ClaimData extends Data{
 		}
 		String insertClaim="INSERT INTO Claim (aviso, id, entry_date, creator, assigned_to, product_nr, amount, deficiency, chatId, done) "
 				+ "VALUES ('" + this.aviso + "', " +  this.id + ", " 
-				+ this.ts + ", '" + this.creator + "', " 
+				+ "CURRENT_TIMESTAMP" + ", '" + this.creator + "', " 
 				+ nullString +  ", '" + this.productNr +"', '" 
 				+ this.amount + "', '" + this.deficiency + "', "
 				+ this.chatId + ", " + done + ")";
@@ -246,12 +244,6 @@ public class ClaimData extends Data{
 	}
 	public void setDeficiency(String deficiency) {
 		this.deficiency = deficiency;
-	}
-	public String getTs() {
-		return ts;
-	}
-	public void setTs(String ts) {
-		this.ts = ts;
 	}
 
 	public int getChatId() {
