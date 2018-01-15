@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
+import controller.ClaimData;
 import controller.ServiceData;
 
 @ManagedBean(name = "service")
@@ -28,7 +29,8 @@ public class Service {
 	private String amount;
 	private String service;
 	private String serviceL;
-	private Date date;
+	private String date;
+	private int chatId;
 	private UIComponent serviceButton;
 	private UIComponent inputService;
 	List<String> serviceList;
@@ -59,10 +61,6 @@ public class Service {
 
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
 	public String getRedirect() {
 		return redirect;
 	}
@@ -77,10 +75,6 @@ public class Service {
 
 	public void setStore(StoreView store) {
 		this.store = store;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public String insertService() throws SQLException {
@@ -108,7 +102,23 @@ public class Service {
 		context.addMessage(serviceButton.getClientId(context), message);
 		return result;
 	}
+	
+	public void deleteClaim() {
+		String result;
+		Severity sev;
+		ServiceData servicedat = new ServiceData(this);
+		if (!servicedat.delete()) {
+			result = "Löschen fehlgeschlagen!";
+			sev = FacesMessage.SEVERITY_WARN;
+		} else {
+			result = "Eintrag gelöscht";
+			sev = FacesMessage.SEVERITY_INFO;
+		}
 
+		FacesMessage msg = new FacesMessage(sev, result, "");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}	
+	
 	public String getAviso() {
 		return aviso;
 	}
@@ -195,6 +205,22 @@ public class Service {
 
 	public void setLogin(Login login) {
 		this.login = login;
+	}
+
+	public int getChatId() {
+		return chatId;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setChatId(int chatId) {
+		this.chatId = chatId;
 	}
 
 }

@@ -38,6 +38,7 @@ public class Claim {
 	private boolean disableInput = false;
 	private List<ChatMsgData> chatHistory;
 	private List<String> deficiencyList;
+	private static String user;
 	@ManagedProperty(value="#{login}")
 	private Login login;
 	private String redirect;
@@ -53,8 +54,9 @@ public class Claim {
 			this.redirect = "buero";
 		}
 		//this.creator = this.login.getUser().getAbbrevation();
-		this.creator = this.login.getUser().getAbbrevation();
-		System.out.println("init: " + this.creator);
+		this.creator = login.getUser().getAbbrevation();
+		Claim.user = login.getUser().getAbbrevation();		
+		//System.out.println("init: " + this.user);
 
 	}
 
@@ -129,7 +131,7 @@ public class Claim {
 		} 
 		else {
 			//System.out.println("Claim login: " + this.login.getUser().getAbbrevation());	// + "\nloginuser: " + this.store.login.getUser().getAbbrevation());
-			ChatMsgData chatMsg = new ChatMsgData(this.chatId, this.text, this.creator);
+			ChatMsgData chatMsg = new ChatMsgData(this.chatId, this.text, this.user);
 			if(chatMsg.insertMessage(this.chatId)) {
 				result = "Nachricht erfasst!";
 				sev = FacesMessage.SEVERITY_INFO;
@@ -169,7 +171,7 @@ public class Claim {
 		String query = "UPDATE Claim SET done=" + this.done 
 				+ " WHERE aviso='" + this.aviso + "' AND id='" + this.id + "'";
 		
-		System.out.println(query);
+		//System.out.println(query);
 		ClaimData claimdat = new ClaimData(this);
 		claimdat.update(query);
 	}
@@ -347,6 +349,14 @@ public class Claim {
 
 	public void setLogin(Login login) {
 		this.login = login;
+	}
+
+	public static String getUser() {
+		return user;
+	}
+
+	public static void setUser(String user) {
+		Claim.user = user;
 	}
 
 }

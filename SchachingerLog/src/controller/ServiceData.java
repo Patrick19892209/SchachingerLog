@@ -2,16 +2,18 @@ package controller;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
+import java.util.List;
 import view.Service;
 
 public class ServiceData extends Data {
 
 	private String aviso;
 	private int id;
-	private Date date;
+	private String date;
 	private String productNr;
 	private String creator;
 	private String amount;
@@ -104,6 +106,75 @@ public class ServiceData extends Data {
 		return bool;
 	}
 	
+	public List<Service> fetchClaims(String creator){
+		
+		if(this.chatId<1) return null;
+		List<Service> serviceList = new ArrayList<>();
+		String fetchServices = "SELECT * FROM Claim "
+				+ "WHERE creator='" + creator + 
+				"' OR assigned_to='" + creator + "' "
+				+ "ORDER BY aviso DESC, id ASC";
+		logger.info(fetchServices);
+		try {
+			this.con = dbc.openConnection();
+			
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				ResultSet rs = stmt.executeQuery(fetchServices);
+				while(rs.next()) {
+					Service service = new Service();
+					service.setAviso(rs.getString("aviso"));
+					service.setId(rs.getInt("id"));
+					service.setDate(rs.getDate("entry_date").toString());
+					//service.setDate(service.convertTsToDate(rs.getTimestamp("Timestamp")));
+					service.setCreator(rs.getString("creator"));
+					service.setProductNr(rs.getString("product_nr"));
+					service.setAmount(rs.getString("amount"));
+					service.setService(rs.getString("deficiency"));
+					service.setChatId(rs.getInt("chatId"));
+					//service.setDone(rs.getBoolean("done"));
+					serviceList.add(service);
+				}
+				logger.info(fetchServices + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+            try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+				}
+			} 
+		return serviceList;	
+	}
+
+	public boolean update() {
+		String updateClaim = "UPDATE Additional_Service SET "
+				+ "aviso='" + this.aviso + "', id=" + this.id 
+				+ ", entry_date='" + this.date + "', creator='" + this.creator 
+				+ "', product_nr='" + this.productNr 
+				+ "', amount=" + this.amount + ", service='" + this.service
+				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
+		System.out.println(updateClaim);
+		return update(updateClaim);
+	}
+	public boolean delete() {
+		String delete="DELETE FROM Additional_Service WHERE aviso='" + this.aviso
+				+ "' AND id=" + this.id;
+		return update(delete);
+	}
+
+	
 	//Getters and Setters
 
 	public String getAviso() {
@@ -119,14 +190,6 @@ public class ServiceData extends Data {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public String getProductNr() {
@@ -163,6 +226,18 @@ public class ServiceData extends Data {
 
 	public void setChatId(int chatId) {
 		this.chatId = chatId;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public int getChatId() {
+		return chatId;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 

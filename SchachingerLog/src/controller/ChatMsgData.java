@@ -78,26 +78,26 @@ public class ChatMsgData extends Data {
 				ResultSet rs = stmt.executeQuery(fetchHistory);
 				while (rs.next()) {
 					ChatMsgData chatMsg = new ChatMsgData(chatId, rs.getString("text"), rs.getString("date"),
-					rs.getString("time"), getUserFromChatId(chatId));
-					logger.info(rs.getString("text"));
+					rs.getString("time"), rs.getString("user"));
+					//logger.info(getUserFromChatId(chatId) + ": " + rs.getString("text"));
 					history.add(chatMsg);
 				}
-				logger.info(fetchHistory + " erfolgreich durchgeführt");
+				//logger.info(fetchHistory + " erfolgreich durchgeführt");
 			} finally {
 				try {
 					stmt.close();
 					this.con.commit();
 					this.con.close();
 				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
+					//logger.warn("Connection couldn't be closed successfully");
 				}
 			}
 		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
+			//logger.warn("SQL ERROR: " + ex);
 			try {
 				this.con.rollback();
 			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
+				//logger.warn("Rollback didnt work");
 			}
 		}
 		return history;
@@ -117,22 +117,22 @@ public class ChatMsgData extends Data {
 				while (rs.next()) {
 					user = rs.getString("creator");
 				}
-				logger.info(getUser + " erfolgreich durchgeführt");
+				//logger.info(getUser + " erfolgreich durchgeführt");
 			} finally {
 				try {
 					stmt.close();
 					this.con.commit();
 					this.con.close();
 				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
+					//logger.warn("Connection couldn't be closed successfully");
 				}
 			}
 		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
+			//logger.warn("SQL ERROR: " + ex);
 			try {
 				this.con.rollback();
 			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
+				//logger.warn("Rollback didnt work");
 			}
 		}
 		return user;

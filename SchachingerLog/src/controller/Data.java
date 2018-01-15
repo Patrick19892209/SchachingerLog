@@ -48,22 +48,22 @@ public class Data {
 				stmt = this.con.createStatement();
 				stmt.executeUpdate(query);
 				bool = true;
-				logger.info(query + " erfolgreich durchgeführt");
+				//logger.info(query + " erfolgreich durchgeführt");
 			} finally {
 				try {
 					stmt.close();
 					this.con.commit();
 					this.con.close();
 				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
+					//logger.warn("Connection couldn't be closed successfully");
 				}
 			}
 		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
+			//logger.warn("SQL ERROR: " + ex);
             try {
 				this.con.rollback();
 			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
+				//logger.warn("Rollback didnt work");
 				}
 			} 
 		
@@ -80,7 +80,7 @@ public class Data {
 				stmt = con.createStatement();
 				this.rs = stmt.executeQuery(query);
 				if(this.rs.next()) bool=true;
-				logger.info(query + " erfolgreich durchgeführt - Bool: " + bool);
+				//logger.info(query + " erfolgreich durchgeführt - Bool: " + bool);
 			} finally {
 				try {
 					stmt.close();
@@ -91,11 +91,11 @@ public class Data {
 				}
 			}
 		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
+			//logger.warn("SQL ERROR: " + ex);
             try {
 				con.rollback();
 			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
+				//logger.warn("Rollback didnt work");
 				}
 			} 
 		catch(NullPointerException n) {
@@ -129,25 +129,25 @@ public class Data {
 				this.rs = stmt.executeQuery(query);
 				if (rs.next()) maxId = this.rs.getInt(1);
 				if(maxId<0) maxId=-1;
-				logger.info("MaxId: " + maxId);
+				//logger.info("MaxId: " + maxId);
 			} finally {
 				try {
 					stmt.close();
 					con.commit();
 					con.close();
 				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
+					//logger.warn("Connection couldn't be closed successfully");
 				}
 			}
 		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
+			//logger.warn("SQL ERROR: " + ex);
             try {
 				con.rollback();
 			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
+				//logger.warn("Rollback didnt work");
 				}
 			} 
-		logger.info("return: "+maxId);
+		//logger.info("return: "+maxId);
 		return maxId;
 	}
 	public DBConnector getDbc() {

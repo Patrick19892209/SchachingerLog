@@ -84,7 +84,7 @@ public class ClaimData extends Data{
 				+ "WHERE creator='" + creator + 
 				"' OR assigned_to='" + creator + "' "
 				+ "ORDER BY aviso DESC, id ASC";
-		logger.info(fetchClaims);
+		//logger.info(fetchClaims);
 		try {
 			this.con = dbc.openConnection();
 			
@@ -110,22 +110,22 @@ public class ClaimData extends Data{
 					//claim.setChatHistory(fetchHistory(this.chatId));
 					claimList.add(claim);
 				}
-				logger.info(fetchClaims + " erfolgreich durchgeführt");
+				//logger.info(fetchClaims + " erfolgreich durchgeführt");
 			} finally {
 				try {
 					stmt.close();
 					this.con.commit();
 					this.con.close();
 				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
+					//logger.warn("Connection couldn't be closed successfully");
 				}
 			}
 		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
+			//logger.warn("SQL ERROR: " + ex);
             try {
 				this.con.rollback();
 			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
+				//logger.warn("Rollback didnt work");
 				}
 			} 
 		return claimList;	
@@ -138,7 +138,7 @@ public class ClaimData extends Data{
 				+ "', assigned_to='" + this.to + "', product_nr='" + this.productNr 
 				+ "', amount=" + this.amount + ", deficiency='" + this.deficiency
 				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
-		System.out.println(updateClaim);
+		//System.out.println(updateClaim);
 		return update(updateClaim);
 	}
 	
@@ -166,7 +166,7 @@ public class ClaimData extends Data{
 				+ nullString +  ", '" + this.productNr +"', '" 
 				+ this.amount + "', '" + this.deficiency + "', "
 				+ this.chatId + ", " + done + ")";
-		System.out.println("Query: " + insertClaim);
+		//System.out.println("Query: " + insertClaim);
 		return update(insertClaim);
 	}
 	
