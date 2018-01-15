@@ -55,8 +55,6 @@ public class ClaimData extends Data{
 	
 	public ClaimData(){	
 		super("controller.ClaimData");
-		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
-		this.chatId = getMaxId(maxChatId) +1;
 }
 
 	public static Date StringToDate(String sdate) throws ParseException {
