@@ -10,9 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.faces.bean.ManagedProperty;
-
 import view.Claim;
 
 public class ClaimData extends Data{
@@ -61,24 +58,15 @@ public class ClaimData extends Data{
 		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
 		this.chatId = getMaxId(maxChatId) +1;
 }
-	
-	/*
-	String input = "2012/01/20 12:05:10.321";
-	DateFormat inputFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-	Date date = inputFormatter.parse(input);
 
-	DateFormat outputFormatter = new SimpleDateFormat("MM/dd/yyyy");
-	String output = outputFormatter.format(date); // Output : 01/20/2012
-	*/
 	public static Date StringToDate(String sdate) throws ParseException {
 		DateFormat inputFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 		Date date = inputFormatter.parse(sdate);
 		return date;
 	}
-	
+	//fetches the claims that have been created or assigned to a certain user
 	public List<Claim> fetchClaims(String creator){
 		
-		if(this.chatId<1) return null;
 		List<Claim> claimList = new ArrayList<>();
 		String fetchClaims = "SELECT * FROM Claim "
 				+ "WHERE creator='" + creator + 

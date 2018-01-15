@@ -6,9 +6,7 @@
 	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-<f:metadata>
-	<f:viewAction action="#{login.validate}" />
-</f:metadata>
+
 <h:head>
 	<title>Lieferungen verwalten</title>
 	<h:outputStylesheet name="css/background.css" />
@@ -21,102 +19,89 @@
 		<img class="logo" src="../resources/images/SchachingerLogo.JPG"
 		alt="Schachinger - wir liefern alles!" />
 		<p:growl id="msgs" showDetail="true" />
-		<p:dataTable styleClass="dtClaims" id="servicesDat" var="service"
+		<p:dataTable styleClass="dtClaims" id="servicesDt" var="service"
 			widgetVar="servicesTable" value="#{dtServices.services}" editable="true"
 			resizableColumns="true" reflow="true"
-			emptyMessage="Es konnten keine Reklamationen gefunden werden, die die Kriterien erfüllen!"
-			filteredValue="#{dtServices.filteredClaims}">
+			emptyMessage="Es konnten keine Zusatz-Services gefunden werden, die die Kriterien erfüllen!"
+			filteredValue="#{dtServices.filteredServices}">
 			<f:facet name="header">
 				Reklamationsbearbeitung
 			</f:facet>
-			<p:ajax event="rowEdit" listener="#{dtClaims.onRowEdit}"
+			<p:ajax event="rowEdit" listener="#{dtServices.onRowEdit}"
 				update=":form:msgs" />
-			<p:ajax event="rowEditCancel" listener="#{dtClaims.onRowCancel}"
+			<p:ajax event="rowEditCancel" listener="#{dtServices.onRowCancel}"
 				update=":form:msgs" />
-			<p:column filterBy="#{claim.aviso}" headerText="Aviso"
+			<p:column filterBy="#{service.aviso}" headerText="Aviso"
 				filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{claim.aviso}" />
+						<h:outputText value="#{service.aviso}" />
 					</f:facet>
 					<f:facet name="input">
 						<p:inputText disabled="true" id="avisoInput"
-							value="#{claim.aviso}" />
+							value="#{service.aviso}" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
 			<p:column headerText="Id">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{claim.id}" />
+						<h:outputText value="#{service.id}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText disabled="true" id="idInput" value="#{claim.id}"
+						<p:inputText disabled="true" id="idInput" value="#{service.id}"
 							label="Id" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column headerText="Datum" filterBy="#{claim.date}"
+			<p:column headerText="Datum" filterBy="#{service.date}"
 				filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{claim.date}" />
+						<h:outputText value="#{service.date}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="dateInput" value="#{claim.date}" label="Date"
+						<p:inputText id="dateInput" value="#{service.date}" label="Date"
 							validatorMessage="Korrektes Datumsformat: 2017-12-31 (31. Dezember 2017).">
 							<f:validateRegex pattern="20\d\d-[0-1]\d-[0-3]\d" />
 						</p:inputText>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column headerText="Erfasser" filterBy="#{claim.creator}"
+			<p:column headerText="Erfasser" filterBy="#{service.creator}"
 				filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{claim.creator}" />
+						<h:outputText value="#{service.creator}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="erfasserInput" value="#{claim.creator}"
+						<p:inputText id="erfasserInput" value="#{service.creator}"
 							label="Erfasser">
 							<f:validator validatorId="model.AbbrevationValidator" />
 						</p:inputText>
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column headerText="Zugewiesen an" filterBy="#{claim.to}"
+			<p:column headerText="Artikelnummer" filterBy="#{service.productNr}"
 				filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{claim.to}" />
+						<h:outputText value="#{service.productNr}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="ToInput" value="#{claim.to}" label="An">
-							<f:validator validatorId="model.AbbrevationValidator" />
-						</p:inputText>
-					</f:facet>
-				</p:cellEditor>
-			</p:column>
-			<p:column headerText="Artikelnummer" filterBy="#{claim.productNr}"
-				filterMatchMode="contains">
-				<p:cellEditor>
-					<f:facet name="output">
-						<h:outputText value="#{claim.productNr}" />
-					</f:facet>
-					<f:facet name="input">
-						<p:inputText id="artNrInput" value="#{claim.productNr}"
+						<p:inputText id="artNrInput" value="#{service.productNr}"
 							label="Artikelnummer" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
-			<p:column headerText="Mangel" filterBy="#{claim.deficiency}"
+			<p:column headerText="Service" filterBy="#{service.service}"
 				filterMatchMode="contains">
 				<p:cellEditor>
 					<f:facet name="output">
-						<h:outputText value="#{claim.deficiency}" />
+						<h:outputText value="#{service.service}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="mangelInput" value="#{claim.deficiency}"
+						<p:inputText id="mangelInput" value="#{service.service}"
 							label="Mangel" />
 					</f:facet>
 				</p:cellEditor>
@@ -126,8 +111,8 @@
 			</p:column>
 			<p:column>
 				<p:commandButton icon="fa fa-remove fa-lg"
-					actionListener="#{dtClaims.deleteClaim(claim)}"
-					update=":form:claimsDt">
+					actionListener="#{dtServices.deleteService(service)}"
+					update=":form:servicesDt">
 					<p:confirm header="Löschen bestätigen"
 						message="Reklamation wirklich löschen?" icon="ui-icon-alert" />
 				</p:commandButton>
@@ -140,13 +125,13 @@
 			</p:column>
 			<p:column id="chatColumn">
 				<p:commandButton id="chatLink" icon="fa fa-wechat fa-lg"
-					action="#{claim.fetchChatHistory}">
+					action="#{service.fetchChatHistory}">
 				</p:commandButton>
 				<p:overlayPanel id="chatPanel" title="Chat" for="chatLink"
 					hideEffect="fade" dynamic="true" style="width:800px">
 					<h:form id="formChat">
 						<p:dataTable styleclass="dtMessages" id="chatHistory"
-							var="chatMsg" value="#{claim.chatHistory}">
+							var="chatMsg" value="#{service.chatHistory}">
 							<p:column id="vonColumn" headerText="Von:">
 								<h:outputText value="#{chatMsg.user}" />
 							</p:column>
@@ -162,43 +147,33 @@
 						</p:dataTable>
 						<b:row>
 							<b:inputTextarea styleClass="chatInput" rows="6" cols="33"
-								placeholder="Nachricht erfasssen.." value="#{claim.text}"
+								placeholder="Nachricht erfasssen.." value="#{service.text}"
 								resizable="false" />
 						</b:row>
 						<b:row>
 							<b:column>
-								<b:commandButton styleClass="msgButton" id="claimButton"
-									value="Nachricht speichern" action="#{claim.insertChatMsg}"
+								<b:commandButton styleClass="msgButton" id="serviceButton"
+									value="Nachricht speichern" action="#{service.insertChatMsg}"
 									update="chatHistory" look="primary" />
 							</b:column>
 						</b:row>
 					</h:form>
 				</p:overlayPanel>
 			</p:column>
-			<p:column>
-				<p:commandButton id="imageButton" icon="fa fa-photo fa-lg" />
-				<p:overlayPanel styleClass="overlayImage" for="imageButton"
-					dynamic="true">
-					<p:galleria value="#{image.fetchPaths(claim)}" var="image"
-						panelWidth="500" panelHeight="400" showCaption="true">
-						<p:graphicImage name="images/claims/#{image}" title="#{image}" />
-					</p:galleria>
-				</p:overlayPanel>
-			</p:column>
-			<p:column styleClass="doneColumn" filterBy="#{claim.done}"
+			<p:column styleClass="doneColumn" filterBy="#{service.done}"
 				headerText="Erledigt" filterMatchMode="equals">
 				<f:facet name="filter">
-					<p:selectOneButton onchange="PF('claimsTable').filter()">
+					<p:selectOneButton onchange="PF('servicesTable').filter()">
 						<f:converter converterId="javax.faces.Boolean" />
 						<f:selectItem itemLabel="Alle" itemValue="" />
 						<f:selectItem itemLabel="Erled." itemValue="true" />
 						<f:selectItem itemLabel="Offen" itemValue="false" />
 					</p:selectOneButton>
 				</f:facet>
-				<p:selectBooleanButton id="done" value="#{claim.done}" onLabel="Ja"
+				<p:selectBooleanButton id="done" value="#{service.done}" onLabel="Ja"
 					offLabel="Nein" onIcon="ui-icon-check" offIcon="ui-icon-close"
 					style="width:60px">
-					<p:ajax update=":form:msgs" listener="#{claim.addDoneMsg}" />
+					<p:ajax update=":form:msgs" listener="#{service.addDoneMsg}" />
 				</p:selectBooleanButton>
 			</p:column>
 		</p:dataTable>

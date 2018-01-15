@@ -39,12 +39,12 @@ public class Claim {
 	private List<ChatMsgData> chatHistory;
 	private List<String> deficiencyList;
 	private static String user;
-	@ManagedProperty(value="#{login}")
+	@ManagedProperty(value = "#{login}")
 	private Login login;
 	private String redirect;
 	@ManagedProperty(value = "#{storeView}")
 	private StoreView store;
-	
+
 	@PostConstruct
 	public void init() {
 		if (store.isEntered() == true) {
@@ -53,10 +53,10 @@ public class Claim {
 		} else {
 			this.redirect = "buero";
 		}
-		//this.creator = this.login.getUser().getAbbrevation();
+		// this.creator = this.login.getUser().getAbbrevation();
 		this.creator = login.getUser().getAbbrevation();
-		Claim.user = login.getUser().getAbbrevation();		
-		//System.out.println("init: " + this.user);
+		Claim.user = login.getUser().getAbbrevation();
+		// System.out.println("init: " + this.user);
 
 	}
 
@@ -86,20 +86,22 @@ public class Claim {
 	}
 
 	// inserts data from this Claim into Table Claim
-	public String insertClaim(){
+	public String insertClaim() {
 
 		FacesContext context = FacesContext.getCurrentInstance();
 		Severity sev;
-		
-		if((this.deficiency==""||this.deficiency==null)&&(this.deficiencyL==""||this.deficiencyL==null)) {
-			sev=FacesMessage.SEVERITY_ERROR;
-			FacesMessage msg = new FacesMessage(sev,"Mangel erfassen!","");
+
+		if ((this.deficiency == "" || this.deficiency == null)
+				&& (this.deficiencyL == "" || this.deficiencyL == null)) {
+			sev = FacesMessage.SEVERITY_ERROR;
+			FacesMessage msg = new FacesMessage(sev, "Mangel erfassen!", "");
 			context.addMessage(this.inputDeficiency.getClientId(), msg);
-			return "Fail";	
+			return "Fail";
 		}
-		
+
 		String result; // result message of the given query
-		if(this.deficiency==""||this.deficiency==null) this.deficiency=this.deficiencyL;
+		if (this.deficiency == "" || this.deficiency == null)
+			this.deficiency = this.deficiencyL;
 		ClaimData claimDat = new ClaimData(this);
 		this.chatId = claimDat.getChatId();
 		if (claimDat.insert()) {
@@ -125,19 +127,18 @@ public class Claim {
 	public void insertChatMsg() {
 		String result;
 		Severity sev;
-		if (text == null || text.length() < 1) {
+		if (this.text == null || this.text.length() < 1) {
 			result = "Keine Nachricht erfasst!";
 			sev = FacesMessage.SEVERITY_WARN;
-		} 
-		else {
-			//System.out.println("Claim login: " + this.login.getUser().getAbbrevation());	// + "\nloginuser: " + this.store.login.getUser().getAbbrevation());
+		} else {
+			// System.out.println("Claim login: " + this.login.getUser().getAbbrevation());
+			// // + "\nloginuser: " + this.store.login.getUser().getAbbrevation());
 			ChatMsgData chatMsg = new ChatMsgData(this.chatId, this.text, this.user);
-			if(chatMsg.insertMessage(this.chatId)) {
+			if (chatMsg.insertMessage(this.chatId)) {
 				result = "Nachricht erfasst!";
 				sev = FacesMessage.SEVERITY_INFO;
 				this.chatHistory.add(chatMsg);
-			}
-			else {
+			} else {
 				result = "Nachricht konnte nicht erfasst!";
 				sev = FacesMessage.SEVERITY_WARN;
 			}
@@ -147,7 +148,7 @@ public class Claim {
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 
 	}
-	
+
 	public void deleteClaim() {
 		String result;
 		Severity sev;
@@ -163,19 +164,21 @@ public class Claim {
 		FacesMessage msg = new FacesMessage(sev, result, "");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-	//Message is written and value done from table Claim is refreshed
+
+	// Message is written and value done from table Claim is refreshed
 	public void addDoneMsg() {
 		String msg = "Reklamation erledigt!";
-		if(!this.done) msg = "Reklamation offen!";
+		if (!this.done)
+			msg = "Reklamation offen!";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
-		String query = "UPDATE Claim SET done=" + this.done 
-				+ " WHERE aviso='" + this.aviso + "' AND id='" + this.id + "'";
-		
-		//System.out.println(query);
+		String query = "UPDATE Claim SET done=" + this.done + " WHERE aviso='" + this.aviso + "' AND id='" + this.id
+				+ "'";
+
+		// System.out.println(query);
 		ClaimData claimdat = new ClaimData(this);
 		claimdat.update(query);
 	}
-	
+
 	// Getters and Setters
 
 	public String getAviso() {
@@ -325,7 +328,7 @@ public class Claim {
 	public void setDone(boolean done) {
 
 		this.done = done;
-	
+
 	}
 
 	public String getDeficiencyL() {
@@ -335,6 +338,7 @@ public class Claim {
 	public void setDeficiencyL(String deficiencyL) {
 		this.deficiencyL = deficiencyL;
 	}
+
 	public UIComponent getInputDeficiency() {
 		return inputDeficiency;
 	}

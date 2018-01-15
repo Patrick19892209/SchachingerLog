@@ -71,7 +71,7 @@
 		<from-view-id>/buero/WelcomeBuero.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>SeeService</from-outcome>
-			<to-view-id>/buero/ServiceView.xhtml</to-view-id>
+			<to-view-id>/buero/officeServices.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -124,7 +124,7 @@
 		<from-view-id>/lager/WelcomeLager.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>SeeService</from-outcome>
-			<to-view-id>/buero/ServiceView.xhtml</to-view-id>
+			<to-view-id>/buero/officeServices.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
@@ -215,7 +215,7 @@
 		<from-view-id>/admin/WelcomeAdmin.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>SeeService</from-outcome>
-			<to-view-id>/buero/ServiceView.xhtml</to-view-id>
+			<to-view-id>/buero/officeServices.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

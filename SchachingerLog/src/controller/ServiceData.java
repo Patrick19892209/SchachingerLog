@@ -1,7 +1,6 @@
 package controller;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,7 +18,6 @@ public class ServiceData extends Data {
 	private String amount;
 	private String service;
 	private int chatId;
-	
 	//Constructors
 	public ServiceData(String aviso, String creator, String productNr, String to, String amount, String service) {
 		super("controller.ServiceData");
@@ -42,29 +40,77 @@ public class ServiceData extends Data {
 		super("controller.ServiceData");
 	}
 	
-	//checks whether abbrevation exists
-	public boolean abbrevationExists(String abbr) {
-		String abbrExists = "SELECT * FROM User WHERE Abbrevation = '" + abbr + "'";
-		logger.info(abbrExists);
-		if(exists(abbrExists)) return true;
-		return false;
+	//fetches the claims that have been created or assigned to a certain user
+	public List<Service> fetchServices(String creator){
+
+		List<Service> serviceList = new ArrayList<>();
+		String fetchServices = "SELECT * FROM Additional_Service "
+				+ "WHERE creator='" + creator
+				+ "' ORDER BY aviso DESC, id ASC";
+		logger.info(fetchServices);
+		try {
+			this.con = dbc.openConnection();
+			
+			this.con.setAutoCommit(false);
+			Statement stmt = null;
+			try {
+				stmt = this.con.createStatement();
+				ResultSet rs = stmt.executeQuery(fetchServices);
+				while(rs.next()) {
+					Service service = new Service();
+					service.setAviso(rs.getString("aviso"));
+					service.setId(rs.getInt("id"));
+					service.setDate(rs.getDate("date").toString());
+					//service.setDate(service.convertTsToDate(rs.getTimestamp("Timestamp")));
+					service.setCreator(rs.getString("creator"));
+					service.setProductNr(rs.getString("product_nr"));
+					service.setAmount(rs.getString("amount"));
+					service.setService(rs.getString("service"));
+					service.setChatId(rs.getInt("chatId"));
+					//service.setDone(rs.getBoolean("done"));
+					//service.setDone(rs.getBoolean("done"));
+					serviceList.add(service);
+				}
+				logger.info(fetchServices + " erfolgreich durchgeführt");
+			} finally {
+				try {
+					stmt.close();
+					this.con.commit();
+					this.con.close();
+				} catch (Exception ignore) {
+					logger.warn("Connection couldn't be closed successfully");
+				}
+			}
+		} catch (SQLException ex) {
+			logger.warn("SQL ERROR: " + ex);
+            try {
+				this.con.rollback();
+			} catch (Exception e) {
+				logger.warn("Rollback didnt work");
+				}
+			} 
+		return serviceList;	
+	}
+
+	//updates Claim with properties from this ClaimData
+	public boolean update() {
+		String updateClaim = "UPDATE Additional_Service SET "
+				+ "aviso='" + this.aviso + "', id=" + this.id 
+				+ ", date='" + this.date + "', creator='" + this.creator 
+				+ "', product_nr='" + this.productNr 
+				+ "', amount=" + this.amount + ", service='" + this.service
+				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
+		System.out.println(updateClaim);
+		return update(updateClaim);
 	}
 	
-	//checks whether certain Aviso exists in the db
-	public boolean avisoExists(String aviso) {
-		String avisoExists =  "SELECT * FROM Delivery WHERE aviso = '" + aviso + "'";
-		logger.info(avisoExists);
-		if(exists(avisoExists));
-		return false;
-	}
-	
-	//inserts the complaint values from a complaint object to the db
+	//inserts the service values from a service object to the db
 	public boolean insert() {
 		String getMaxIdService = "SELECT max(id) FROM Additional_Service WHERE aviso = '" + aviso + "'";
 		int newId = getMaxId(getMaxIdService);	//get the new Id for the current Aviso (Avisos can have more than one complaint, thus they have an Id)
 		if (newId < 0) {return false;}
 		else {this.id=newId+1;}
-		String getMaxChatId = "SELECT max(chatId) FROM Claim";
+		String getMaxChatId = "SELECT max(chatId) FROM Additional_Service";
 		int maxChatId = getMaxId(getMaxChatId);
 		if(maxChatId<0) {return false;}
 		else {this.chatId = maxChatId+1;}
@@ -106,74 +152,28 @@ public class ServiceData extends Data {
 		return bool;
 	}
 	
-	public List<Service> fetchClaims(String creator){
-		
-		if(this.chatId<1) return null;
-		List<Service> serviceList = new ArrayList<>();
-		String fetchServices = "SELECT * FROM Claim "
-				+ "WHERE creator='" + creator + 
-				"' OR assigned_to='" + creator + "' "
-				+ "ORDER BY aviso DESC, id ASC";
-		logger.info(fetchServices);
-		try {
-			this.con = dbc.openConnection();
-			
-			this.con.setAutoCommit(false);
-			Statement stmt = null;
-			try {
-				stmt = this.con.createStatement();
-				ResultSet rs = stmt.executeQuery(fetchServices);
-				while(rs.next()) {
-					Service service = new Service();
-					service.setAviso(rs.getString("aviso"));
-					service.setId(rs.getInt("id"));
-					service.setDate(rs.getDate("entry_date").toString());
-					//service.setDate(service.convertTsToDate(rs.getTimestamp("Timestamp")));
-					service.setCreator(rs.getString("creator"));
-					service.setProductNr(rs.getString("product_nr"));
-					service.setAmount(rs.getString("amount"));
-					service.setService(rs.getString("deficiency"));
-					service.setChatId(rs.getInt("chatId"));
-					//service.setDone(rs.getBoolean("done"));
-					serviceList.add(service);
-				}
-				logger.info(fetchServices + " erfolgreich durchgeführt");
-			} finally {
-				try {
-					stmt.close();
-					this.con.commit();
-					this.con.close();
-				} catch (Exception ignore) {
-					logger.warn("Connection couldn't be closed successfully");
-				}
-			}
-		} catch (SQLException ex) {
-			logger.warn("SQL ERROR: " + ex);
-            try {
-				this.con.rollback();
-			} catch (Exception e) {
-				logger.warn("Rollback didnt work");
-				}
-			} 
-		return serviceList;	
-	}
 
-	public boolean update() {
-		String updateClaim = "UPDATE Additional_Service SET "
-				+ "aviso='" + this.aviso + "', id=" + this.id 
-				+ ", entry_date='" + this.date + "', creator='" + this.creator 
-				+ "', product_nr='" + this.productNr 
-				+ "', amount=" + this.amount + ", service='" + this.service
-				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
-		System.out.println(updateClaim);
-		return update(updateClaim);
-	}
 	public boolean delete() {
 		String delete="DELETE FROM Additional_Service WHERE aviso='" + this.aviso
 				+ "' AND id=" + this.id;
 		return update(delete);
 	}
 
+	//checks whether abbrevation exists
+	public boolean abbrevationExists(String abbr) {
+		String abbrExists = "SELECT * FROM User WHERE Abbrevation = '" + abbr + "'";
+		logger.info(abbrExists);
+		if(exists(abbrExists)) return true;
+		return false;
+	}
+	
+	//checks whether certain Aviso exists in the db
+	public boolean avisoExists(String aviso) {
+		String avisoExists =  "SELECT * FROM Delivery WHERE aviso = '" + aviso + "'";
+		logger.info(avisoExists);
+		if(exists(avisoExists));
+		return false;
+	}
 	
 	//Getters and Setters
 
@@ -239,7 +239,6 @@ public class ServiceData extends Data {
 	public void setDate(String date) {
 		this.date = date;
 	}
-
 
 	
 	
