@@ -145,7 +145,7 @@
 				<p:overlayPanel id="chatPanel" title="Chat" for="chatLink"
 					hideEffect="fade" dynamic="true" style="width:800px">
 					<h:form id="formChat">
-						<p:dataTable styleclass="dtMessages" id="chatHistory"
+						<p:dataTable styleClass="dtMessages" id="chatHistory"
 							var="chatMsg" value="#{claim.chatHistory}">
 							<p:column id="vonColumn" headerText="Von:">
 								<h:outputText value="#{chatMsg.user}" />

@@ -22,10 +22,6 @@ public class Claim {
 
 	private String aviso;
 	private int id;
-	
-	@ManagedProperty(value="#{login}") 
-	private Login login;
-	
 	private String creator;
 	private String productNr;
 	private String to;
@@ -42,11 +38,11 @@ public class Claim {
 	private boolean disableInput = false;
 	private List<ChatMsgData> chatHistory;
 	private List<String> deficiencyList;
-	//private List<String> imagePaths;
-
+	@ManagedProperty(value="#{login}")
+	private Login login;
 	private String redirect;
 	@ManagedProperty(value = "#{storeView}")
-	StoreView store;
+	private StoreView store;
 	
 	@PostConstruct
 	public void init() {
@@ -56,7 +52,10 @@ public class Claim {
 		} else {
 			this.redirect = "buero";
 		}
-		this.creator = this.store.login.getUser().getAbbrevation();
+		//this.creator = this.login.getUser().getAbbrevation();
+		this.creator = this.login.getUser().getAbbrevation();
+		System.out.println("init: " + this.creator);
+
 	}
 
 	public Claim() {
@@ -66,7 +65,6 @@ public class Claim {
 		deficiencyList.add("Artikel beschädigt");
 		deficiencyList.add("Verpackung beschädigt");
 		deficiencyList.add("Menge inkorrekt");
-
 	}
 
 	public Claim(String aviso, String creator, String date, String productNr, String to, String amount,
@@ -95,7 +93,6 @@ public class Claim {
 			sev=FacesMessage.SEVERITY_ERROR;
 			FacesMessage msg = new FacesMessage(sev,"Mangel erfassen!","");
 			context.addMessage(this.inputDeficiency.getClientId(), msg);
-			System.out.println("Hallo");
 			return "Fail";	
 		}
 		
@@ -131,12 +128,11 @@ public class Claim {
 			sev = FacesMessage.SEVERITY_WARN;
 		} 
 		else {
+			//System.out.println("Claim login: " + this.login.getUser().getAbbrevation());	// + "\nloginuser: " + this.store.login.getUser().getAbbrevation());
 			ChatMsgData chatMsg = new ChatMsgData(this.chatId, this.text, this.creator);
-
 			if(chatMsg.insertMessage(this.chatId)) {
 				result = "Nachricht erfasst!";
 				sev = FacesMessage.SEVERITY_INFO;
-				
 				this.chatHistory.add(chatMsg);
 			}
 			else {
@@ -352,4 +348,5 @@ public class Claim {
 	public void setLogin(Login login) {
 		this.login = login;
 	}
+
 }

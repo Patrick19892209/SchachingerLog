@@ -54,6 +54,7 @@ public class Chat {
 		else {
 				Claim claim = (Claim) this.dt.getRowData();
 				ChatMsgData chatMsg = new ChatMsgData();
+				System.out.println("Chat: " + chatMsg.getUser());
 				chatMsg.setText(this.text);
 				chatMsg.insertMessage(claim.getChatId());
 				result = "Reklamationserfassung fehlgeschlagen!";

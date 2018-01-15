@@ -22,15 +22,7 @@ public class ChatMsgData extends Data {
 	private String date;
 	private String time;
 	private String to;
-	@ManagedProperty(value = "#{login}")
-	private Login login;
-	// LocalDateTime time;
 	
-	@PostConstruct
-	public void init() {
-		this.user = this.login.getUser().getAbbrevation(); 
-	}
-
 	public ChatMsgData(int chatId, String text, String date, String time, String user) {
 		super();
 		this.text = text;
@@ -42,24 +34,19 @@ public class ChatMsgData extends Data {
 
 	public ChatMsgData(int chatId, String text, String user) {
 		super();
+		this.user = user;
 		this.chatId = chatId;
 		this.text = text;
-		this.user = user;
 	}
 
 	public ChatMsgData() {
 		super();
 	}
-
+	
 	// add new Message to Chat_Message
 	public boolean insertMessage(int chatId) {
 		if (chatId < 1)
 			chatId = this.chatId;
-		/*
-		 * if(!exists("SELECT * FROM Chat_Message WHERE chat_id='" + chatId + "'")) {
-		 * logger.info("Chat mit chatId: " + chatId + " existiert nicht!"); return
-		 * false; }
-		 */
 		String getMaxIdMsg = "SELECT max(id) FROM Chat_Message WHERE chatId = '" + chatId + "'";
 		int maxMsgId = getMaxId(getMaxIdMsg); // get the Id for the current Aviso (Avisos can have more than one
 												// complaint)
@@ -91,9 +78,8 @@ public class ChatMsgData extends Data {
 				ResultSet rs = stmt.executeQuery(fetchHistory);
 				while (rs.next()) {
 					ChatMsgData chatMsg = new ChatMsgData(chatId, rs.getString("text"), rs.getString("date"),
-							rs.getString("time"), getUserFromChatId(chatId));
+					rs.getString("time"), getUserFromChatId(chatId));
 					logger.info(rs.getString("text"));
-					
 					history.add(chatMsg);
 				}
 				logger.info(fetchHistory + " erfolgreich durchgeführt");
@@ -206,14 +192,6 @@ public class ChatMsgData extends Data {
 
 	public void setTime(String time) {
 		this.time = time;
-	}
-
-	public Login getLogin() {
-		return login;
-	}
-
-	public void setLogin(Login login) {
-		this.login = login;
 	}
 
 }
