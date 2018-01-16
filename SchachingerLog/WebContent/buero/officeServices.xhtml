@@ -25,7 +25,7 @@
 			emptyMessage="Es konnten keine Zusatz-Services gefunden werden, die die Kriterien erfüllen!"
 			filteredValue="#{dtServices.filteredServices}">
 			<f:facet name="header">
-				Reklamationsbearbeitung
+				Bearbeitung von Zusatzservices
 			</f:facet>
 			<p:ajax event="rowEdit" listener="#{dtServices.onRowEdit}"
 				update=":form:msgs" />
@@ -101,8 +101,8 @@
 						<h:outputText value="#{service.service}" />
 					</f:facet>
 					<f:facet name="input">
-						<p:inputText id="mangelInput" value="#{service.service}"
-							label="Mangel" />
+						<p:inputText id="serviceInput" value="#{service.service}"
+							label="Service" />
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
@@ -114,7 +114,7 @@
 					actionListener="#{dtServices.deleteService(service)}"
 					update=":form:servicesDt">
 					<p:confirm header="Löschen bestätigen"
-						message="Reklamation wirklich löschen?" icon="ui-icon-alert" />
+						message="Servicefall wirklich löschen?" icon="ui-icon-alert" />
 				</p:commandButton>
 				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 					<p:commandButton value="Ja" type="button"

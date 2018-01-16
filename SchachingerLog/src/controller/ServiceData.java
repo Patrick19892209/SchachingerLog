@@ -15,15 +15,18 @@ public class ServiceData extends Data {
 	private String date;
 	private String productNr;
 	private String creator;
+	private double price;
 	private String amount;
 	private String service;
 	private int chatId;
+	
 	//Constructors
-	public ServiceData(String aviso, String creator, String productNr, String to, String amount, String service) {
+	public ServiceData(String aviso, String creator, String productNr, String to, Double price, String amount, String service) {
 		super("controller.ServiceData");
 		this.aviso = aviso;
 		this.creator = creator;
 		this.productNr = productNr;
+		this.price = price;
 		this.amount = amount;
 		this.service = service;
 	}
@@ -32,6 +35,7 @@ public class ServiceData extends Data {
 		this.aviso = service.getAviso();
 		this.creator = service.getCreator();
 		this.productNr = service.getProductNr();
+		this.price = service.getPrice();
 		this.amount = service.getAmount();
 		this.service = service.getService();
 
@@ -64,6 +68,7 @@ public class ServiceData extends Data {
 					//service.setDate(service.convertTsToDate(rs.getTimestamp("Timestamp")));
 					service.setCreator(rs.getString("creator"));
 					service.setProductNr(rs.getString("product_nr"));
+					service.setPrice(rs.getDouble("price"));
 					service.setAmount(rs.getString("amount"));
 					service.setService(rs.getString("service"));
 					service.setChatId(rs.getInt("chatId"));
@@ -97,7 +102,7 @@ public class ServiceData extends Data {
 		String updateClaim = "UPDATE Additional_Service SET "
 				+ "aviso='" + this.aviso + "', id=" + this.id 
 				+ ", date='" + this.date + "', creator='" + this.creator 
-				+ "', product_nr='" + this.productNr 
+				+ "', product_nr='" + this.productNr + ", price=" + this.price
 				+ "', amount=" + this.amount + ", service='" + this.service
 				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
 		System.out.println(updateClaim);
@@ -115,9 +120,9 @@ public class ServiceData extends Data {
 		if(maxChatId<0) {return false;}
 		else {this.chatId = maxChatId+1;}
 
-		String insertService="INSERT INTO Additional_Service (aviso, id, date, creator, product_nr, service, amount, chatId) "
+		String insertService="INSERT INTO Additional_Service (aviso, id, date, creator, product_nr, service, price, amount, chatId) "
 				+ "VALUES ('" + this.aviso + "', " +  this.id + ", " + "CURRENT_TIMESTAMP" + ", '" + this.creator + "', " 
-				+ this.productNr + ", '" + this.service + "', " + this.amount + ", " + this.chatId +   ")";
+				+ this.productNr + ", '" + this.service + "', " + this.price + ", " + this.amount + ", " + this.chatId +   ")";
 		
 		this.logger.info("Insert Query: " + insertService);
 		Connection con = null;
@@ -238,6 +243,14 @@ public class ServiceData extends Data {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	

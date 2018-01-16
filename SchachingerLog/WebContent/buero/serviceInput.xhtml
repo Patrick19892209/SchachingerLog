@@ -20,7 +20,6 @@
 			<b:panel title="Service-Erfassung" look="success">
 				<img class="logo" src="../resources/images/SchachingerLogo.JPG"
 					alt="Schachinger - wir liefern alles!" />
-
 				<b:row>
 					<b:column>
 						<b:message for="productNr" errorClass="errorMessage" />
@@ -47,6 +46,16 @@
 							<f:selectItem itemValue="" itemLabel="Service erfassen..." />
 							<f:selectItems value="#{service.serviceList}" />
 						</b:selectOneMenu>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column>
+						<b:message for="price" />
+						<b:inputText class="InputText" placeholder="Stundensatz..." id="price"
+							value="#{service.price}" required="true"
+							requiredMessage="Preis erfassen!" ajax="true"
+							autocomplete="false">
+						</b:inputText>
 					</b:column>
 				</b:row>
 				<b:row>

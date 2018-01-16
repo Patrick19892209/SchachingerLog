@@ -69,22 +69,6 @@ public class Claim {
 		deficiencyList.add("Menge inkorrekt");
 	}
 
-	public Claim(String aviso, String creator, String date, String productNr, String to, String amount,
-			String deficiency) {
-		super();
-		this.aviso = aviso;
-		this.creator = creator;
-		this.productNr = productNr;
-		this.to = to;
-		this.amount = amount;
-		this.deficiency = deficiency;
-		this.date = date;
-		deficiencyList = new ArrayList<>();
-		deficiencyList.add("Artikel beschädigt");
-		deficiencyList.add("Verpackung beschädigt");
-		deficiencyList.add("Menge inkorrekt");
-	}
-
 	// inserts data from this Claim into Table Claim
 	public String insertClaim() {
 

@@ -25,6 +25,7 @@ public class Service {
 	private String creator;
 	private String productNr;
 	private String amount;
+	private double price;
 	private String service;
 	private String serviceL;
 	private String date;
@@ -65,21 +66,6 @@ public class Service {
 
 	}
 
-	public String getRedirect() {
-		return redirect;
-	}
-
-	public void setRedirect(String redirect) {
-		this.redirect = redirect;
-	}
-
-	public StoreView getStore() {
-		return store;
-	}
-
-	public void setStore(StoreView store) {
-		this.store = store;
-	}
 
 	public String insertService() {
 
@@ -87,7 +73,7 @@ public class Service {
 		Severity sev;
 		if ((this.service == "" || this.service == null) && (this.serviceL == "" || this.serviceL == null)) {
 			sev = FacesMessage.SEVERITY_ERROR;
-			FacesMessage msg = new FacesMessage(sev, "Mangel erfassen!", "");
+			FacesMessage msg = new FacesMessage(sev, "Service erfassen!", "");
 			context.addMessage(this.inputService.getClientId(), msg);
 			return "Fail";
 		}
@@ -157,9 +143,9 @@ public class Service {
 	}
 
 	public void addDoneMsg() {
-		String msg = "Reklamation erledigt!";
+		String msg = "Servicefall erledigt!";
 		if (!this.done)
-			msg = "Reklamation offen!";
+			msg = "Servicefall offen!";
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
 		String query = "UPDATE Additional_Service SET done=" + this.done + " WHERE aviso='" + this.aviso + "' AND id='"
 				+ this.id + "'";
@@ -305,4 +291,28 @@ public class Service {
 		Service.user = user;
 	}
 
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
+	}
+
+	public StoreView getStore() {
+		return store;
+	}
+
+	public void setStore(StoreView store) {
+		this.store = store;
+	}
 }
