@@ -19,6 +19,8 @@
 			<b:panel title="Reklamationserfassung" look="primary">
 				<img class="logo" src="../resources/images/SchachingerLogo.JPG"
 					alt="Schachinger - wir liefern alles!" />
+				<p:commandButton value="Zurück" icon="fa fa-arrow-left"
+					onclick="window.history.back();" />
 				<b:row>
 					<b:column>
 						<b:message for="productNr" errorClass="errorMessage" />
@@ -63,8 +65,8 @@
 				<b:row>
 					<b:column>
 						<b:message for="aviso" errorClass="errorMessage" />
-						<b:inputText class="InputText" placeholder="Aviso eingeben..." id="aviso"
-							value="#{claim.aviso}" required="true"
+						<b:inputText class="InputText" placeholder="Aviso eingeben..."
+							id="aviso" value="#{claim.aviso}" required="true"
 							disabled="#{claim.disableInput}"
 							requiredMessage="Aviso eingeben!" ajax="true"
 							autocomplete="false">
@@ -109,19 +111,12 @@
 			</b:panel>
 		</b:container>
 	</h:form>
-	<h:form id="fileUpload" enctype="multipart/form-data">
-		<h:panelGroup class="panelUpload" title="Fotos erstellen und uploaden"
-			rendered="#{claim.showFileUpload}">
-			<p:fileUpload value="#{fileUploader.file}" mode="advanced"
-				multiple="true"
-				fileUploadListener="#{fileUploader.handleFileUpload}">
-			</p:fileUpload>
-		</h:panelGroup>
+	<h:form id="home" enctype="multipart/form-data">
 		<p:stack icon="/resources/menu/stack.png" expanded="false">
 			<p:menuitem value="Home" icon="/resources/menu/home.png"
 				title="Startseite" url="#{login.user.homepage}" />
 			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-				title="Logout" action="#{login.logout}" url="#{login.out}"/>
+				title="Logout" action="#{login.logout}" url="#{login.out}" />
 		</p:stack>
 
 	</h:form>

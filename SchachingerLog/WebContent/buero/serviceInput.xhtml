@@ -20,6 +20,8 @@
 			<b:panel title="Service-Erfassung" look="success">
 				<img class="logo" src="../resources/images/SchachingerLogo.JPG"
 					alt="Schachinger - wir liefern alles!" />
+				<p:commandButton value="Zurück" icon="fa fa-arrow-left"
+					onclick="window.history.back();" />
 				<b:row>
 					<b:column>
 						<b:message for="productNr" errorClass="errorMessage" />
@@ -51,8 +53,8 @@
 				<b:row>
 					<b:column>
 						<b:message for="price" />
-						<b:inputText class="InputText" placeholder="Stundensatz..." id="price"
-							value="#{service.price}" required="true"
+						<b:inputText class="InputText" placeholder="Stundensatz..."
+							id="price" value="#{service.price}" required="true"
 							requiredMessage="Preis erfassen!" ajax="true"
 							autocomplete="false">
 						</b:inputText>
