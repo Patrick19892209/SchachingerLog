@@ -14,8 +14,6 @@ import org.primefaces.event.RowEditEvent;
 
 import controller.Data;
 import controller.ServiceData;
-import controller.ClaimData;
-import view.Claim;
 
 @ManagedBean(name = "dtServices")
 @ViewScoped
@@ -47,7 +45,7 @@ public class ServiceTable extends Data implements Serializable {
 	}
 
 	public void onRowCancel(RowEditEvent event) {
-		FacesMessage msg = new FacesMessage("Edit Cancelled", ((Claim) event.getObject()).getAviso());
+		FacesMessage msg = new FacesMessage("Edit Cancelled", ((Service) event.getObject()).getAviso());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 

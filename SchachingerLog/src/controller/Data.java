@@ -40,6 +40,7 @@ public class Data {
 	
 	public boolean update(String query) {
 		boolean bool = false;
+		logger.info(query);
 		try {
 			this.con = this.dbc.openConnection();
 			this.con.setAutoCommit(false);
@@ -48,7 +49,7 @@ public class Data {
 				stmt = this.con.createStatement();
 				stmt.executeUpdate(query);
 				bool = true;
-				//logger.info(query + " erfolgreich durchgeführt");
+				logger.info(query + " erfolgreich durchgeführt");
 			} finally {
 				try {
 					stmt.close();
@@ -59,7 +60,7 @@ public class Data {
 				}
 			}
 		} catch (SQLException ex) {
-			//logger.warn("SQL ERROR: " + ex);
+			logger.warn("SQL ERROR: " + ex);
             try {
 				this.con.rollback();
 			} catch (Exception e) {

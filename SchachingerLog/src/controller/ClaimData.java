@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,18 +25,6 @@ public class ClaimData extends Data{
 	private boolean done;
 
 	//Constructors
-	public ClaimData(String aviso, String creator, String productNr, String to, String amount, String deficiency) {
-		super("controller.ClaimData");
-		this.aviso = aviso;
-		this.creator = creator;
-		this.productNr = productNr;
-		this.to = to;
-		this.amount = amount;
-		this.deficiency = deficiency;
-		String maxChatId = "SELECT max(id) FROM Claim WHERE chatId = '" + chatId + "'";
-		this.chatId = getMaxId(maxChatId) + 1;
-		}
-
 	public ClaimData(Claim claim) {	
 		super("controller.ClaimData");
 		this.aviso = claim.getAviso();
@@ -55,13 +42,8 @@ public class ClaimData extends Data{
 	
 	public ClaimData(){	
 		super("controller.ClaimData");
-}
-
-	public static Date StringToDate(String sdate) throws ParseException {
-		DateFormat inputFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-		Date date = inputFormatter.parse(sdate);
-		return date;
 	}
+
 	//fetches the claims that have been created or assigned to a certain user
 	public List<Claim> fetchClaims(String creator){
 		
@@ -117,10 +99,10 @@ public class ClaimData extends Data{
 		return claimList;	
 	}
 	
+	//updates an entry from table Claim with the data of this object
 	public boolean update() {
 		String updateClaim = "UPDATE Claim SET "
-				+ "aviso='" + this.aviso + "', id=" + this.id 
-				+ ", entry_date='" + this.date + "', creator='" + this.creator 
+				+ "entry_date='" + this.date + "', creator='" + this.creator 
 				+ "', assigned_to='" + this.to + "', product_nr='" + this.productNr 
 				+ "', amount=" + this.amount + ", deficiency='" + this.deficiency
 				+ "' WHERE aviso='" + this.aviso + "' AND id=" + this.id;
@@ -177,7 +159,7 @@ public class ClaimData extends Data{
 	}
 	
 	//Getters and Setters
- 
+
 	public String getAviso() {
 		return aviso;
 	}

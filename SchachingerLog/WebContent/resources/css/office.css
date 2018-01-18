@@ -14,6 +14,14 @@
 form{
 	text-align: center;
 }
+.imageUpload{
+	margin: 0 auto;
+	max-width: 90%;
+}
+.fileUpload{
+	margin-top: 10px;
+	
+}
 .form-control.chatInput{
 	margin: 0 auto;
 	width: 95%;

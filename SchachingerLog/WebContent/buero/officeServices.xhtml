@@ -6,9 +6,11 @@
 	xmlns:b="http://bootsfaces.net/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-
+<f:metadata>
+	<f:viewAction action="#{login.validate}" />
+</f:metadata>
 <h:head>
-	<title>Lieferungen verwalten</title>
+	<title>Services verwalten</title>
 	<h:outputStylesheet name="css/background.css" />
 </h:head>
 <h:body>
@@ -106,6 +108,28 @@
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
+			<p:column headerText="Preis">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{service.price}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText disabled="false" id="priceInput" value="#{service.price}"
+							label="Price" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
+			<p:column headerText="Menge">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{service.amount}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText disabled="false" id="amountInput" value="#{service.amount}"
+							label="Amount" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
 			<p:column id="editColumn">
 				<p:rowEditor icon="fa fa-remove" />
 			</p:column>
@@ -131,7 +155,8 @@
 					hideEffect="fade" dynamic="true" style="width:800px">
 					<h:form id="formChat">
 						<p:dataTable styleclass="dtMessages" id="chatHistory"
-							var="chatMsg" value="#{service.chatHistory}">
+							var="chatMsg" value="#{service.chatHistory}"
+							emptyMessage="Es konnten keine Nachrichten gefunden werden!">
 							<p:column id="vonColumn" headerText="Von:">
 								<h:outputText value="#{chatMsg.user}" />
 							</p:column>

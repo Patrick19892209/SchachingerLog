@@ -10,7 +10,7 @@
 	<f:viewAction action="#{login.validate}" />
 </f:metadata>
 <h:head>
-	<title>Lieferungen verwalten</title>
+	<title>Reklamationen verwalten</title>
 	<h:outputStylesheet name="css/background.css" />
 </h:head>
 <h:body>
@@ -19,7 +19,7 @@
 	</f:facet>
 	<h:form id="form">
 		<img class="logo" src="../resources/images/SchachingerLogo.JPG"
-		alt="Schachinger - wir liefern alles!" />
+			alt="Schachinger - wir liefern alles!" />
 		<p:growl id="msgs" showDetail="true" />
 		<p:dataTable styleClass="dtClaims" id="claimsDt" var="claim"
 			widgetVar="claimsTable" value="#{dtClaims.claims}" editable="true"
@@ -121,6 +121,17 @@
 					</f:facet>
 				</p:cellEditor>
 			</p:column>
+			<p:column headerText="Menge">
+				<p:cellEditor>
+					<f:facet name="output">
+						<h:outputText value="#{claim.amount}" />
+					</f:facet>
+					<f:facet name="input">
+						<p:inputText disabled="false" id="amountInput"
+							value="#{claim.amount}" label="Amount" />
+					</f:facet>
+				</p:cellEditor>
+			</p:column>
 			<p:column id="editColumn">
 				<p:rowEditor icon="fa fa-remove" />
 			</p:column>
@@ -146,7 +157,8 @@
 					hideEffect="fade" dynamic="true" style="width:800px">
 					<h:form id="formChat">
 						<p:dataTable styleclass="dtMessages" id="chatHistory"
-							var="chatMsg" value="#{claim.chatHistory}">
+							var="chatMsg" value="#{claim.chatHistory}"
+							emptyMessage="Es konnten keine Nachrichten gefunden werden!">
 							<p:column id="vonColumn" headerText="Von:">
 								<h:outputText value="#{chatMsg.user}" />
 							</p:column>
@@ -172,6 +184,7 @@
 									update="chatHistory" look="primary" />
 							</b:column>
 						</b:row>
+
 					</h:form>
 				</p:overlayPanel>
 			</p:column>
@@ -179,10 +192,17 @@
 				<p:commandButton id="imageButton" icon="fa fa-photo fa-lg" />
 				<p:overlayPanel styleClass="overlayImage" for="imageButton"
 					dynamic="true">
-					<p:galleria value="#{image.fetchPaths(claim)}" var="image"
-						panelWidth="500" panelHeight="400" showCaption="true">
+					<p:galleria styleClass="galleria"
+						value="#{image.fetchPaths(claim)}" var="image" showCaption="true">
 						<p:graphicImage name="images/claims/#{image}" title="#{image}" />
 					</p:galleria>
+					<h:form styleClass="imageUpload" id="fileUpload" enctype="multipart/form-data">
+						<p:fileUpload styleClass="fileUpload" value="#{fileUploader.file}" mode="advanced"
+							multiple="true"
+							fileUploadListener="#{fileUploader.handleFileUpload}">
+						</p:fileUpload>
+					</h:form>
+
 				</p:overlayPanel>
 			</p:column>
 			<p:column styleClass="doneColumn" filterBy="#{claim.done}"
@@ -234,7 +254,7 @@
 			<p:menuitem value="Home" icon="/resources/menu/home.png"
 				title="Startseite" url="#{login.user.homepage}" />
 			<p:menuitem value="Logout" icon="/resources/menu/logout.png"
-				title="Logout" action="#{login.logout}" url="#{login.out}"/>
+				title="Logout" action="#{login.logout}" url="#{login.out}" />
 		</p:stack>
 	</h:form>
 </h:body>

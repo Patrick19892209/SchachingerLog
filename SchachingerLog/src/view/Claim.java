@@ -69,7 +69,7 @@ public class Claim {
 		deficiencyList.add("Menge inkorrekt");
 	}
 
-	// inserts data from this Claim into Table Claim
+	// inserts data from this Claim into table Claim
 	public String insertClaim() {
 
 		FacesContext context = FacesContext.getCurrentInstance();
