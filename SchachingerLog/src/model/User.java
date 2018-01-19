@@ -2,6 +2,7 @@ package model;
 
 public class User {
 
+	//Variables
 	private String user;
 	private String password;
 	private String name;
@@ -12,6 +13,7 @@ public class User {
 	private String redirect;
 
 	
+	// Getters and Setters
 	public String getAbbrevation() {
 		return abbrevation;
 	}

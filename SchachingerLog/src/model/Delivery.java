@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class Delivery {
 
+	//Variables
 	private String aviso;
 	private String orderId;
 	private String supplier;
@@ -13,6 +14,7 @@ public class Delivery {
 	private boolean claim;
 	private boolean service;
 	
+	//Constructor 1
 	public Delivery(String supplier, Calendar arrival, Calendar departure, String aviso) {
 		this.aviso = aviso;
 		this.supplier = supplier;
@@ -20,12 +22,15 @@ public class Delivery {
 		this.departure = departure;
 	}
 
+	//Constructor 2
 	public Delivery(String supplier, Calendar arrival, String aviso) {
 		this.aviso = aviso;
 		this.supplier = supplier;
 		this.arrival = arrival;
 		this.departure = Calendar.getInstance();
 	}
+	
+	// Getters and Setters
 	public String getAviso() {
 		return aviso;
 	}
@@ -86,6 +91,12 @@ public class Delivery {
 		this.service = service;
 	}
 
+	
+	/**
+	 * set departure time of the delivery
+	 * @param date
+	 * @param c
+	 */
 	public void setTimeDep(Date date,Calendar c) {
 		this.departure.setTime(date);
 		this.departure.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
@@ -93,7 +104,13 @@ public class Delivery {
 		this.departure.set(Calendar.SECOND, c.get(Calendar.SECOND));
 	}
 	
-	public void setTimeArr(Date date,Calendar c) {
+
+	/**
+	 * set arrival time of the delivery
+	 * @param date
+	 * @param c
+	 */
+public void setTimeArr(Date date,Calendar c) {
 		this.arrival.setTime(date);
 		this.arrival.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
 		this.arrival.set(Calendar.MINUTE, c.get(Calendar.MINUTE));

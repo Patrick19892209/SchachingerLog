@@ -8,22 +8,25 @@ import java.sql.Statement;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Logger;
 import model.DBConnector;
 import model.User;
 
 public class LoginData {
+	
+	//Variables
 	private DBConnector dbc;
 	private static Connection con;
-	private Logger logger = null;
 
-
+	/**
+	 * get the specific role of a user (admin/lager/büro)
+	 * @param user // the user object
+	 * @return result // 1/2/3 for each role
+	 */
 	public int getRole(User user) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
-		logger = (Logger) LoggerFactory.getLogger("model.LoginData");
 		int result = 0;
 
 		result = chkUser(user);
@@ -31,6 +34,8 @@ public class LoginData {
 		return result;
 	}
 
+
+	//implementation of the method above
 	private int chkUser(User user) {
 		int result = 0;
 		String role ;
@@ -43,7 +48,6 @@ public class LoginData {
 				stmt = con.createStatement();
 				rs = stmt.executeQuery(sql);
 				if (rs.next()) {
-					logger.info("Correct Password");
 					role = rs.getString("role");
 					user.setRole(role);
 					user.setName(rs.getString("name"));

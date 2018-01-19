@@ -26,6 +26,7 @@ import model.Delivery;
 
 class TimeComparator implements Comparator<Delivery> {
 
+	// Comparator to order the list after time
 	@Override
 	public int compare(Delivery supp1, Delivery supp2) {
 			if (supp1.getArrival().get(Calendar.HOUR_OF_DAY) == supp2.getArrival().get(Calendar.HOUR_OF_DAY)) {
@@ -45,6 +46,7 @@ class TimeComparator implements Comparator<Delivery> {
 @SessionScoped
 public class StoreView {
 
+	//Variables
 	private List<Delivery> openDeliveries;
 	private List<Delivery> finishedDeliveries;
 	private Date deliveryDate;
@@ -81,6 +83,7 @@ public class StoreView {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
+    //chage the working gate
     public void switchGate(String s) {
     	this.gate = Integer.parseInt(Character.toString(s.charAt(4)));
 		initFinishedDeliveries();
@@ -89,12 +92,14 @@ public class StoreView {
         RequestContext.getCurrentInstance().update("test");
     }
 
+    // initialize the finished deliveries of the day and gate
     private void initFinishedDeliveries() {
 		finishedDeliveries = data.finishedDeliveries(this.deliveryDate, this.gate);
 		Collections.sort(finishedDeliveries, new TimeComparator());
 		if (!finishedDeliveries.isEmpty()) this.deliDone = finishedDeliveries.get(finishedDeliveries.size() - 1);
 	}
 
+    // update a finished delivery or update a finished delivery
 	public void setDeliDone(Delivery deliDone) {
 		Calendar c = Calendar.getInstance();
 		if (this.deliDone != null ) { 
@@ -112,6 +117,7 @@ public class StoreView {
 		addMessage("Alles Gut");
 	}
 
+	// remove a finished delivery 
 	public void cancel(Delivery deli) {
 		boolean result = data.delDelivery(deli);
 		if (!result) { addMessage("Fehler bei der Verarbeitung"); return ; }
@@ -122,6 +128,7 @@ public class StoreView {
 		addMessage("Alles Gut");
 	}
 	
+	// add a delivery which was not noticed
 	public void add() {
 		Calendar c = Calendar.getInstance();
 		Calendar d = Calendar.getInstance();
@@ -142,6 +149,7 @@ public class StoreView {
 		addMessage("Alles Gut");	
 	}
 		
+	// set day on calendar
 	public void onDateSelect(SelectEvent event) {
 	        FacesContext facesContext = FacesContext.getCurrentInstance();
 	        Date dateNew = (Date) event.getObject();
@@ -155,6 +163,7 @@ public class StoreView {
 	        RequestContext.getCurrentInstance().update("lager");
 	 }
 
+	// updating the open deliveries
 	private void updateDeliveries() {
 		openDeliveries = data.openDeliveries(getDeliveryDate());
 		setAverageTime();
@@ -162,10 +171,6 @@ public class StoreView {
 				
 	}
 
-	public String look (String g) {
-		if (Integer.parseInt(Character.toString(g.charAt(4))) == this.gate ) return "truck2";
-		else return "truck1";
-	}
 	
 	public void updateArrival(Delivery d) {
 		data.updateArrDep(d, deliveryDate, 1);

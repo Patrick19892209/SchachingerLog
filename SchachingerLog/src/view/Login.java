@@ -8,9 +8,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.Logger;
 import controller.LoginData;
 import model.User;
 
@@ -18,11 +15,15 @@ import model.User;
 @ManagedBean
 @SessionScoped
 public class Login {
-	private Logger logger = (Logger) LoggerFactory.getLogger("view.Login");
+
+	//Variables
 	private User user;
 	private LoginData data;
     private boolean loggedIn = false;
     private final String out = "../login.xhtml";
+    private RequestContext context = RequestContext.getCurrentInstance();
+    private FacesMessage message = null;
+    
     
 	@PostConstruct
 	public void init() {
@@ -30,6 +31,7 @@ public class Login {
 		user = new User();
 	}
 
+	// Getters and Setters
 	public User getUser() {
 		return user;
 	}
@@ -46,15 +48,17 @@ public class Login {
 		return loggedIn;
 	}
 
+	/**
+	 * check user and password
+	 * also the the other user variables will be set
+	 * @return answer  // page to navigate to 
+	 */
 	public String login() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage message = null;
         String answer = null;
         if(user.getAbbrevation() != null && user.getPassword() != null){
         	switch (data.getRole(user)) {
     		case 1: //admin
     			loggedIn = true;
-                logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "admin";
                 user.setRole("admin");
@@ -62,7 +66,6 @@ public class Login {
     			break;
     		case 2: //Lager
     			loggedIn = true;
-                logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "lager";
                 user.setRole("lager");
@@ -70,7 +73,6 @@ public class Login {
     			break;
     		case 3: //buero
     			loggedIn = true;
-                logger.info(user.getName() + " logged in");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", user.getName());
                 answer = "buero";
                 user.setRole("buero");
@@ -79,12 +81,10 @@ public class Login {
     		case -1:
     			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Keine Connection :( So ein Mist aber auch!",null);
     			answer ="Connection problem";
-    			System.out.println("Login con prob");
     			break;
     		default:
     			loggedIn = false;
-                logger.warn(user.getName() + " tried to log in and failed (wrong user or pw)");
-                message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
+    			message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Loggin Error", "Invalid credentials");
                 answer = "wrong login";
     			break;
     		}
@@ -99,8 +99,11 @@ public class Login {
 
 	}
 	
+	/**
+	 * set user to null and return to login page
+	 * @return loginpage
+	 */
 	public String logout() {
-		logger.info(user.getName() + " logging out");
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Logout", user.getName())
 		);
@@ -109,9 +112,12 @@ public class Login {
 		return "../login.xhtml";
 		
 	}
-	
+
+	/**
+	 * check if logged in
+	 * @return logout/stay
+	 */
 	public String validate(){
-		
 		if (user.getName() == null || !this.loggedIn) return "logout";
 		return "stay";
 	}

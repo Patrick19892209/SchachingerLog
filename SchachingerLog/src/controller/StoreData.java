@@ -17,9 +17,15 @@ import model.Delivery;
 
 public class StoreData {
 
+	//Variables
 	private DBConnector dbc;
 	private static Connection con;
 
+	/**
+	 * evaluate the open deliveries of the day
+	 * @param day // the given day
+	 * @return	// List of Object<Delivery>
+	 */
 	public List<Delivery> openDeliveries(Date day) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
@@ -64,6 +70,10 @@ public class StoreData {
 		return list;
 	}
 
+	/**
+	 * evaluate the average time of a delivery and set it
+	 * @param openDeliveries
+	 */
 	public void setArrivals(List<Delivery> openDeliveries) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
@@ -122,6 +132,13 @@ public class StoreData {
 
 	}
 
+	/**
+	 * evaluate the finished deliveries of the given date,
+	 * at the specific gate 
+	 * @param day 
+	 * @param gate
+	 * @return a List of Object<Delivery>
+	 */
 	public List<Delivery> finishedDeliveries(Date day, int gate) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
@@ -184,6 +201,15 @@ public class StoreData {
 		return list;
 	}
 
+	
+	/**
+	 * Updating the tables Delivery and Registered if a delivery will add to finished deliveries
+	 * @param deli 
+	 * @param deliveryDate
+	 * @param gate
+	 * @param name
+	 * @return
+	 */
 	public boolean setTables(Delivery deli, Date deliveryDate, int gate, String name) {
 		boolean result = true;
 		dbc = new DBConnector();
@@ -237,6 +263,12 @@ public class StoreData {
 		return result;
 	}
 
+	
+	/**
+	 * evaluating how much gates are available on the given location
+	 * @param location   //  location of the user
+	 * @return result  // count of gates
+	 */
 	public int getGates(String location) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
@@ -277,6 +309,12 @@ public class StoreData {
 		return result;
 	}
 
+	/**
+	 * remove delivery from finished deliveries and give back to table delivery,
+	 * if possilbe
+	 * @param deli
+	 * @return result // true if success
+	 */
 	public boolean delDelivery(Delivery deli) {
 		boolean result = true;
 		dbc = new DBConnector();
@@ -325,6 +363,13 @@ public class StoreData {
 		return result;
 	}
 
+	
+	/**
+	 * updating the delivery or departure  date
+	 * @param deli
+	 * @param deliveryDate
+	 * @param i  // 1=delivery , 2=departure
+	 */
 	public void updateArrDep(Delivery deli, Date deliveryDate, int i) {
 		dbc = new DBConnector();
 		con = dbc.openConnection();
