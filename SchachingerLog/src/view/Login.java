@@ -8,7 +8,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
-import controller.LoginData;
+import model.LoginData;
 import model.User;
 
 

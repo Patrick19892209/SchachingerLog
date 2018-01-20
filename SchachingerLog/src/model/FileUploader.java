@@ -53,13 +53,10 @@ public class FileUploader {
 	public boolean copyFile(String fileName, InputStream in, String path) {
 		boolean ok = false;
 		try {
-			File newFile = new File(this.path);
-			System.out.println(this.path);
+			File newFile = new File(path);
 			if (!newFile.exists()) {
-				System.out.println("creating directory: " + newFile.getName());
 				try {
 					newFile.mkdir();
-					System.out.println("DIR created");
 				} catch (SecurityException se) {
 					// handle it
 				}
@@ -67,12 +64,7 @@ public class FileUploader {
 			//int index = 0;
 			//do {
 			index++;
-				System.out.println("index: " + index);
 				newFile = new File(path + "/" + fileName);	// + "_" + index + ".jpg");
-				System.out.println("path: " + path + "/" + fileName);
-			//} while (newFile.exists());
-			System.out.println(index);
-			
 			OutputStream out = new FileOutputStream(newFile);
 
 			int read = 0;
@@ -86,7 +78,6 @@ public class FileUploader {
 			out.flush();
 			out.close();
 
-			System.out.println("New file created!");
 			ok = true;
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -96,6 +87,7 @@ public class FileUploader {
 	
 		public String loadCSV(FileUploadEvent event) throws Exception {
 			this.path2 = servletContext.getRealPath(this.path2);
+			this.path2 = this.path2 + "Aviso";
 		try {
 			copyFile(event.getFile().getFileName(), event.getFile().getInputstream(), this.path2);
 		} catch (IOException e) {
@@ -117,8 +109,20 @@ public class FileUploader {
                 		+ "SET date = STR_TO_DATE(@date,'%Y%m%d')";
                 	table = "Delivery";
              try {
-            	 
-            	String loadQuery = "LOAD DATA LOCAL INFILE '" + this.path2.concat(event.getFile().getFileName()) + 
+            	String file = this.path2.concat('\\' + event.getFile().getFileName());
+
+        		String[] split = file.split("\\\\");
+        		String b = null;
+        		for (String s: split) {
+        			if (b == null) {
+        				b=s;
+        			}
+        			else {
+        				b = b + "/" + s;
+        				
+        			}
+        		}
+            	String loadQuery = "LOAD DATA LOCAL INFILE '" + b + 
             			"' INTO TABLE " + table + " FIELDS TERMINATED BY ';'" + 
             			" LINES TERMINATED BY '\n' IGNORE 1 LINES " + columns;
             	stmt = con.createStatement();
@@ -146,66 +150,9 @@ public class FileUploader {
             throw ex;
         }
 		return result;
-    
-
-		
-		
-	/*	DBConnector dbc = new DBConnector();
-		Connection con = dbc.openConnection();
-		//FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-		//FacesContext.getCurrentInstance().addMessage(null, message);
-		// Do what you want with the file
-        con.setAutoCommit(false);
-        
-        Statement stmt = null;
-        ResultSet rs = null;
-        String columns = null, table = null;
-        		columns = "(aviso, delivery_nr,"
-            		+ " @date, nr_of_items, supplier"
-            		+ " ) "
-            		+ "SET date = STR_TO_DATE(@date,'%Y%m%d')";
-            	table = "Delivery";
-         try {
-        	 
-        	String loadQuery = "LOAD DATA LOCAL INFILE '" + "C:/Users/bauer/Downloads/Aviso_METRO.CSV" + 
-        			"' INTO TABLE " + table + " FIELDS TERMINATED BY ';'" + 
-        			" LINES TERMINATED BY '\n' IGNORE 1 LINES " + columns;
-        	stmt = con.createStatement();
-        	System.out.println(loadQuery);
-        	rs = stmt.executeQuery(loadQuery);
-            try {
-                rs.close();
-            } catch (Exception ignore) {
-            }
-              
-        } finally {
-            try {
-                stmt.close();
-                con.commit();
-            } catch (Exception ignore) {
-            }
-        }
-    } catch (SQLException ex) {
-        System.out.println("Error executing transactions ..." + ex.getMessage());
-        try {
-            con.rollback();
-            result = false;
-        } catch (Exception ignore) {
-            throw ignore;
-        }
-        throw ex;
     }
-
-		
-		try {
-			
-			copyFile(event.getFile().getFileName(), event.getFile().getInputstream());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	return "stay";*/
-	}
 	
+		
 	public UploadedFile getFile() {
 		return file;
 	}

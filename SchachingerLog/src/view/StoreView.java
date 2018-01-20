@@ -20,7 +20,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
-import controller.StoreData;
+import model.StoreData;
 import model.Delivery;
 
 

@@ -13,8 +13,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-import controller.ChatMsgData;
-import controller.ClaimData;
+import model.ChatMsgData;
+import model.ClaimData;
 
 @ManagedBean(name = "claim")
 @ViewScoped

@@ -13,8 +13,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
-import controller.Data;
-import controller.ClaimData;
+import model.Data;
+import model.ClaimData;
 import view.Claim;
 
 @ManagedBean(name = "dtClaims")

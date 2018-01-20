@@ -13,7 +13,7 @@ import javax.faces.event.ActionEvent;
 
 import org.primefaces.component.datatable.DataTable;
 
-import controller.ChatMsgData;
+import model.ChatMsgData;
 
 @ManagedBean
 @ViewScoped

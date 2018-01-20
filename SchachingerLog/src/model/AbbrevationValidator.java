@@ -8,7 +8,6 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-import controller.ClaimData;
 
 @FacesValidator("model.AbbrevationValidator")
 public class AbbrevationValidator implements Validator {

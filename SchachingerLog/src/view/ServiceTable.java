@@ -12,8 +12,8 @@ import javax.faces.context.FacesContext;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
 
-import controller.Data;
-import controller.ServiceData;
+import model.Data;
+import model.ServiceData;
 
 @ManagedBean(name = "dtServices")
 @ViewScoped
